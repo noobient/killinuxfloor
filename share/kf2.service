@@ -1,0 +1,14 @@
+[Unit]
+Description=KF2 Server
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=steam
+Group=steam
+ExecStart=/home/steam/Steam/KF2Server/Binaries/Win64/KFGameSteamServer.bin.x86_64 kf-burningparis
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
