@@ -1,2 +1,5 @@
 # kf2-centos
-Killing Floor 2 Dedicated Server on CentOS 7
+
+For the step-by-step guide please refer to:
+
+[Dedicated Killing Floor 2 Server on Linux](https://noobient.com/post/166215861971/dedicated-killing-floor-2-server-on-linux)
