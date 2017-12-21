@@ -4,10 +4,16 @@ set -Eeu
 
 function errorexit ()
 {
-    if [ $? -ne 0 ]
-    then
-        echo 'error!'
-    fi
+    case $? in
+        1)
+            echo "Usage: $0 {start|stop|restart|status|update|log|config}"
+            ;;
+
+        2)
+            echo 'error!'
+            ;;
+
+    esac
 }
 
 trap errorexit EXIT
@@ -175,7 +181,6 @@ case $1 in
         ;;
 
     *)
-        echo "Usage: $0 {start|stop|restart|status|update|log|config}"
         exit 1
 
 esac
