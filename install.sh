@@ -10,3 +10,4 @@ sh bin/03_systemd.sh
 sh bin/04_sudo.sh
 sh bin/05_firewalld.sh
 sh bin/06_helper.sh
+sh bin/07_config.sh

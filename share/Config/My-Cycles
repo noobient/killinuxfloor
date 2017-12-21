@@ -1,0 +1,5 @@
+# maps on the same line will be in the same cycle
+# separate maps with a comma
+# don't add spaces before or after commas
+# lines starting with # will be ignored
+KF-HorzineArenaRMEdition,KF-KrampusLair
