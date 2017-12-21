@@ -1,13 +1,25 @@
 #!/bin/sh
 
+set -Eeu
+
+function errorexit ()
+{
+    if [ $? -ne 0 ]
+    then
+        echo 'error!'
+    fi
+}
+
+trap errorexit EXIT
+
 function regen_conf ()
 {
     # variables
     LIVE_CONF="${HOME}/Steam/KF2Server/KFGame/Config"
     OWN_CONF="${HOME}/Config"
     MAP_DIR="${HOME}/Steam/KF2Server/KFGame/BrewedPC/Maps"
-    MAP_LIST="${OWN_CONF}/maps.txt"
-    CYCLE_LIST="${OWN_CONF}/cycles.txt"
+    MAP_LIST="${OWN_CONF}/My-Maps.csv"
+    CYCLE_LIST="${OWN_CONF}/My-Cycles.csv"
 
     # merge live ini files with own custom values
     # these must be unique for crudini to work
@@ -15,7 +27,7 @@ function regen_conf ()
     echo -n 'Applying settings to upstream config files... '
     for f in $(find ${OWN_CONF} -maxdepth 1 -name '*.ini' -type f -printf %f\\n)
     do
-        crudini --merge ${LIVE_CONF}/${f} < ${OWN_CONF}/${f}
+        crudini --merge "${LIVE_CONF}/${f#$"My-"}" < "${OWN_CONF}/${f}"
     done
     echo 'done.'
 
@@ -41,12 +53,15 @@ function regen_conf ()
 
     # parse custom cycle list
     echo -n 'Adding custom game cycles... '
-    for line in $(grep '.' ${CYCLE_LIST} | grep -v '^#')
+    test -e ${CYCLE_LIST} || exit
+    while read -r line
     do
+        # skip comments
+        [[ $line = \#* ]] && continue
         CYCLE="${CYCLE_START}\"${line}\"))"
         CYCLE=$(sed 's/,/","/g' <<< ${CYCLE})
         sed -i "s/\[KFGame.KFGameInfo\]/&\n${CYCLE}/" ${LIVE_CONF}/LinuxServer-KFGame.ini
-    done
+    done < ${CYCLE_LIST}
     echo 'done.'
 
     # cycle string reset
@@ -59,8 +74,11 @@ function regen_conf ()
 
     # parse map list
     echo -n 'Applying workshop subscriptions and updating webadmin map entries... '
-    for line in $(grep '.' ${MAP_LIST} | grep -v '^#')
+    test -e ${MAP_LIST} || exit
+    while read -r line
     do
+        # skip comments
+        [[ $line = \#* ]] && continue
         ID=$(awk -F "," '{print $1}' <<< ${line})
         NAME=$(awk -F "," '{print $2}' <<< ${line})
 
@@ -80,7 +98,7 @@ function regen_conf ()
         fi
         CYCLE="${CYCLE}\"${NAME}\""
         FIRST=0
-    done
+    done < ${MAP_LIST}
     echo 'done.'
 
     # write the workshop map cycle
