@@ -4,10 +4,10 @@ set -e
 
 # variables
 LIVE_CONF="${HOME}/Steam/KF2Server/KFGame/Config"
-OWN_CONF="${HOME}/work"
+OWN_CONF="${HOME}/Config"
 MAP_DIR="${HOME}/Steam/KF2Server/KFGame/BrewedPC/Maps"
-MAP_LIST='maps.txt'
-CYCLE_LIST='cycles.txt'
+MAP_LIST="${OWN_CONF}/maps.txt"
+CYCLE_LIST="${OWN_CONF}/cycles.txt"
 
 # merge live ini files with own custom values
 # these must be unique for crudini to work
@@ -35,12 +35,12 @@ crudini --del ${LIVE_CONF}/LinuxServer-KFGame.ini KFGame.KFGameInfo GameMapCycle
 CYCLE_START='GameMapCycles=(Maps=('
 
 # parse custom cycle list
-while IFS='' read -r line || [[ -n "${line}" ]]
+for line in $(grep '.' ${CYCLE_LIST} | grep -v '^#')
 do
     CYCLE="${CYCLE_START}\"${line}\"))"
     CYCLE=$(sed 's/,/","/g' <<< ${CYCLE})
     sed -i "s/\[KFGame.KFGameInfo\]/&\n${CYCLE}/" ${LIVE_CONF}/LinuxServer-KFGame.ini
-done < ${CYCLE_LIST}
+done
 
 # cycle string reset
 CYCLE="${CYCLE_START}"
@@ -48,7 +48,7 @@ CYCLE="${CYCLE_START}"
 FIRST=1
 
 # parse map list
-while IFS='' read -r line || [[ -n "${line}" ]]
+for line in $(grep '.' ${MAP_LIST} | grep -v '^#')
 do
     ID=$(awk -F "," '{print $1}' <<< ${line})
     NAME=$(awk -F "," '{print $2}' <<< ${line})
@@ -69,7 +69,7 @@ do
     fi
     CYCLE="${CYCLE}\"${NAME}\""
     FIRST=0
-done < ${MAP_LIST}
+done
 
 # write the workshop map cycle
 CYCLE="${CYCLE}))"
