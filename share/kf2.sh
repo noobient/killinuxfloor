@@ -151,6 +151,11 @@ function regen_conf ()
     echo 'Killing Floor 2 server configuration regenerated successfully!'
 }
 
+if [ "$#" -ne 1 ]
+then
+    exit 1
+fi
+
 case $1 in
     start)
         sudo /bin/systemctl start kf2.service
