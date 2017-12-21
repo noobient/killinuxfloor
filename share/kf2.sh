@@ -53,7 +53,7 @@ function regen_conf ()
 
     # parse custom cycle list
     echo -n 'Adding custom game cycles... '
-    test -e ${CYCLE_LIST} || exit
+    test -e ${CYCLE_LIST} || exit 2
     while read -r line
     do
         # skip comments
@@ -74,7 +74,7 @@ function regen_conf ()
 
     # parse map list
     echo -n 'Applying workshop subscriptions and updating webadmin map entries... '
-    test -e ${MAP_LIST} || exit
+    test -e ${MAP_LIST} || exit 2
     while read -r line
     do
         # skip comments
