@@ -10,7 +10,7 @@ yum -y install crudini
 cp -R share/Config ${STEAM_HOME}/
 
 # fix ownership
-chown steam.steam ${STEAM_HOME}/Config
+chown -R steam.steam ${STEAM_HOME}/Config
 
 # fix selinux context
 restorecon -rv ${STEAM_HOME}/Config
