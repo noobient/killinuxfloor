@@ -6,7 +6,7 @@ function errorexit ()
 {
     case $? in
         1)
-            echo "Usage: $0 {start|stop|restart|status|update|log|config}"
+            echo "Usage: $0 {start|stop|restart|status|update|log|config|purge <map_id>}"
             ;;
 
         2)
@@ -151,7 +151,14 @@ function regen_conf ()
     echo 'Killing Floor 2 server configuration regenerated successfully!'
 }
 
-if [ "$#" -ne 1 ]
+function purge_map ()
+{
+    rm -rf "${HOME}/Cache/${1}"
+    rm -rf "${HOME}/Workshop/content/232090/${1}"
+    sed -i "/${1}/,+5d" "${HOME}/Workshop/appworkshop_232090.acf"
+}
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]
 then
     exit 1
 fi
@@ -183,6 +190,10 @@ case $1 in
 
     config)
         regen_conf
+        ;;
+
+    purge)
+        purge_map $2
         ;;
 
     *)
