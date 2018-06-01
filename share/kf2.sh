@@ -119,7 +119,7 @@ function regen_conf ()
 
     # cycle for stock maps
     echo -n 'Adding map cycle for stock maps... '
-    for d in $(find ${MAP_DIR} -maxdepth 1 -mindepth 1 -type d -printf %f\\n)
+    for d in $(find ${MAP_DIR} -maxdepth 1 -mindepth 1 -type d -printf %f\\n | sort)
     do
         if [ ${FIRST} -ne 1 ]
         then
