@@ -6,3 +6,4 @@ For the step-by-step guide please refer to:
 * [KF2 Halloween Horrors on Linux Server](https://noobient.com/post/166513354986/kf2-halloween-horrors-on-linux-server)
 * [Cheap VPS - DigitalOcean vs Linode vs Vultr](https://noobient.com/post/166745112166/cheap-vps-digitalocean-vs-linode-vs-vultr)
 * [Migrating your /home to Btrfs](https://noobient.com/post/168802452746/migrating-your-home-to-btrfs)
+* [Killing Floor 2 Auto-Kick Bot on Linux Dedicated Server](https://noobient.com/post/175434585701/killing-floor-2-auto-kick-bot-on-linux-dedicated)
