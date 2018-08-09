@@ -173,7 +173,7 @@ function purge_map ()
     echo 'done.'
 
     echo -n 'Deleting from My-Maps.csv... '
-    sed -i "/${1},${MAP_NAME}/d" ${OWN_CONF}/My-Maps.csv
+    sed -i --follow-symlinks "/${1},${MAP_NAME}/d" ${OWN_CONF}/My-Maps.csv
     echo 'done.'
 
     echo 'Performing complete config regeneration... '
