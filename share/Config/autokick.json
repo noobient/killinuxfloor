@@ -1,6 +1,6 @@
 {
   "servers": ["http://127.0.0.1:8080"],
-  "basicAuthorization": "admin:YOURPASSWORDHERE",
+  "basicAuthorization": "Admin:YOURPASSWORDHERE",
   "intervalCheck": 5000,
   "action": "kick",
   "minLevel": 0,
