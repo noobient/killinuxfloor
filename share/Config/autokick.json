@@ -1,0 +1,10 @@
+{
+  "servers": ["http://127.0.0.1:8080"],
+  "basicAuthorization": "admin:YOURPASSWORDHERE",
+  "intervalCheck": 5000,
+  "action": "kick",
+  "minLevel": 0,
+  "warnings": true,
+  "warningPeriod": 20000,
+  "warningMessage": "Minimum level is 0. Please switch perk or you'll be auto-kicked in 20 seconds."
+}

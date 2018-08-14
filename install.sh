@@ -11,3 +11,4 @@ sh bin/04_sudo.sh
 sh bin/05_firewalld.sh
 sh bin/06_helper.sh
 sh bin/07_config.sh
+sh bin/08_autokick.sh

@@ -1,0 +1,5 @@
+%steam ALL=NOPASSWD: /bin/systemctl start kf2autokick.service
+%steam ALL=NOPASSWD: /bin/systemctl stop kf2autokick.service
+%steam ALL=NOPASSWD: /bin/systemctl restart kf2autokick.service
+%steam ALL=NOPASSWD: /bin/systemctl status kf2autokick.service
+%steam ALL=NOPASSWD: /bin/journalctl --system --unit=kf2autokick.service --follow
