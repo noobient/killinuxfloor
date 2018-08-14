@@ -9,7 +9,7 @@ Group=steam
 # make sure we patch webadmin every time, otherwise it could break after an update
 # it can still break because of sed match pattern change, but still better
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_player_row.inc
-ExecStartPre=/bin/sed 's@<td><%player.name%></td>@<td class="foo-bar"><%player.perk.name%>;<%player.perk.level%>;<%player.playerkey%></td>@' /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_player_row.inc
+ExecStartPre=/bin/sed -i 's@<td><%player.name%></td>@<td class="foo-bar"><%player.perk.name%>;<%player.perk.level%>;<%player.playerkey%></td>@' /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_player_row.inc
 ExecStart=/bin/node /home/steam/kf2autokick/lib/index.js --config=/home/steam/Config/autokick.json
 Restart=on-failure
 RestartSec=5
