@@ -6,7 +6,7 @@ function errorexit ()
 {
     case $? in
         1)
-            echo "Usage: $0 {start|stop|restart|status|update|log|config|purge <map_id>|init}"
+            echo "Usage: $0 {start|stop|restart|status|update [preview]|log|config|purge <map_id>|init}"
             ;;
 
         2)
@@ -210,6 +210,21 @@ function init_kf2 ()
     stop_kf2
 }
 
+function update_kf2 ()
+{
+    # hack: gotta use -beta without a branch name to force non-beta
+    # https://forums.tripwireinteractive.com/forum/killing-floor-2/kf2-news-and-announcements/news-and-announcements-af/2321016-summer-sideshow-2018-treacherous-skies?p=2321049#post2321049
+    case $# in
+        1)
+            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 -beta +exit
+            ;;
+
+        2)
+            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 -beta $2 +exit
+            ;;
+    esac
+}
+
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]
 then
     exit 1
@@ -233,7 +248,7 @@ case $1 in
         ;;
 
     update)
-        steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 +exit
+        update_kf2
         ;;
 
     log)
