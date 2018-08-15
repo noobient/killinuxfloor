@@ -2,11 +2,31 @@
 
 set -Eeu
 
+function print_help ()
+{
+    #echo "Usage: kf2.sh {start|stop|restart|status|update [preview]|log|config|purge <map_id>|init|help}"
+    echo "Killing Floor 2 Admin Script"
+    echo ""
+    echo "Usage:"
+    echo "------"
+    echo -e "kf2.sh init \t\t populate all internal KF2 server settings with defaults (don't forget to run 'config' afterwards)"
+    echo -e "kf2.sh config \t\t apply your own settings to the internal KF2 server config"
+    echo -e "kf2.sh start \t\t start KF2"
+    echo -e "kf2.sh stop \t\t stop KF2"
+    echo -e "kf2.sh restart \t\t restart KF2"
+    echo -e "kf2.sh status \t\t query the status of KF2"
+    echo -e "kf2.sh log \t\t display the KF2 logs"
+    echo -e "kf2.sh purge <map_id> \t remove an installed workshop map"
+    echo -e "kf2.sh update \t\t check for and apply KF2 updates (don't forget to run 'init' and 'config' if update found)"
+    echo -e "kf2.sh update preview \t apply updates from the 'preview' branch"
+    echo -e "kf2.sh help \t\t print this help"
+}
+
 function errorexit ()
 {
     case $? in
         1)
-            echo "Usage: $0 {start|stop|restart|status|update [preview]|log|config|purge <map_id>|init}"
+            print_help
             ;;
 
         2)
@@ -270,6 +290,9 @@ case $1 in
 
     init)
         init_kf2
+        ;;
+    help)
+        print_help
         ;;
 
     *)
