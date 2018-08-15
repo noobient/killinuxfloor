@@ -6,7 +6,7 @@ function errorexit ()
 {
     case $? in
         1)
-            echo "Usage: $0 {start|stop|restart|status|update|log|config|purge <map_id>}"
+            echo "Usage: $0 {start|stop|restart|status|update|log|config|purge <map_id>|init}"
             ;;
 
         2)
@@ -188,6 +188,28 @@ function purge_map ()
     echo "The ${MAP_NAME} map with ID ${1} has been completely purged."
 }
 
+function start_kf2 ()
+{
+    sudo /bin/systemctl start kf2.service
+}
+
+function stop_kf2 ()
+{
+    sudo /bin/systemctl stop kf2.service
+}
+
+function init_kf2 ()
+{
+    stop_kf2
+    rm -f ${LIVE_CONF}/KF*.ini
+    rm -f ${LIVE_CONF}/LinuxServer-*.ini
+    start_kf2
+    echo -n 'Waiting for default INI files to be generated... '
+    sleep 15
+    echo 'done.'
+    stop_kf2
+}
+
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]
 then
     exit 1
@@ -195,11 +217,11 @@ fi
 
 case $1 in
     start)
-        sudo /bin/systemctl start kf2.service
+        start_kf2
         ;;
 
     stop)
-        sudo /bin/systemctl stop kf2.service
+        stop_kf2
         ;;
 
     restart)
@@ -224,6 +246,10 @@ case $1 in
 
     purge)
         purge_map $2
+        ;;
+
+    init)
+        init_kf2
         ;;
 
     *)
