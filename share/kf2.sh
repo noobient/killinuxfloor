@@ -215,12 +215,12 @@ function update_kf2 ()
     # hack: gotta use -beta without a branch name to force non-beta
     # https://forums.tripwireinteractive.com/forum/killing-floor-2/kf2-news-and-announcements/news-and-announcements-af/2321016-summer-sideshow-2018-treacherous-skies?p=2321049#post2321049
     case $# in
-        1)
+        0)
             steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 -beta +exit
             ;;
 
-        2)
-            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 -beta $2 +exit
+        1)
+            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 -beta $1 +exit
             ;;
     esac
 }
@@ -248,7 +248,12 @@ case $1 in
         ;;
 
     update)
-        update_kf2
+        if [ $# -eq 2 ]
+        then
+            update_kf2 $2
+        else
+            update_kf2
+        fi
         ;;
 
     log)
