@@ -5,7 +5,7 @@ set -Eeu
 function print_help ()
 {
     #echo "Usage: kf2.sh {start|stop|restart|status|update [preview]|log|config|purge <map_id>|init|help}"
-    echo "Killing Floor 2 Admin Script"
+    echo "Killing Floor 2 CentOS Admin Script (c) noobient"
     echo ""
     echo "Usage:"
     echo "------"
