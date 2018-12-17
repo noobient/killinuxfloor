@@ -181,7 +181,7 @@ function purge_map ()
     echo "Purging map with ID ${1}... "
 
     echo -n 'Finding map name corresponding to ID... '
-    MAP_NAME=$(grep ${1} ${MAP_LIST} | cut -d',' -f2)
+    MAP_NAME=$(grep ^${1} ${MAP_LIST} | cut -d',' -f2)
     echo "${MAP_NAME}."
 
     echo -n 'Deleting from KFGame.ini... '
@@ -193,7 +193,7 @@ function purge_map ()
     echo 'done.'
 
     echo -n 'Deleting from My-Maps.csv... '
-    sed -i --follow-symlinks "/${1},${MAP_NAME}/d" ${OWN_CONF}/My-Maps.csv
+    sed -i --follow-symlinks "/^${1},${MAP_NAME}/d" ${OWN_CONF}/My-Maps.csv
     echo 'done.'
 
     echo 'Performing complete config regeneration... '
