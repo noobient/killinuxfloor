@@ -270,6 +270,8 @@ fi
 
 case $1 in
     start)
+        # we have to reload every time coz startup parameters might've changed
+        sudo /bin/systemctl daemon-reload
         start_kf2
         ;;
 
@@ -278,6 +280,7 @@ case $1 in
         ;;
 
     restart)
+        sudo /bin/systemctl daemon-reload
         sudo /bin/systemctl restart kf2.service
         ;;
 

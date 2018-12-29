@@ -3,3 +3,4 @@
 %steam ALL=NOPASSWD: /bin/systemctl restart kf2.service
 %steam ALL=NOPASSWD: /bin/systemctl status kf2.service
 %steam ALL=NOPASSWD: /bin/journalctl --system --unit=kf2.service --follow
+%steam ALL=NOPASSWD: /bin/systemctl daemon-reload
