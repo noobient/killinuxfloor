@@ -43,6 +43,7 @@ LIVE_CONF="${HOME}/Steam/KF2Server/KFGame/Config"
 OWN_CONF="${HOME}/Config"
 MAP_DIR="${HOME}/Steam/KF2Server/KFGame/BrewedPC/Maps"
 MAP_LIST="${OWN_CONF}/My-Maps.csv"
+MUTATOR_LIST="${OWN_CONF}/My-Mutators.csv"
 CYCLE_LIST="${OWN_CONF}/My-Cycles.csv"
 
 function sanitize_conf ()
@@ -62,6 +63,22 @@ function sanitize_conf ()
     echo 'done.'
 }
 
+function add_mutators ()
+{
+    # parse mutator list
+    echo -n 'Applying mutators... '
+    test -e ${MUTATOR_LIST} || exit 2
+    while read -r line
+    do
+        # skip comments
+        [[ $line = \#* ]] && continue
+
+        # add entry to workshop list, can't use crudini here because parameters aren't unique
+        echo "ServerSubscribedWorkshopItems=${line}" >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
+    done < ${MUTATOR_LIST}
+    echo 'done.'
+}
+
 function regen_conf ()
 {
     # merge live ini files with own custom values
@@ -77,6 +94,8 @@ function regen_conf ()
     # delete old workshop section from KFEngine altogether
     echo -n 'Deleting old workshop entries... '
     crudini --del ${LIVE_CONF}/LinuxServer-KFEngine.ini OnlineSubsystemSteamworks.KFWorkshopSteamworks
+    # workshop header
+    echo '[OnlineSubsystemSteamworks.KFWorkshopSteamworks]' >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
     echo 'done.'
 
     # also reset download managers, we need multiple values and in specific order
@@ -111,9 +130,6 @@ function regen_conf ()
     CYCLE="${CYCLE_START}"
     # track if we need a comma or not
     FIRST=1
-
-    # workshop header
-    echo '[OnlineSubsystemSteamworks.KFWorkshopSteamworks]' >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
 
     # parse map list
     echo -n 'Applying workshop subscriptions and updating webadmin map entries... '
@@ -170,6 +186,8 @@ function regen_conf ()
     CYCLE="${CYCLE}))"
     sed -i "s/\[KFGame.KFGameInfo\]/&\n${CYCLE}/" ${LIVE_CONF}/LinuxServer-KFGame.ini
     echo 'done.'
+
+    add_mutators
 
     sanitize_conf
 
