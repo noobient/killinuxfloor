@@ -243,7 +243,7 @@ function init_kf2 ()
     rm -f ${LIVE_CONF}/LinuxServer-*.ini
     start_kf2
     echo -n 'Waiting for default INI files to be generated... '
-    sleep 15
+    sleep 20
     echo 'done.'
     stop_kf2
 }
