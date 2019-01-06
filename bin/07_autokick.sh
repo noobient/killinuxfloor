@@ -23,4 +23,4 @@ fi
 # 'build' it
 sudo -u steam sh -c "cd ${STEAM_HOME}/kf2autokick && yarn --silent --frozen-lockfile >/dev/null 2>&1"
 
-echo 'done.'
+${ECHO_DONE}

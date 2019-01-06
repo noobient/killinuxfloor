@@ -46,6 +46,8 @@ MAP_LIST="${OWN_CONF}/My-Maps.csv"
 MUTATOR_LIST="${OWN_CONF}/My-Mutators.csv"
 CYCLE_LIST="${OWN_CONF}/My-Cycles.csv"
 
+ECHO_DONE='echo -e \e[32mdone\e[0m.'
+
 function sanitize_conf ()
 {
     # cleanup
@@ -60,7 +62,7 @@ function sanitize_conf ()
         # get rid of spaces around = added by crudini
         sed -i 's/ = /=/' ${LIVE_CONF}/${INI}
     done
-    echo 'done.'
+    ${ECHO_DONE}
 }
 
 function add_mutators ()
@@ -76,7 +78,7 @@ function add_mutators ()
         # add entry to workshop list, can't use crudini here because parameters aren't unique
         echo "ServerSubscribedWorkshopItems=${line}" >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
     done < ${MUTATOR_LIST}
-    echo 'done.'
+    ${ECHO_DONE}
 }
 
 function regen_conf ()
@@ -89,26 +91,26 @@ function regen_conf ()
     do
         crudini --merge "${LIVE_CONF}/${f#$"My-"}" < "${OWN_CONF}/${f}"
     done
-    echo 'done.'
+    ${ECHO_DONE}
 
     # delete old workshop section from KFEngine altogether
     echo -n 'Deleting old workshop entries... '
     crudini --del ${LIVE_CONF}/LinuxServer-KFEngine.ini OnlineSubsystemSteamworks.KFWorkshopSteamworks
     # workshop header
     echo '[OnlineSubsystemSteamworks.KFWorkshopSteamworks]' >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
-    echo 'done.'
+    ${ECHO_DONE}
 
     # also reset download managers, we need multiple values and in specific order
     echo -n 'Configuring map download managers... '
     crudini --del ${LIVE_CONF}/LinuxServer-KFEngine.ini IpDrv.TcpNetDriver DownloadManagers
     crudini --set ${LIVE_CONF}/LinuxServer-KFEngine.ini IpDrv.TcpNetDriver DownloadManagers OnlineSubsystemSteamworks.SteamWorkshopDownload
     sed -i 's/DownloadManagers.*=.*OnlineSubsystemSteamworks.SteamWorkshopDownload/&\nDownloadManagers=IpDrv.HTTPDownload/' ${LIVE_CONF}/LinuxServer-KFEngine.ini
-    echo 'done.'
+    ${ECHO_DONE}
 
     # delete old cycles
     echo -n 'Deleting old game cycles... '
     crudini --del ${LIVE_CONF}/LinuxServer-KFGame.ini KFGame.KFGameInfo GameMapCycles
-    echo 'done.'
+    ${ECHO_DONE}
 
     # cycle string
     CYCLE_START='GameMapCycles=(Maps=('
@@ -124,7 +126,7 @@ function regen_conf ()
         CYCLE=$(sed 's/,/","/g' <<< ${CYCLE})
         sed -i "s/\[KFGame.KFGameInfo\]/&\n${CYCLE}/" ${LIVE_CONF}/LinuxServer-KFGame.ini
     done < ${CYCLE_LIST}
-    echo 'done.'
+    ${ECHO_DONE}
 
     # cycle string reset
     CYCLE="${CYCLE_START}"
@@ -158,13 +160,13 @@ function regen_conf ()
         CYCLE="${CYCLE}\"${NAME}\""
         FIRST=0
     done < ${MAP_LIST}
-    echo 'done.'
+    ${ECHO_DONE}
 
     # write the workshop map cycle
     echo -n 'Adding map cycle for workshop maps... '
     CYCLE="${CYCLE}))"
     sed -i "s/\[KFGame.KFGameInfo\]/&\n${CYCLE}/" ${LIVE_CONF}/LinuxServer-KFGame.ini
-    echo 'done.'
+    ${ECHO_DONE}
 
     # reset
     CYCLE="${CYCLE_START}"
@@ -185,7 +187,7 @@ function regen_conf ()
     # always do default maps last so that it is the first cycle in the config
     CYCLE="${CYCLE}))"
     sed -i "s/\[KFGame.KFGameInfo\]/&\n${CYCLE}/" ${LIVE_CONF}/LinuxServer-KFGame.ini
-    echo 'done.'
+    ${ECHO_DONE}
 
     add_mutators
 
@@ -204,15 +206,15 @@ function purge_map ()
 
     echo -n 'Deleting from KFGame.ini... '
     crudini --del ${LIVE_CONF}/LinuxServer-KFGame.ini "${MAP_NAME} KFMapSummary"
-    echo 'done.'
+    ${ECHO_DONE}
 
     echo -n 'Deleting from KFEngine.ini... '
     sed -i "/ServerSubscribedWorkshopItems=${1}/d" ${LIVE_CONF}/LinuxServer-KFEngine.ini
-    echo 'done.'
+    ${ECHO_DONE}
 
     echo -n 'Deleting from My-Maps.csv... '
     sed -i --follow-symlinks "/^${1},${MAP_NAME}/d" ${OWN_CONF}/My-Maps.csv
-    echo 'done.'
+    ${ECHO_DONE}
 
     echo 'Performing complete config regeneration... '
     regen_conf
@@ -221,7 +223,7 @@ function purge_map ()
     rm -rf "${HOME}/Cache/${1}"
     rm -rf "${HOME}/Workshop/content/232090/${1}"
     sed -i "/${1}/,+5d" "${HOME}/Workshop/appworkshop_232090.acf"
-    echo 'done.'
+    ${ECHO_DONE}
 
     echo "The ${MAP_NAME} map with ID ${1} has been completely purged."
 }
@@ -244,7 +246,7 @@ function init_kf2 ()
     start_kf2
     echo -n 'Waiting for default INI files to be generated... '
     sleep 20
-    echo 'done.'
+    ${ECHO_DONE}
     stop_kf2
 }
 

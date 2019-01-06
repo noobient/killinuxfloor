@@ -27,4 +27,4 @@ firewall-cmd --quiet --add-service=kf2 --permanent
 # reload
 firewall-cmd --quiet --reload
 
-echo 'done.'
+${ECHO_DONE}

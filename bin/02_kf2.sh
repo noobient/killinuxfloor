@@ -31,4 +31,4 @@ sudo -u steam sh -c "grep -i 'install state:' ${STATE_LOG} | grep -i 'fully inst
 sudo -u steam sh -c 'ln -sfn ~/Steam/KF2Server/KFGame/Cache ~/Cache'
 sudo -u steam sh -c 'ln -sfn ~/Steam/KF2Server/Binaries/Win64/steamapps/workshop ~/Workshop'
 
-echo 'done.'
+${ECHO_DONE}

@@ -21,4 +21,4 @@ systemctl --quiet daemon-reload
 systemctl --quiet enable kf2.service
 systemctl --quiet enable kf2autokick.service
 
-echo 'done.'
+${ECHO_DONE}

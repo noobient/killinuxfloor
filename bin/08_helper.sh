@@ -26,4 +26,4 @@ chown -R steam.steam ${STEAM_HOME}/bin
 # fix selinux context
 restorecon -r ${STEAM_HOME}/bin
 
-echo 'done.'
+${ECHO_DONE}

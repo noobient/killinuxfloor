@@ -15,4 +15,4 @@ restorecon -r /etc/sudoers.d
 chmod 0440 /etc/sudoers.d/kf2-sudo
 chmod 0440 /etc/sudoers.d/kf2autokick-sudo
 
-echo 'done.'
+${ECHO_DONE}

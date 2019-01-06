@@ -2,7 +2,7 @@
 
 set -eu
 
-read -p "This will install Killing Floor 2 on this machine. Type 'y' to continue: " -n 1 -r
+read -p "This will install Killing Floor 2 on this machine. Press 'y' to continue: " -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
@@ -13,6 +13,7 @@ fi
 echo 'Installing Killing Floor 2... '
 
 export STEAM_HOME='/home/steam'
+export ECHO_DONE='echo -e \e[32mdone\e[0m.'
 
 sh bin/01_steamcmd.sh
 sh bin/02_kf2.sh

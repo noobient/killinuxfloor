@@ -8,7 +8,7 @@ echo -n 'Installing config generator... '
 yum -y -q install epel-release | grep -v "already installed and latest version" || true
 yum -y -q install crudini | grep -v "already installed and latest version" || true
 
-echo 'done.'
+${ECHO_DONE}
 
 if [ -d ${STEAM_HOME}/Config ]
 then
@@ -18,7 +18,7 @@ then
     echo -n "Backing up current KF2 config as ${BACKUP_FILE}... "
     rm -f ${STEAM_HOME}/Config/Internal
     sudo -u steam sh -c "tar czfh ${BACKUP_FILE} -C ${STEAM_HOME} Config"
-    echo 'done.'
+    ${ECHO_DONE}
 
     rm -rf ${STEAM_HOME}/Config
 fi
@@ -40,4 +40,4 @@ sudo -u steam sh -c 'ln -sfn ~/Steam/KF2Server/KFGame/Config ~/Config/Internal'
 # suppress warnings during init
 systemctl --quiet daemon-reload
 
-echo 'done.'
+${ECHO_DONE}

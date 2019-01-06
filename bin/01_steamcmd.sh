@@ -7,13 +7,13 @@ if [ $(id -u steam 2>/dev/null || echo -1) -eq -1 ]
 then
     echo -n 'Creating dedicated steam user... '
     useradd --user-group --create-home steam
-    echo 'done.'
+    ${ECHO_DONE}
 fi
 
 # Deps
 echo -n 'Installing dependencies... '
 yum -y -q install glibc.i686 libstdc++.i686 unzip dos2unix patch | grep -v "already installed and latest version" || true
-echo 'done.'
+${ECHO_DONE}
 
 # SteamCMD
 echo -n 'Installing Steam... '
@@ -29,4 +29,4 @@ then
     sudo -u steam sh -c 'sed -i.orig '"'"'/^PATH=/ s@$@:$HOME/Steam@'"'"' ~/.bash_profile'
 fi
 
-echo 'done.'
+${ECHO_DONE}
