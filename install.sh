@@ -1,6 +1,16 @@
 #!/bin/sh
 
-set -e
+set -eu
+
+read -p "This will install Killing Floor 2 on this machine. Type 'y' to continue: " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    echo 'Installation cancelled.'
+    exit
+fi
+
+echo 'Installing Killing Floor 2... '
 
 export STEAM_HOME='/home/steam'
 
