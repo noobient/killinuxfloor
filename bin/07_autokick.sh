@@ -7,7 +7,7 @@ curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
 curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
 
 # install the packages
-yum -y install nodejs yarn dos2unix
+yum -y install nodejs yarn
 
 # obtain a copy of kf2_autokick
 # wonderful workaround for "could not change back" bullcrap by git

@@ -6,7 +6,7 @@ set -e
 useradd --user-group --create-home steam
 
 # compat libs required
-yum -y install glibc.i686 libstdc++.i686 unzip
+yum -y install glibc.i686 libstdc++.i686 unzip dos2unix
 
 # create the main steam dir
 sudo -u steam sh -c 'mkdir -p ~/Steam'
