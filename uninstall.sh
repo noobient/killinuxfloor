@@ -4,7 +4,22 @@ set -eu
 
 export STEAM_HOME='/home/steam'
 
+read -p "This will uninstall Killing Floor 2 on this machine. Type 'y' to continue: " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    echo 'Uninstallation cancelled.'
+    exit
+fi
+
+echo 'Uninstalling Killing Floor 2... '
+
 # Essentially, this file should be bin/* undone, in reverse order.
+
+echo -n 'Stopping KF2 services... '
+systemctl --quiet stop kf2.service
+systemctl --quiet stop kf2autokick.service
+echo 'done.'
 
 # Helper
 echo -n 'Removing helpers... '
@@ -71,3 +86,5 @@ echo 'done.'
 
 # the only thing we don't remove is the steam user, because it has user config
 #userdel steam
+
+echo 'Killing Floor 2 successfully uninstalled.'
