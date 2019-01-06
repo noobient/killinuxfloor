@@ -8,6 +8,7 @@ echo -n 'Installing and enabling KF2 services... '
 cp -f share/kf2.service /etc/systemd/system/
 cp -f share/kf2autokick.service /etc/systemd/system/
 mkdir -p /etc/systemd/system/kf2.service.d
+cp -f share/current_change.html.patch /etc/systemd/system/kf2.service.d/
 ln -sf ${STEAM_HOME}/Config/Startup.conf /etc/systemd/system/kf2.service.d/kf2.service.conf
 
 # fix selinux context

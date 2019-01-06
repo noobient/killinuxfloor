@@ -1,0 +1,41 @@
+--- current_change.html.orig    2019-01-06 13:08:05.747618120 -0600
++++ current_change.html 2019-01-06 13:08:52.647933332 -0600
+@@ -25,13 +25,13 @@
+ </div>
+ </fieldset>
+
+-<fieldset id="mutators">
++<!-- fieldset id="mutators">
+ <legend>Mutators</legend>
+ <div class="section">
+ <%mutators%>
+ <input type="hidden" name="mutatorGroupCount" value="<%mutator.groups%>" />
+ </div>
+-</fieldset>
++</fieldset -->
+
+ <fieldset>
+ <legend>Miscellaneous</legend>
+@@ -57,6 +57,22 @@
+ </script>
+ <script type="text/javascript" src="/images/current_change.js?gzip"></script>
+
++<script type="text/javascript">
++mutString = "<%rules.mutators%>";
++
++if (mutString.length > 0)
++{
++    /* take the human-readable mutator list, remove whitespaces, then add them as params */
++    urlString = ("?Mutator=" + mutString + "<%urlextra%>").replace(/\s/g, "");
++}
++else
++{
++    urlString = "<%urlextra%>";
++}
++
++$("#urlextra").val(urlString);
++</script>
++
+ </div>
+
+ <!-- #include file="navigation.inc" -->

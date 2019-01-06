@@ -12,7 +12,7 @@ fi
 
 # Deps
 echo -n 'Installing dependencies... '
-yum -y -q install glibc.i686 libstdc++.i686 unzip dos2unix | grep -v "already installed and latest version" || true
+yum -y -q install glibc.i686 libstdc++.i686 unzip dos2unix patch | grep -v "already installed and latest version" || true
 echo 'done.'
 
 # SteamCMD

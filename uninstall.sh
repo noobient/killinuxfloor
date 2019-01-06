@@ -82,7 +82,7 @@ echo 'done.'
 
 # Deps
 echo -n 'Removing dependencies... '
-yum -y -q erase glibc.i686 libstdc++.i686 unzip dos2unix
+yum -y -q erase glibc.i686 libstdc++.i686 unzip dos2unix patch
 echo 'done.'
 
 # the only thing we don't remove is the steam user, because it has user config
