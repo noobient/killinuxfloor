@@ -1,6 +1,7 @@
+# list of maps you want to have installed
 # add entries in id,name format, one map per line
-# name = filename of the map without the .kfm extension
-# id = displayed on the workshop page in the url as ?id=
+# - name = filename of the map without the .kfm extension
+# - id = displayed on the workshop page in the url as ?id=
 # don't add spaces before or after commas
 # lines starting with # will be ignored
 # run "kf2.sh stop && kf2.sh config && kf2.sh start" to apply your changes

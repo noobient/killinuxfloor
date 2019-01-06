@@ -1,3 +1,4 @@
+# list of mutators you want to have installed
 # add entries in id format, one mutator per line
 # id = displayed on the workshop page in the url as ?id=
 # don't add spaces before or after
