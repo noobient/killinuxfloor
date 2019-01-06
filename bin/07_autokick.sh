@@ -5,11 +5,11 @@ set -eu
 echo -n 'Installing auto-kick bot... '
 
 # install the repos
-curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
-curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
+curl --silent --location https://rpm.nodesource.com/setup_8.x | bash - >/dev/null
+curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo > /etc/yum.repos.d/yarn.repo
 
 # install the packages
-yum -y -q install nodejs yarn
+yum -y -q install nodejs yarn | grep -v "already installed and latest version" || true
 
 if [ -d ${STEAM_HOME}/kf2autokick ]
 then

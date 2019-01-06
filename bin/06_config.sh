@@ -5,8 +5,8 @@ set -eu
 echo -n 'Installing config generator... '
 
 # install crudini
-yum -y -q install epel-release
-yum -y -q install crudini
+yum -y -q install epel-release | grep -v "already installed and latest version" || true
+yum -y -q install crudini | grep -v "already installed and latest version" || true
 
 # deploy the initial config
 cp -R -f share/Config ${STEAM_HOME}/
