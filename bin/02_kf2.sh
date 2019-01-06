@@ -11,10 +11,6 @@ function errorexit ()
             echo 'Once you eliminated the problem, try running the installer again.'
             ;;
 
-        *)
-            echo 'error!'
-            ;;
-
     esac
 }
 
@@ -29,7 +25,7 @@ echo 'Killing Floor 2 installer exited.'
 echo -n 'Checking Killing Floor 2 install state... '
 export STATE_LOG="${STEAM_HOME}/Steam/logs/state.log"
 sudo -u steam sh -c "~/Steam/steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_status 232130 +exit > ${STATE_LOG}"
-sudo -u steam sh -c "grep -i 'install state:' ${STATE_LOG} | grep -i 'fully installed' || exit 1"
+sudo -u steam sh -c "grep -i 'install state:' ${STATE_LOG} | grep -i 'fully installed' > /dev/null || exit 1"
 
 # easy access
 sudo -u steam sh -c 'ln -sfn ~/Steam/KF2Server/KFGame/Cache ~/Cache'
