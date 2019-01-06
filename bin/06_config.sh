@@ -37,4 +37,7 @@ restorecon -r ${STEAM_HOME}/Config
 # easy access to stock config files
 sudo -u steam sh -c 'ln -sfn ~/Steam/KF2Server/KFGame/Config ~/Config/Internal'
 
+# suppress warnings during init
+systemctl --quiet daemon-reload
+
 echo 'done.'
