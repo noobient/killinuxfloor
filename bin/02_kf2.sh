@@ -6,7 +6,7 @@ function errorexit ()
 {
     case $? in
         1)
-            echo 'error! Killing Floor 2 failed to install.'
+            echo -e "\e[31merror! Killing Floor 2 failed to install.\e[0m"
             echo 'Observe the SteamCMD output and check the files under /home/steam/Steam/logs.'
             echo 'Once you eliminated the problem, try running the installer again.'
             ;;
