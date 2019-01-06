@@ -32,7 +32,7 @@ sudo -u steam sh -c "~/Steam/steamcmd.sh +login anonymous +force_install_dir ./K
 sudo -u steam sh -c "grep -i 'install state:' ${STATE_LOG} | grep -i 'fully installed' || exit 1"
 
 # easy access
-sudo -u steam sh -c 'ln -sf ~/Steam/KF2Server/KFGame/Cache ~/Cache'
-sudo -u steam sh -c 'ln -sf ~/Steam/KF2Server/Binaries/Win64/steamapps/workshop ~/Workshop'
+sudo -u steam sh -c 'ln -sfn ~/Steam/KF2Server/KFGame/Cache ~/Cache'
+sudo -u steam sh -c 'ln -sfn ~/Steam/KF2Server/Binaries/Win64/steamapps/workshop ~/Workshop'
 
 echo 'done.'
