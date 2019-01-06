@@ -5,7 +5,7 @@ set -eu
 echo -n 'Adding firewall rules... '
 
 # create a new service
-if [ -f /etc/firewalld/services/kf2.service ]
+if [ -f /etc/firewalld/services/kf2.xml ]
 then
     firewall-cmd --quiet --remove-service=kf2 --permanent
     firewall-cmd --quiet --reload
