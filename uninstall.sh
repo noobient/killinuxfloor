@@ -44,6 +44,7 @@ echo 'done.'
 DATE_STR=$(date +%Y%m%d-%H%M%S)
 BACKUP_FILE="${STEAM_HOME}/Config-${DATE_STR}.tgz"
 echo -n "Backing up current KF2 config as ${BACKUP_FILE}... "
+rm -f ${STEAM_HOME}/Config/Internal
 sudo -u steam sh -c "tar czfh ${BACKUP_FILE} -C ${STEAM_HOME} Config"
 echo 'done.'
 
