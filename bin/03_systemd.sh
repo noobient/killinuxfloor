@@ -6,7 +6,7 @@ set -e
 cp share/kf2.service /etc/systemd/system/
 cp share/kf2autokick.service /etc/systemd/system/
 mkdir -p /etc/systemd/system/kf2.service.d
-ln -sf ${STEAM_HOME}/Config/mutators.conf /etc/systemd/system/kf2.service.d/kf2.service.conf
+ln -sf ${STEAM_HOME}/Config/Startup.conf /etc/systemd/system/kf2.service.d/kf2.service.conf
 
 # fix selinux context
 restorecon -rv /etc/systemd/system
