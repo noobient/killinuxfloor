@@ -26,7 +26,7 @@ sh bin/08_helper.sh
 sh bin/09_init.sh
 
 echo
-echo -e "Installation finished. You may now manage your KF2 server with the 'steam' user."
+echo -e "\e[32mInstallation finished!\e[0m You may now manage your KF2 server with the 'steam' user."
 echo -e "To switch to the steam user, use \e[36msudo -iu steam\e[0m. Switch back with \e[36mexit\e[0m."
 echo -e "The configuration files can be found under \e[36m/home/steam/Config\e[0m."
 echo "If you have previous config backed up, you may restore them now."
