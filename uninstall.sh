@@ -89,4 +89,4 @@ ${ECHO_DONE}
 # the only thing we don't remove is the steam user, because it has user config
 #userdel steam
 
-echo 'Killing Floor 2 successfully uninstalled.'
+echo -e "\e[32mKilling Floor 2 successfully uninstalled.\e[0m"
