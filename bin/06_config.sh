@@ -5,6 +5,7 @@ set -eu
 echo -n 'Installing config generator... '
 
 # install crudini
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 yum -y -q install epel-release | grep -v "already installed and latest version" || true
 yum -y -q install crudini | grep -v "already installed and latest version" || true
 

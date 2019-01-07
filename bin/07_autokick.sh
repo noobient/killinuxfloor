@@ -5,6 +5,8 @@ set -eu
 echo -n 'Installing auto-kick bot... '
 
 # install the repos
+rpm --import /etc/pki/rpm-gpg/NODESOURCE-GPG-SIGNING-KEY-EL
+rpm --import https://dl.yarnpkg.com/rpm/pubkey.gpg
 curl --silent --location https://rpm.nodesource.com/setup_8.x | bash - >/dev/null
 curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo > /etc/yum.repos.d/yarn.repo
 
