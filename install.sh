@@ -10,8 +10,6 @@ then
     exit
 fi
 
-echo 'Installing Killing Floor 2... '
-
 export STEAM_HOME='/home/steam'
 export ECHO_DONE='echo -e \e[32mdone\e[0m.'
 
