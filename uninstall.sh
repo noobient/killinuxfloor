@@ -18,8 +18,17 @@ echo 'Uninstalling Killing Floor 2... '
 # Essentially, this file should be bin/* undone, in reverse order.
 
 echo -n 'Stopping KF2 services... '
-systemctl --quiet stop kf2.service
-systemctl --quiet stop kf2autokick.service
+
+if [ -f /etc/systemd/system/kf2.service ]
+then
+    systemctl --quiet stop kf2.service
+fi
+
+if [ -f /etc/systemd/system/kf2autokick.service ]
+then
+    systemctl --quiet stop kf2autokick.service
+fi
+
 ${ECHO_DONE}
 
 # Helper
