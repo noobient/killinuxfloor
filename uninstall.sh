@@ -17,6 +17,16 @@ echo 'Uninstalling Killing Floor 2... '
 
 # Essentially, this file should be bin/* undone, in reverse order.
 
+function safe_erase ()
+{
+    RET=1
+    yum -q list installed $1 >/dev/null 2>&1 && RET=$?
+    if [ ${RET} -eq 0 ]
+    then
+        yum -y -q erase $1
+    fi
+}
+
 echo -n 'Stopping KF2 services... '
 
 if [ -f /etc/systemd/system/kf2.service ]
@@ -39,7 +49,8 @@ ${ECHO_DONE}
 
 # Autokick
 echo -n 'Removing auto-kick bot... '
-yum -y -q erase nodejs yarn
+safe_erase nodejs
+safe_erase yarn
 rm -f /etc/yum.repos.d/nodesource-el7.repo
 rm -f /etc/yum.repos.d/yarn.repo
 rm -rf ${STEAM_HOME}/kf2autokick
@@ -47,7 +58,8 @@ ${ECHO_DONE}
 
 # Config generator
 echo -n 'Removing config generator... '
-yum -y -q erase crudini epel-release
+safe_erase crudini
+safe_erase epel-release
 ${ECHO_DONE}
 
 # Backup
@@ -60,10 +72,15 @@ ${ECHO_DONE}
 
 # Firewall
 echo -n 'Removing firewall rules... '
-firewall-cmd --quiet --remove-service=kf2 --permanent
-firewall-cmd --quiet --reload
-firewall-cmd --quiet --delete-service=kf2 --permanent
-firewall-cmd --quiet --reload
+
+if [ -f /etc/firewalld/services/kf2.xml ]
+then
+    firewall-cmd --quiet --remove-service=kf2 --permanent
+    firewall-cmd --quiet --reload
+    firewall-cmd --quiet --delete-service=kf2 --permanent
+    firewall-cmd --quiet --reload
+fi
+
 ${ECHO_DONE}
 
 # Sudo
@@ -74,12 +91,24 @@ ${ECHO_DONE}
 
 # Systemd
 echo -n 'Removing KF2 services... '
-systemctl --quiet disable kf2.service
-systemctl --quiet disable kf2autokick.service
+
+systemctl --quiet daemon-reload
+
+if [ -f /etc/systemd/system/kf2.service ]
+then
+    systemctl --quiet disable kf2.service
+fi
+
+if [ -f /etc/systemd/system/kf2autokick.service ]
+then
+    systemctl --quiet disable kf2autokick.service
+fi
+
 rm -f /etc/systemd/system/kf2.service
 rm -f /etc/systemd/system/kf2autokick.service
 rm -rf /etc/systemd/system/kf2.service.d
 systemctl --quiet daemon-reload
+
 ${ECHO_DONE}
 
 # Steam + KF2
@@ -92,7 +121,12 @@ ${ECHO_DONE}
 
 # Deps
 echo -n 'Removing dependencies... '
-yum -y -q erase glibc.i686 libstdc++.i686 unzip dos2unix patch
+
+for PKG in glibc.i686 libstdc++.i686 unzip dos2unix patch
+do
+    safe_erase $PKG
+done
+
 ${ECHO_DONE}
 
 # the only thing we don't remove is the steam user, because it has user config
