@@ -20,6 +20,7 @@ function print_help ()
     echo -e "kf2.sh update \t\t check for and apply KF2 updates (don't forget to run 'init' and 'config' if update found)"
     echo -e "kf2.sh update preview \t apply updates from the 'preview' branch"
     echo -e "kf2.sh info \t\t show KF2 installation info"
+    echo -e "kf2.sh verify \t\t verify integrity of KF2 files"
     echo -e "kf2.sh help \t\t print this help"
 }
 
@@ -266,9 +267,22 @@ function update_kf2 ()
     esac
 }
 
-function check_kf2 ()
+function get_install ()
 {
     steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_status 232130 +exit
+}
+
+function check_integrity ()
+{
+    case $# in
+        0)
+            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta +exit
+            ;;
+
+        1)
+            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta $1 +exit
+            ;;
+    esac
 }
 
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]
@@ -322,7 +336,16 @@ case $1 in
         ;;
 
     info)
-        check_kf2
+        get_install
+        ;;
+
+    verify)
+        if [ $# -eq 2 ]
+        then
+            check_integrity $2
+        else
+            check_integrity
+        fi
         ;;
 
     help)
