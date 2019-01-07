@@ -19,6 +19,7 @@ function print_help ()
     echo -e "kf2.sh purge <map_id> \t remove an installed workshop map"
     echo -e "kf2.sh update \t\t check for and apply KF2 updates (don't forget to run 'init' and 'config' if update found)"
     echo -e "kf2.sh update preview \t apply updates from the 'preview' branch"
+    echo -e "kf2.sh info \t\t show KF2 installation info"
     echo -e "kf2.sh help \t\t print this help"
 }
 
@@ -265,6 +266,11 @@ function update_kf2 ()
     esac
 }
 
+function check_kf2 ()
+{
+    steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_status 232130 +exit
+}
+
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]
 then
     exit 1
@@ -314,6 +320,11 @@ case $1 in
     init)
         init_kf2
         ;;
+
+    info)
+        check_kf2
+        ;;
+
     help)
         print_help
         ;;
