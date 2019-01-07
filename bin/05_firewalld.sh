@@ -1,30 +1,26 @@
-#!/bin/sh
-
-set -eu
-
 echo -n 'Adding firewall rules... '
 
 # create a new service
 if [ -f /etc/firewalld/services/kf2.xml ]
 then
-    firewall-cmd --quiet --remove-service=kf2 --permanent
-    firewall-cmd --quiet --reload
-    firewall-cmd --quiet --delete-service=kf2 --permanent
-    firewall-cmd --quiet --reload
+    firewall-cmd ${FIREWALLCMD_FLAGS} --remove-service=kf2 --permanent
+    firewall-cmd ${FIREWALLCMD_FLAGS} --reload
+    firewall-cmd ${FIREWALLCMD_FLAGS} --delete-service=kf2 --permanent
+    firewall-cmd ${FIREWALLCMD_FLAGS} --reload
 fi
 
-firewall-cmd --quiet --new-service=kf2 --permanent
+firewall-cmd ${FIREWALLCMD_FLAGS} --new-service=kf2 --permanent
 
 # deploy it
 cp -f share/kf2.xml /etc/firewalld/services/
 
 # fix selinux context
-restorecon -r /etc/firewalld/services/
+restorecon ${RESTORECON_FLAGS} -r /etc/firewalld/services/
 
 # allow it
-firewall-cmd --quiet --add-service=kf2 --permanent
+firewall-cmd ${FIREWALLCMD_FLAGS} --add-service=kf2 --permanent
 
 # reload
-firewall-cmd --quiet --reload
+firewall-cmd ${FIREWALLCMD_FLAGS} --reload
 
 ${ECHO_DONE}

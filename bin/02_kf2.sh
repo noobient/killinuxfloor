@@ -1,7 +1,3 @@
-#!/bin/sh
-
-set -Eeu
-
 function errorexit ()
 {
     case $? in
@@ -19,7 +15,11 @@ trap errorexit EXIT
 echo 'Installing Killing Floor 2... '
 
 # acquire the kf2 binaries
-sudo -u steam sh -c '~/Steam/steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate +exit'
+if [ ${SKIP_KFGAME} -ne 1 ]
+then
+    sudo -u steam sh -c '~/Steam/steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate +exit'
+fi
+
 echo 'Killing Floor 2 installer exited.'
 
 echo -n 'Checking Killing Floor 2 install state... '
