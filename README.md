@@ -1,5 +1,17 @@
 # kf2-centos
 
+## About
+
+Why, it's the easiest way to install Killing Floor 2 on Linux. All you need is a fresh, up-to-date install of CentOS. But how easy is it to install KF2 using this, really? Well, see it for youself.
+
+![](img/install.png)
+
+Uninstalling is quick and simple, too.
+
+![](img/uninstall.png)
+
+## Documentation
+
 For step-by-step guides please refer to:
 
 * [Dedicated Killing Floor 2 Server on Linux v2](https://noobient.com/post/177032104336/dedicated-killing-floor-2-server-on-linux-v2)
@@ -9,7 +21,7 @@ For step-by-step guides please refer to:
 * [Cheap VPS 2018/02 - DigitalOcean vs Linode vs Vultr](https://noobient.com/post/170833729621/cheap-vps-201802-digitalocean-vs-linode-vs)
 * [Playing on the Noobient Killing Floor 2 Servers](https://noobient.com/post/176812638301/playing-on-the-noobient-killing-floor-2-servers)
 
-Deprecated docs:
+### Deprecated docs
 
 * [Dedicated Killing Floor 2 Server on Linux](https://noobient.com/post/166215861971/dedicated-killing-floor-2-server-on-linux)
 * [KF2 Halloween Horrors on Linux Server](https://noobient.com/post/166513354986/kf2-halloween-horrors-on-linux-server)
