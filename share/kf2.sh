@@ -30,7 +30,7 @@ function errorexit ()
             ;;
 
         2)
-            echo 'error!'
+            echo -e "\e[31merror!\e[0m"
             ;;
 
     esac
