@@ -66,7 +66,7 @@ function errorexit ()
 
         4)
             echo -e "\e[31merror! Your CentOS is too old.\e[0m"
-            echo -e "Update with \e[36myum update\e[0m."
+            echo -e "Update with \e[36myum update\e[0m, then reboot."
             ;;
 
         *)
