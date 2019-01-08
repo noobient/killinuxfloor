@@ -26,3 +26,29 @@ function kf2_yum_erase ()
         fi
     done
 }
+
+function errorexit ()
+{
+    case $? in
+        0)
+            ;;
+
+        1)
+            echo -e "\e[31merror! Killing Floor 2 failed to install.\e[0m"
+            echo 'Observe the SteamCMD output and check the files under /home/steam/Steam/logs.'
+            echo 'Once you eliminated the problem, try running the installer again.'
+            ;;
+
+        2)
+            echo -e "\e[31merror! Is firewalld running?\e[0m"
+            echo -e "You can check with \e[36msystemctl status firewalld.service\e[0m."
+            ;;
+
+        *)
+            echo -e "\e[31merror!\e[0m"
+            ;;
+
+    esac
+}
+
+trap errorexit EXIT

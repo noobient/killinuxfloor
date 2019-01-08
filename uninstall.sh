@@ -67,10 +67,10 @@ echo -n 'Removing firewall rules... '
 
 if [ -f /etc/firewalld/services/kf2.xml ]
 then
-    firewall-cmd ${FIREWALLCMD_FLAGS} --remove-service=kf2 --permanent
-    firewall-cmd ${FIREWALLCMD_FLAGS} --reload
-    firewall-cmd ${FIREWALLCMD_FLAGS} --delete-service=kf2 --permanent
-    firewall-cmd ${FIREWALLCMD_FLAGS} --reload
+    firewall-cmd ${FIREWALLCMD_FLAGS} --remove-service=kf2 --permanent || exit 2
+    firewall-cmd ${FIREWALLCMD_FLAGS} --reload || exit 2
+    firewall-cmd ${FIREWALLCMD_FLAGS} --delete-service=kf2 --permanent || exit 2
+    firewall-cmd ${FIREWALLCMD_FLAGS} --reload || exit 2
 fi
 
 ${ECHO_DONE}

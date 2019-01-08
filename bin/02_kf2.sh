@@ -1,17 +1,3 @@
-function errorexit ()
-{
-    case $? in
-        1)
-            echo -e "\e[31merror! Killing Floor 2 failed to install.\e[0m"
-            echo 'Observe the SteamCMD output and check the files under /home/steam/Steam/logs.'
-            echo 'Once you eliminated the problem, try running the installer again.'
-            ;;
-
-    esac
-}
-
-trap errorexit EXIT
-
 echo 'Installing Killing Floor 2... '
 
 # acquire the kf2 binaries
