@@ -17,6 +17,7 @@ source "${ROOT}/lib/aliases.sh"
 source "${ROOT}/lib/flags.sh"
 source "${ROOT}/lib/functions.sh"
 
+source "${ROOT}/bin/00_centos.sh"
 source "${ROOT}/bin/01_steamcmd.sh"
 source "${ROOT}/bin/02_kf2.sh"
 source "${ROOT}/bin/03_systemd.sh"

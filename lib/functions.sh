@@ -34,6 +34,15 @@ function check_firewalld ()
     systemctl is-active --quiet firewalld.service && RET=0 || true
 }
 
+function check_centos ()
+{
+    RET=1
+    if [[ $(cat /etc/centos-release) == "CentOS Linux release 7.6"* ]]
+    then
+        RET=0
+    fi
+}
+
 function errorexit ()
 {
     case $? in
@@ -42,7 +51,7 @@ function errorexit ()
 
         1)
             echo -e "\e[31merror! Killing Floor 2 failed to install.\e[0m"
-            echo 'Observe the SteamCMD output and check the files under /home/steam/Steam/logs.'
+            echo -e "Observe the SteamCMD output and check the files under \e[36m/home/steam/Steam/logs\e[0m."
             echo 'Once you eliminated the problem, try running the installer again.'
             ;;
 
@@ -53,6 +62,11 @@ function errorexit ()
 
         3)
             echo -e "\e[31merror! Is yum operable?\e[0m"
+            ;;
+
+        4)
+            echo -e "\e[31merror! Your CentOS is too old.\e[0m"
+            echo -e "Update with \e[36myum update\e[0m."
             ;;
 
         *)
