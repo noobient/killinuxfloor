@@ -17,7 +17,7 @@ Features:
 * Automatically generated and updated **map cycle** for workshop maps
 * User-defined map cycles, too
 * Bundled, integrated **auto-kick bot** made by [Sinewyk](https://github.com/Sinewyk/kf2_autokick) (thanks for your work!)
-* **kf2.sh** command to manage all aspects of your KF2 server
+* **killinuxfloor** command to manage all aspects of your KF2 server
 * Corrected mutator management on webadmin, offering your previous parameters during manual map change
 
 But how easy is it to install KF2 using this, really? Well, see it for youself.
@@ -51,9 +51,9 @@ Yes, at first sight it really is. Thanks to Tripwire, and probably to Unreal Eng
 
 Traditionally, you're expected to find the options you want to change, among the thousands that are available. When you upgrade to a new KF2 patch, you either collect your changes scattered over in those huge files, then change them again in the new files (so much time), or just carry over your old files, risking the loss of any change in defaults, or the addition of new settings that Tripwire may have done. I find both options horrible.
 
-With kf2.sh it's different. You only list **the options you want to change** from the defaults. Then kf2.sh applies these settings to the internal config files. This way you always get the fresh internal config files after KF2 patches, and it's extremely easy to carry over your config to a different server - you just copy your `Config` folder, and that's it. All your customizations, workshop maps, map cycles, mutators, auto-kick settings are preserved.
+With killinuxfloor it's different. You only list **the options you want to change** from the defaults. Then killinuxfloor applies these settings to the internal config files. This way you always get the fresh internal config files after KF2 patches, and it's extremely easy to carry over your config to a different server - you just copy your `Config` folder, and that's it. All your customizations, workshop maps, map cycles, mutators, auto-kick settings are preserved.
 
-**TL;DR** You should never edit `Config/Internal` files. Use the files under `Config`, then run the `kf2.sh config` command to have your settings applied to the internal config files.
+**TL;DR** You should never edit `Config/Internal` files. Use the files under `Config`, then run the `killinuxfloor config` command to have your settings applied to the internal config files.
 
 ## Further Reading
 

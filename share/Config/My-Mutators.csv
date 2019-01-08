@@ -4,7 +4,7 @@
 # id = displayed on the workshop page in the url as ?id=
 # don't add spaces before or after
 # lines starting with # will be ignored
-# run "kf2.sh stop && kf2.sh config && kf2.sh start" to apply your changes
+# run "killinuxfloor stop && killinuxfloor config && killinuxfloor start" to apply your changes
 # when new mutators finish downloading, the server restarts once more
 
 # Maxplayers Mutator

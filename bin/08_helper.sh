@@ -3,18 +3,18 @@ echo -n 'Installing helpers... '
 # create the dir
 sudo -u steam sh -c 'mkdir -p ~/bin'
 
-if [ -d ${STEAM_HOME}/kf2-centos ]
+if [ -d ${STEAM_HOME}/killinuxfloor ]
 then
     # update
-    sudo -u steam sh -c "cd ~/kf2-centos && git reset ${GIT_FLAGS} --hard && git pull ${GIT_FLAGS}"
+    sudo -u steam sh -c "cd ~/killinuxfloor && git reset ${GIT_FLAGS} --hard && git pull ${GIT_FLAGS}"
 else
-    # make a local copy of kf2-centos for easier updates
-    sudo -u steam sh -c "cd && git clone ${GIT_FLAGS} https://github.com/bviktor/kf2-centos.git"
+    # make a local copy of killinuxfloor for easier updates
+    sudo -u steam sh -c "cd && git clone ${GIT_FLAGS} https://github.com/bviktor/killinuxfloor.git"
 fi
 
 # deploy the helpers
-ln -sTf ${STEAM_HOME}/kf2-centos/share/kf2.sh ${STEAM_HOME}/bin/kf2.sh
-ln -sTf ${STEAM_HOME}/kf2-centos/share/autokick.sh ${STEAM_HOME}/bin/autokick.sh
+ln -sTf ${STEAM_HOME}/killinuxfloor/share/killinuxfloor ${STEAM_HOME}/bin/killinuxfloor
+ln -sTf ${STEAM_HOME}/bin/killinuxfloor ${STEAM_HOME}/bin/klf
 
 # fix ownership
 chown -R steam.steam ${STEAM_HOME}/bin

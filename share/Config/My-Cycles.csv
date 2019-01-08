@@ -2,5 +2,5 @@
 # separate maps with a comma
 # don't add spaces before or after commas
 # lines starting with # will be ignored
-# run "kf2.sh stop && kf2.sh config && kf2.sh start" to apply your changes
+# run "killinuxfloor stop && killinuxfloor config && killinuxfloor start" to apply your changes
 KF-HorzineArenaRMEdition,KF-KrampusLair

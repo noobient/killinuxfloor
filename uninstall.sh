@@ -37,7 +37,9 @@ ${ECHO_DONE}
 
 # Helper
 echo -n 'Removing helpers... '
+# Legacy
 rm -rf ${STEAM_HOME}/kf2-centos
+rm -rf ${STEAM_HOME}/killinuxfloor
 rm -rf ${STEAM_HOME}/bin
 ${ECHO_DONE}
 

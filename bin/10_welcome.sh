@@ -18,5 +18,5 @@ echo
 echo -e "Files marked in \e[33myellow\e[0m are for all the game/server options provided by Tripwire."
 echo "Now they contain a few cherry-picked settings, but you can add any internal option here."
 echo -e "For reference, see the \e[36m/home/steam/Config/Internal\e[0m counterparts (but don't edit those)."
-echo -e "After you change settings, don't forget to run \e[36mkf2.sh config && kf2.sh restart\e[0m."
-echo -e "If you change auto-kick bot settings, use \e[36mautokick.sh restart\e[0m."
+echo -e "After you change settings, don't forget to run \e[36mkillinuxfloor config && killinuxfloor restart\e[0m."
+echo -e "If you change auto-kick bot settings, use \e[36mkillinuxfloor autokick restart\e[0m."

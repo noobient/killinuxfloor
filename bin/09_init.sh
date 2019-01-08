@@ -1,1 +1,1 @@
-sudo -u steam sh -c "${STEAM_HOME}/bin/kf2.sh init"
+sudo -u steam sh -c "${STEAM_HOME}/bin/killinuxfloor init"
