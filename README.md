@@ -45,6 +45,16 @@ firewall-cmd --reload
 
 Then you can access your webadmin via `http://YOUR_IP:8080/`.
 
+* Wait, should I edit the `Config` files, or the `Config/Internal` files? It's confusing!
+
+Yes, at first sight it really is. Thanks to Tripwire, and probably to Unreal Engine for exposing _all_ friggin' options to users, making it next to impossible to keep your changes in one place and well-organized.
+
+Traditionally, you're expected to find the options you want to change, among the thousands that are available. When you upgrade to a new KF2 patch, you either collect your changes scattered over in those huge files, then change them again in the new files (so much time), or just carry over your old files, risking the loss of any change in defaults, or the addition of new settings that Tripwire may have done. I find both options horrible.
+
+With kf2.sh it's different. You only list **the options you want to change** from the defaults. Then kf2.sh applies these settings to the internal config files. This way you always get the fresh internal config files after KF2 patches, and it's extremely easy to carry over your config to a different server - you just copy your `Config` folder, and that's it. All your customizations, workshop maps, map cycles, mutators, auto-kick settings are preserved.
+
+**TL;DR** You should never edit `Config/Internal` files. Use the files under `Config`, then run the `kf2.sh config` command to have your settings applied to the internal config files.
+
 ## Further Reading
 
 For step-by-step guides please refer to:
