@@ -2,9 +2,9 @@ function kf2_yum_install ()
 {
     if [ ${KF2_DEBUG} -eq 1 ]
     then
-        yum install "$@"
+        yum install "$@" || exit 3
     else
-        yum --assumeyes --quiet install "$@" | grep -v "already installed and latest version" || true
+        yum --assumeyes --quiet install "$@" >/dev/null || exit 3
     fi
 }
 
@@ -13,15 +13,15 @@ function kf2_yum_erase ()
     for PKG in "$@"
     do
         RET=1
-        yum --quiet list installed $PKG >/dev/null 2>&1 && RET=$?
+        yum --quiet list installed $PKG >/dev/null 2>&1 && RET=$? || exit 3
 
         if [ ${RET} -eq 0 ]
         then
             if [ ${KF2_DEBUG} -eq 1  ]
             then
-                yum erase $PKG
+                yum erase $PKG || exit 3
             else
-                yum --assumeyes --quiet erase $PKG
+                yum --assumeyes --quiet erase $PKG || exit 3
             fi
         fi
     done
@@ -42,6 +42,10 @@ function errorexit ()
         2)
             echo -e "\e[31merror! Is firewalld running?\e[0m"
             echo -e "You can check with \e[36msystemctl status firewalld.service\e[0m."
+            ;;
+
+        3)
+            echo -e "\e[31merror! Is yum operable?\e[0m"
             ;;
 
         *)
