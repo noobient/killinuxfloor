@@ -8,7 +8,7 @@ fi
 
 # Deps
 echo -n 'Installing dependencies... '
-kf2_yum_install glibc.i686 libstdc++.i686 unzip dos2unix patch
+kf2_yum_install glibc.i686 libstdc++.i686 unzip dos2unix patch git
 ${ECHO_DONE}
 
 # SteamCMD
