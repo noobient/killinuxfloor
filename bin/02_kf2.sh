@@ -3,7 +3,7 @@ echo 'Installing Killing Floor 2... '
 # acquire the kf2 binaries
 if [ ${SKIP_KFGAME} -ne 1 ]
 then
-    sudo -u steam sh -c '~/Steam/steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate +exit'
+    sudo -u steam sh -c '~/Steam/steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate +exit || exit 1'
 fi
 
 echo 'Killing Floor 2 installer exited.'
