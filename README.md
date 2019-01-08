@@ -2,7 +2,7 @@
 
 ## About
 
-Why, it's the easiest way to install and manage Killing Floor 2 on Linux. All you need is a fresh, up-to-date install of CentOS.
+Why, it's the easiest way to install and manage Killing Floor 2 on Linux. All you need is a fresh, up-to-date install of CentOS 7.
 
 Features:
 
