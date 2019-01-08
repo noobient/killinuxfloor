@@ -2,7 +2,7 @@
 
 set -eu
 
-read -p $'This will uninstall killinuxfloor on this machine. Press \e[36my\e[0m to continue: ' -n 1 -r
+read -p $'This will uninstall killinuxfloor from this machine. Press \e[36my\e[0m to continue: ' -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
