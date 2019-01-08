@@ -1,10 +1,10 @@
 echo -n 'Installing auto-kick bot... '
 
 # install the repos
-rpm --import /etc/pki/rpm-gpg/NODESOURCE-GPG-SIGNING-KEY-EL
-rpm --import https://dl.yarnpkg.com/rpm/pubkey.gpg
 curl ${CURL_FLAGS} --location https://rpm.nodesource.com/setup_8.x | bash - >/dev/null
 curl ${CURL_FLAGS} --location https://dl.yarnpkg.com/rpm/yarn.repo > /etc/yum.repos.d/yarn.repo
+rpm --import /etc/pki/rpm-gpg/NODESOURCE-GPG-SIGNING-KEY-EL
+rpm --import https://dl.yarnpkg.com/rpm/pubkey.gpg
 
 # install the packages
 kf2_yum_install nodejs yarn
