@@ -1,6 +1,11 @@
 [Unit]
 Description=KF2 Auto-Kick Bot
-After=syslog.target network.target
+# start after KF2 started
+After=syslog.target network.target kf2.service
+# autokick won't work if KF2 isn't running
+Requires=kf2.service
+# restart and stop automatically if KF2 is restarted/stopped
+PartOf=kf2.service
 
 [Service]
 Type=simple
