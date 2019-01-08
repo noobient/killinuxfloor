@@ -19,6 +19,6 @@ else
 fi
 
 # 'build' it
-sudo -u steam sh -c "cd ${STEAM_HOME}/kf2autokick && yarn --silent --frozen-lockfile >/dev/null 2>&1"
+sudo -u steam sh -c "cd ${STEAM_HOME}/kf2autokick && yarn --silent --prod --frozen-lockfile >/dev/null 2>&1"
 
 ${ECHO_DONE}
