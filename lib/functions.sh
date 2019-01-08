@@ -13,7 +13,7 @@ function kf2_yum_erase ()
     for PKG in "$@"
     do
         RET=1
-        yum --quiet list installed $PKG >/dev/null 2>&1 && RET=$? || exit 3
+        yum --quiet list installed $PKG >/dev/null 2>&1 && RET=$?
 
         if [ ${RET} -eq 0 ]
         then
