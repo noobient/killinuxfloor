@@ -21,6 +21,7 @@ function print_help ()
     echo -e "kf2.sh update preview \t apply updates from the 'preview' branch"
     echo -e "kf2.sh info \t\t show KF2 installation info"
     echo -e "kf2.sh verify \t\t verify integrity of KF2 files"
+    echo -e "kf2.sh autokick {start|stop|restart|status|log}"
     echo -e "kf2.sh help \t\t print this help"
 }
 
@@ -285,6 +286,35 @@ function check_integrity ()
     esac
 }
 
+function autokick ()
+{
+    case $1 in
+        start)
+            sudo /bin/systemctl start kf2autokick.service
+            ;;
+
+        stop)
+            sudo /bin/systemctl stop kf2autokick.service
+            ;;
+
+        restart)
+            sudo /bin/systemctl restart kf2autokick.service
+            ;;
+
+        status)
+            sudo /bin/systemctl status kf2autokick.service
+            ;;
+
+        log)
+            sudo /bin/journalctl --system --unit=kf2autokick.service --follow
+            ;;
+
+        *)
+            exit 1
+
+    esac
+}
+
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]
 then
     exit 1
@@ -346,6 +376,10 @@ case $1 in
         else
             check_integrity
         fi
+        ;;
+
+    autokick)
+        autokick $2
         ;;
 
     help)
