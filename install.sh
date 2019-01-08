@@ -2,7 +2,7 @@
 
 set -eu
 
-read -p "This will install Killing Floor 2 on this machine. Press 'y' to continue: " -n 1 -r
+read -p "This will install killinuxfloor on this machine. Press 'y' to continue: " -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then

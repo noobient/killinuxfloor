@@ -2,7 +2,7 @@
 
 set -eu
 
-read -p "This will uninstall Killing Floor 2 on this machine. Press 'y' to continue: " -n 1 -r
+read -p "This will uninstall killinuxfloor on this machine. Press 'y' to continue: " -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
@@ -124,4 +124,4 @@ ${ECHO_DONE}
 # the only thing we don't remove is the steam user, because it has user config
 #userdel steam
 
-echo -e "\e[32mKilling Floor 2 successfully uninstalled.\e[0m"
+echo -e "\e[32mkillinuxfloor successfully uninstalled.\e[0m"
