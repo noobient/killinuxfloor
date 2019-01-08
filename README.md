@@ -34,16 +34,16 @@ Uninstalling is quick and simple, too.
 
 It's a Killing Floor 2 [bug](https://forums.tripwireinteractive.com/forum/killing-floor-2/technical-support-ae/the-bug-report-ae/2328058-whitelisted-mutator-got-unranked-in-these-conditions). Please copy `C:\Program Files (x86)\Steam\steamapps\common\killingfloor2\Binaries\Win64\balance_tweaks.bin` from your desktop PC to `/home/steam/Steam/KF2Server/Binaries/Win64/balance_tweaks.bin` on the server, and it should be ranked again.
 
-* Why can't I access webadmin? I already set `bEnabled=true`!
+* Why can't I access webadmin?
 
 By default, the CentOS firewall blocks everything. For security reasons, the installer won't open this port for you automatically. You can open the relevant port with:
 
 ```
-firewall-cmd --add-port=8080/tcp --permanent
-firewall-cmd --reload
+sudo firewall-cmd --add-port=8080/tcp --permanent
+sudo firewall-cmd --reload
 ```
 
-Then you can access your webadmin via `http://YOUR_IP:8080/`.
+Also make sure you set `AdminPassword` in `My-LinuxServer-KFGame.ini`. Then `killinuxfloor config && killinuxfloor restart`, and you can access your webadmin via `http://YOUR_IP:8080/`.
 
 * Wait, should I edit the `Config` files, or the `Config/Internal` files? It's confusing!
 
