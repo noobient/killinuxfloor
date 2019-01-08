@@ -55,6 +55,10 @@ With killinuxfloor it's different. You only list **the options you want to chang
 
 **TL;DR** You should never edit `Config/Internal` files. Use the files under `Config`, then run the `killinuxfloor config` command to have your settings applied to the internal config files.
 
+* Webadmin says 'Exceeded login attempts', am I being hacked?
+
+That _might_ happen, but more likely you just forgot to set the admin password in `autokick.json`, and thus the auto-kick bot constantly fails to authenticate. Make sure that `basicAuthorization` in `autokick.json` matches `AdminPassword` in `My-LinuxServer-KFGame.ini`, and the exceeded login attempts should go away.
+
 ## Further Reading
 
 For step-by-step guides please refer to:
