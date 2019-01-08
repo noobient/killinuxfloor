@@ -2,7 +2,25 @@
 
 ## About
 
-Why, it's the easiest way to install Killing Floor 2 on Linux. All you need is a fresh, up-to-date install of CentOS. But how easy is it to install KF2 using this, really? Well, see it for youself.
+Why, it's the easiest way to install and manage Killing Floor 2 on Linux. All you need is a fresh, up-to-date install of CentOS.
+
+Features:
+
+* One-command installation of the Killing Floor 2 Linux Server
+* One-command uninstallation as well
+* Automatic backup of previous config during install and uninstall
+* Full support for **firewalld** and **Security-Enhanced Linux**
+* **systemd** integration to manage your server as a standard Linux service
+* **sudo** integration for proper rights delegation
+* Separated config for settings you actually _change_, getting thousands of unchanged defaults out of the way
+* Support for installing **workshop maps** and **mutators**
+* Automatically generated and updated **map cycle** for workshop maps
+* User-defined map cycles, too
+* Bundled, integrated **auto-kick bot** made by [Sinewyk](https://github.com/Sinewyk/kf2_autokick) (thanks for your work!)
+* **kf2.sh** command to manage all aspects of your KF2 server
+* Corrected mutator management on webadmin, offering your previous parameters during manual map change
+
+But how easy is it to install KF2 using this, really? Well, see it for youself.
 
 ![](img/install.png)
 
