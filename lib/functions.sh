@@ -27,6 +27,13 @@ function kf2_yum_erase ()
     done
 }
 
+function check_firewalld ()
+{
+    # check if firewalld is running
+    RET=1
+    systemctl is-active --quiet firewalld.service && RET=0 || true
+}
+
 function errorexit ()
 {
     case $? in
