@@ -63,12 +63,12 @@ sudo -u steam sh -c "tar czfh ${BACKUP_FILE} -C ${STEAM_HOME} Config"
 ${ECHO_DONE}
 
 # Firewall
-echo -n 'Removing firewall rules... '
 
 check_firewalld
 
 if [ -f /etc/firewalld/services/kf2.xml ]
 then
+    echo -n 'Removing firewall rules... '
     if [ ${RET} -eq 0 ]
     then
         firewall-cmd ${FIREWALLCMD_FLAGS} --remove-service=kf2 --permanent || exit 2
@@ -78,9 +78,8 @@ then
     else
         rm -f /etc/firewalld/services/kf2.xml
     fi
+    ${ECHO_DONE}
 fi
-
-${ECHO_DONE}
 
 # Sudo
 echo -n 'Removing KF2 service delegation rules... '
