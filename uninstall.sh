@@ -17,8 +17,6 @@ source "${ROOT}/lib/aliases.sh"
 source "${ROOT}/lib/flags.sh"
 source "${ROOT}/lib/functions.sh"
 
-echo 'Uninstalling Killing Floor 2... '
-
 # Essentially, this file should be bin/* undone, in reverse order.
 
 echo -n 'Stopping KF2 services... '
