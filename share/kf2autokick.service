@@ -9,7 +9,7 @@ Group=steam
 # This fails if the admin password is not set in KFGame.ini. But that's actually
 # desirable, since webadmin is disabled when no admin password is set. In which
 # case there's no point in starting the autokick service either.
-ExecStartPre=/bin/sed -i "s@basicAuthorization.*@basicAuthorization\": \"admin:$$(/bin/crudini --get /home/steam/Config/My-LinuxServer-KFGame.ini Engine.AccessControl AdminPassword)\",@g" /home/steam/Config/autokick.json
+ExecStartPre=/bin/bash -c '/bin/sed -i \"s@\\"basicAuthorization\\".*@\\"basicAuthorization\\": \\"admin:$(/bin/crudini --get /home/steam/Config/My-LinuxServer-KFGame.ini Engine.AccessControl AdminPassword)\\",@g\" /home/steam/Config/autokick.json'
 # make sure we patch webadmin every time, otherwise it could break after an update
 # it can still break because of sed match pattern change, but still better
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_player_row.inc
