@@ -4,7 +4,7 @@ function kf2_yum_install ()
     then
         yum install "$@" || exit 3
     else
-        yum --assumeyes --quiet install "$@" >/dev/null 2>&1 || exit 3
+        yum --assumeyes --quiet install "$@" >/dev/null || exit 3
     fi
 }
 
