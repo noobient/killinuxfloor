@@ -122,7 +122,8 @@ ${ECHO_DONE}
 
 # Deps
 echo -n 'Removing dependencies... '
-kf2_yum_erase glibc.i686 libstdc++.i686 unzip dos2unix patch git
+# skip utils, they might be used regardless
+kf2_yum_erase glibc.i686 libstdc++.i686 #unzip dos2unix patch git
 ${ECHO_DONE}
 
 # the only thing we don't remove is the steam user, because it has user config
