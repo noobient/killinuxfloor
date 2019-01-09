@@ -28,6 +28,17 @@ Uninstalling is quick and simple, too.
 
 ![](img/uninstall.png)
 
+## Tested VPS Providers
+
+These providers have been tested with their default **CentOS 7** images, and are known to work flawlessly with killinuxfloor out of the box.
+
+Name | Tier | Storage | Memory | CPU | Status
+---|---|---|---|---|---
+[DigitalOcean](https://www.digitalocean.com/?refcode=8d14c4) | $5 | 25 GB | 1 GB | 1 | ✓\*
+[Vultr](https://www.vultr.com/?ref=7244064) | $5 | 25 GB | 1 GB | 1 | ✓ 
+
+\* due to outdated base OS image, prior `yum update` is required
+
 ## FAQ
 
 * Why is my server is deranked when I load whitelisted mutators?
