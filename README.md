@@ -1,6 +1,6 @@
-# killinuxfloor
+![](img/logo.png)
 
-## About
+# About
 
 Why, it's the easiest way to install and manage Killing Floor 2 on Linux. All you need is a fresh, up-to-date install of CentOS 7.
 
@@ -28,7 +28,7 @@ Uninstalling is quick and simple, too.
 
 ![](img/uninstall.png)
 
-## Tested VPS Providers
+# Tested VPS Providers
 
 These providers have been tested with their default **CentOS 7** images, and are known to work flawlessly with killinuxfloor out of the box.
 
@@ -39,7 +39,7 @@ Name | Tier | Storage | Memory | CPU | Status
 
 \* due to outdated base OS image, prior `yum update` is required
 
-## FAQ
+# FAQ
 
 * Why is my server is deranked when I load whitelisted mutators?
 
@@ -66,7 +66,7 @@ With killinuxfloor it's different. You only list **the options you want to chang
 
 **TL;DR** You should never edit `Config/Internal` files. Use the files under `Config`, then run the `killinuxfloor config` command to have your settings applied to the internal config files.
 
-## Further Reading
+# Further Reading
 
 For step-by-step guides please refer to:
 
@@ -77,7 +77,7 @@ For step-by-step guides please refer to:
 * [Cheap VPS 2018/02 - DigitalOcean vs Linode vs Vultr](https://noobient.com/post/170833729621/cheap-vps-201802-digitalocean-vs-linode-vs)
 * [Playing on the Noobient Killing Floor 2 Servers](https://noobient.com/post/176812638301/playing-on-the-noobient-killing-floor-2-servers)
 
-### Deprecated docs
+## Deprecated Docs
 
 * [Dedicated Killing Floor 2 Server on Linux](https://noobient.com/post/166215861971/dedicated-killing-floor-2-server-on-linux)
 * [KF2 Halloween Horrors on Linux Server](https://noobient.com/post/166513354986/kf2-halloween-horrors-on-linux-server)
