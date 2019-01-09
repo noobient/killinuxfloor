@@ -34,7 +34,7 @@ These providers have been tested with their default **CentOS 7** images, and are
 
 Name | Tier | Storage | Memory | CPU | Status
 ---|---|---|---|---|---
-[DigitalOcean](https://www.digitalocean.com/?refcode=8d14c4) | $5 | 25 GB | 1 GB | 1 | ✓\*
+[DigitalOcean](https://m.do.co/c/0e2a6c411de3) | $5 | 25 GB | 1 GB | 1 | ✓\*
 [Vultr](https://www.vultr.com/?ref=7244064) | $5 | 25 GB | 1 GB | 1 | ✓ 
 
 \* due to outdated base OS image, prior `yum update` is required
