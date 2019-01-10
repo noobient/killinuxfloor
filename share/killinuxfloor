@@ -37,7 +37,7 @@ function errorexit ()
             ;;
 
         2)
-            echo -e "\e[31merror!\e[0m"
+            echo -e "\e[31merror! File not found.\e[0m"
             ;;
 
     esac
@@ -369,9 +369,12 @@ function count_lines ()
 
 function check_workshop ()
 {
-    count_lines "${OWN_CONF}/My-Mutators.csv"
+    test -e ${MUTATOR_LIST} || exit 2
+    count_lines ${MUTATOR_LIST}
     MUT_COUNT=${RET}
-    count_lines "${OWN_CONF}/My-Maps.csv"
+
+    test -e ${MAP_LIST} || exit 2
+    count_lines ${MAP_LIST}
     MAP_COUNT=${RET}
     SUB_COUNT=0
     ((SUB_COUNT=MUT_COUNT+MAP_COUNT))
