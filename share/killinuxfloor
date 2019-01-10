@@ -37,7 +37,8 @@ function errorexit ()
             ;;
 
         2)
-            echo -e "\e[31merror! File not found.\e[0m"
+            echo -e "\e[31merror!\e[0m"
+            echo -e "File \e[36m${FILE_MISSING}\e[0m not found."
             ;;
 
     esac
@@ -57,6 +58,12 @@ WORKSHOP_DIR="${HOME}/Steam/KF2Server/Binaries/Win64/steamapps/workshop"
 
 ECHO_DONE='echo -e \e[32mdone\e[0m.'
 CYCLE_START='GameMapCycles=(Maps=('
+
+function check_file ()
+{
+    FILE_MISSING=$1
+    test -e ${FILE_MISSING} || exit 2
+}
 
 function sanitize_config ()
 {
@@ -79,7 +86,8 @@ function add_mutators ()
 {
     # parse mutator list
     echo -n 'Applying mutators... '
-    test -e ${MUTATOR_LIST} || exit 2
+    check_file ${MUTATOR_LIST}
+    check_file ${LIVE_CONF}/LinuxServer-KFEngine.ini
     while read -r line
     do
         # skip comments and empty lines
@@ -108,6 +116,7 @@ function delete_cycles ()
 {
     # delete old cycles
     echo -n 'Deleting old game cycles... '
+    check_file ${LIVE_CONF}/LinuxServer-KFGame.ini
     crudini --del ${LIVE_CONF}/LinuxServer-KFGame.ini KFGame.KFGameInfo GameMapCycles
     ${ECHO_DONE}
 }
@@ -116,6 +125,7 @@ function reset_subscriptions ()
 {
     # delete old workshop section from KFEngine altogether
     echo -n 'Deleting old workshop entries... '
+    check_file ${LIVE_CONF}/LinuxServer-KFEngine.ini
     crudini --del ${LIVE_CONF}/LinuxServer-KFEngine.ini OnlineSubsystemSteamworks.KFWorkshopSteamworks
     # workshop header
     echo '[OnlineSubsystemSteamworks.KFWorkshopSteamworks]' >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
@@ -130,7 +140,7 @@ function regen_config ()
 
     # parse custom cycle list
     echo -n 'Adding custom game cycles... '
-    test -e ${CYCLE_LIST} || exit 2
+    check_file ${CYCLE_LIST}
     while read -r line
     do
         # skip comments and empty lines
@@ -148,7 +158,7 @@ function regen_config ()
 
     # parse map list
     echo -n 'Applying workshop subscriptions and updating webadmin map entries... '
-    test -e ${MAP_LIST} || exit 2
+    check_file ${MAP_LIST}
     while read -r line
     do
         # skip comments and empty lines
@@ -213,18 +223,22 @@ function purge_map ()
     echo "Purging map with ID ${1}... "
 
     echo -n 'Finding map name corresponding to ID... '
+    check_file ${MAP_LIST}
     MAP_NAME=$(grep ^${1} ${MAP_LIST} | cut -d',' -f2)
     echo "${MAP_NAME}."
 
     echo -n 'Deleting from KFGame.ini... '
+    check_file ${LIVE_CONF}/LinuxServer-KFGame.ini
     crudini --del ${LIVE_CONF}/LinuxServer-KFGame.ini "${MAP_NAME} KFMapSummary"
     ${ECHO_DONE}
 
     echo -n 'Deleting from KFEngine.ini... '
+    check_file ${LIVE_CONF}/LinuxServer-KFEngine.ini
     sed -i "/ServerSubscribedWorkshopItems=${1}/d" ${LIVE_CONF}/LinuxServer-KFEngine.ini
     ${ECHO_DONE}
 
     echo -n 'Deleting from My-Maps.csv... '
+    check_file ${OWN_CONF}/My-Maps.csv
     sed -i --follow-symlinks "/^${1},${MAP_NAME}/d" ${OWN_CONF}/My-Maps.csv
     ${ECHO_DONE}
 
@@ -380,11 +394,12 @@ function count_lines ()
 function check_workshop ()
 {
     echo -n "Checking Workshop subscriptions... "
-    test -e ${MUTATOR_LIST} || exit 2
+
+    check_file ${MUTATOR_LIST}
     count_lines ${MUTATOR_LIST}
     MUT_COUNT=${RET}
 
-    test -e ${MAP_LIST} || exit 2
+    check_file ${MAP_LIST}
     count_lines ${MAP_LIST}
     MAP_COUNT=${RET}
 
