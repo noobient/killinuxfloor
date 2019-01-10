@@ -105,13 +105,6 @@ function regen_conf ()
     echo '[OnlineSubsystemSteamworks.KFWorkshopSteamworks]' >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
     ${ECHO_DONE}
 
-    # also reset download managers, we need multiple values and in specific order
-    echo -n 'Configuring map download managers... '
-    crudini --del ${LIVE_CONF}/LinuxServer-KFEngine.ini IpDrv.TcpNetDriver DownloadManagers
-    crudini --set ${LIVE_CONF}/LinuxServer-KFEngine.ini IpDrv.TcpNetDriver DownloadManagers OnlineSubsystemSteamworks.SteamWorkshopDownload
-    sed -i 's/DownloadManagers.*=.*OnlineSubsystemSteamworks.SteamWorkshopDownload/&\nDownloadManagers=IpDrv.HTTPDownload/' ${LIVE_CONF}/LinuxServer-KFEngine.ini
-    ${ECHO_DONE}
-
     # delete old cycles
     echo -n 'Deleting old game cycles... '
     crudini --del ${LIVE_CONF}/LinuxServer-KFGame.ini KFGame.KFGameInfo GameMapCycles
