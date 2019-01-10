@@ -376,6 +376,7 @@ function check_workshop ()
     test -e ${MAP_LIST} || exit 2
     count_lines ${MAP_LIST}
     MAP_COUNT=${RET}
+
     SUB_COUNT=0
     ((SUB_COUNT=MUT_COUNT+MAP_COUNT))
 
