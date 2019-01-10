@@ -6,4 +6,6 @@
     <port protocol="udp" port="27015"></port>
     <!-- steam port -->
     <port protocol="udp" port="20560"></port>
+    <!-- webadmin port -->
+    <port protocol="tcp" port="8080"></port>
 </service>
