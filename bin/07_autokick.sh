@@ -1,7 +1,7 @@
 echo -n 'Installing auto-kick bot... '
 
 # install the repos
-curl ${CURL_FLAGS} --location https://rpm.nodesource.com/setup_8.x | sed "s/RPM_TMP=\$(mktemp/RPM_TMP=\$(mktemp --suffix=.rpm/" | sed "s/rpm -i --nosignature --force.*/yum --assumeyes --quiet install \'\${RPM_TMP}\'\"/" | bash - >/dev/null
+kf2_yum_install https://rpm.nodesource.com/pub_8.x/el/7/x86_64/nodesource-release-el7-1.noarch.rpm
 curl ${CURL_FLAGS} --location https://dl.yarnpkg.com/rpm/yarn.repo > /etc/yum.repos.d/yarn.repo
 rpm --import /etc/pki/rpm-gpg/NODESOURCE-GPG-SIGNING-KEY-EL
 rpm --import https://dl.yarnpkg.com/rpm/pubkey.gpg
