@@ -9,8 +9,8 @@ function print_help ()
     echo ""
     echo "Usage:"
     echo "------"
-    echo -e "\e[36mkillinuxfloor init\e[0m \t\t populate all internal KF2 server settings with defaults (don't forget to run 'config' afterwards)"
     echo -e "\e[36mkillinuxfloor config\e[0m \t\t apply your own settings to the internal KF2 server config"
+    echo -e "\e[36mkillinuxfloor reset\e[0m \t\t reset internal config and erase the Workshop and Cache folders (don't forget to run 'config' afterwards)"
     echo -e "\e[36mkillinuxfloor start\e[0m \t\t start KF2"
     echo -e "\e[36mkillinuxfloor stop\e[0m \t\t stop KF2"
     echo -e "\e[36mkillinuxfloor restart\e[0m \t\t restart KF2"
@@ -50,6 +50,8 @@ MAP_DIR="${HOME}/Steam/KF2Server/KFGame/BrewedPC/Maps"
 MAP_LIST="${OWN_CONF}/My-Maps.csv"
 MUTATOR_LIST="${OWN_CONF}/My-Mutators.csv"
 CYCLE_LIST="${OWN_CONF}/My-Cycles.csv"
+CACHE_DIR="${HOME}/Steam/KF2Server/KFGame/Cache"
+WORKSHOP_DIR="${HOME}/Steam/KF2Server/Binaries/Win64/steamapps/workshop"
 
 ECHO_DONE='echo -e \e[32mdone\e[0m.'
 
@@ -236,13 +238,29 @@ function stop_kf2 ()
     sudo /bin/systemctl stop kf2.service
 }
 
-function init_kf2 ()
+function reset_kf2 ()
 {
     stop_kf2
 
     # nuke old config
     rm -f ${LIVE_CONF}/KF*.ini
     rm -f ${LIVE_CONF}/LinuxServer-*.ini
+
+    # nuke cache
+    if [ -d ${CACHE_DIR} ] && [ ! -z "$(ls -A ${CACHE_DIR})" ]
+    then
+        echo -n 'Removing Cache content... '
+        rm -rf ${CACHE_DIR}/*
+        ${ECHO_DONE}
+    fi
+
+    # nuke workshop
+    if [ -d ${WORKSHOP_DIR} ] && [ ! -z "$(ls -A ${WORKSHOP_DIR})" ]
+    then
+        echo -n 'Removing Workshop content... '
+        rm -rf ${WORKSHOP_DIR}/*
+        ${ECHO_DONE}
+    fi
 
     echo -n 'Waiting for default INI files to be generated... '
     start_kf2
@@ -381,8 +399,8 @@ case $1 in
         purge_map $2
         ;;
 
-    init)
-        init_kf2
+    reset)
+        reset_kf2
         ;;
 
     info)
