@@ -51,7 +51,7 @@ Webadmin is accessible via `http://YOUR_IP:8080/`. Make sure you set `AdminPassw
 
 * Why isn't auto-kick working?
 
-The auto-kick bot relies on webadmin, so if you don't set `AdminPassword`, auto-kick won't work either.
+The auto-kick bot relies on webadmin, so if you don't set `AdminPassword`, or block/disable webadmin in any other way, auto-kick won't work either.
 
 * Wait, should I edit the `Config` files, or the `Config/Internal` files? It's confusing!
 
