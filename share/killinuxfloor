@@ -57,7 +57,8 @@ CACHE_DIR="${HOME}/Steam/KF2Server/KFGame/Cache"
 WORKSHOP_DIR="${HOME}/Steam/KF2Server/Binaries/Win64/steamapps/workshop"
 
 ECHO_DONE='echo -e \e[32mdone\e[0m.'
-CYCLE_START='GameMapCycles=(Maps=('
+CYCLE_START='GameMapCycles=(Maps=("'
+CYCLE_END='"))'
 
 function check_file ()
 {
@@ -82,20 +83,45 @@ function sanitize_config ()
     ${ECHO_DONE}
 }
 
-function add_mutators ()
+function reset_subscriptions ()
+{
+    # delete old workshop section from KFEngine altogether
+    echo -n 'Deleting old workshop entries... '
+    check_file ${LIVE_CONF}/LinuxServer-KFEngine.ini
+    crudini --del ${LIVE_CONF}/LinuxServer-KFEngine.ini OnlineSubsystemSteamworks.KFWorkshopSteamworks
+    # workshop header
+    echo '[OnlineSubsystemSteamworks.KFWorkshopSteamworks]' >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
+    ${ECHO_DONE}
+}
+
+function subscribe_mutators ()
 {
     # parse mutator list
-    echo -n 'Applying mutators... '
+    echo -n 'Subscribing to workshop mutators... '
     check_file ${MUTATOR_LIST}
     check_file ${LIVE_CONF}/LinuxServer-KFEngine.ini
     while read -r line
     do
-        # skip comments and empty lines
-        [[ $line = \#* ]] || [ -z "$line" ] && continue
-
+        [[ $line = \#* ]] || [ -z "$line" ] && continue # skip comments & empty lines
         # add entry to workshop list, can't use crudini here because parameters aren't unique
         echo "ServerSubscribedWorkshopItems=${line}" >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
     done < ${MUTATOR_LIST}
+    ${ECHO_DONE}
+}
+
+function subscribe_maps ()
+{
+    # parse map list
+    echo -n 'Subscribing to workshop maps... '
+    check_file ${MAP_LIST}
+    check_file ${LIVE_CONF}/LinuxServer-KFEngine.ini
+    while read -r line
+    do
+        [[ $line = \#* ]] || [ -z "$line" ] && continue # skip comments & empty lines
+        ID=$(awk -F "," '{print $1}' <<< ${line})
+        # add entry to workshop list, can't use crudini here because parameters aren't unique
+        echo "ServerSubscribedWorkshopItems=${ID}" >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
+    done < ${MAP_LIST}
     ${ECHO_DONE}
 }
 
@@ -121,101 +147,113 @@ function delete_cycles ()
     ${ECHO_DONE}
 }
 
-function reset_subscriptions ()
+function add_maps ()
 {
-    # delete old workshop section from KFEngine altogether
-    echo -n 'Deleting old workshop entries... '
-    check_file ${LIVE_CONF}/LinuxServer-KFEngine.ini
-    crudini --del ${LIVE_CONF}/LinuxServer-KFEngine.ini OnlineSubsystemSteamworks.KFWorkshopSteamworks
-    # workshop header
-    echo '[OnlineSubsystemSteamworks.KFWorkshopSteamworks]' >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
-    ${ECHO_DONE}
-}
-
-function regen_config ()
-{
-    merge_config
-    delete_cycles
-    reset_subscriptions
-
-    # parse custom cycle list
-    echo -n 'Adding custom game cycles... '
-    check_file ${CYCLE_LIST}
-    while read -r line
-    do
-        # skip comments and empty lines
-        [[ $line = \#* ]] || [ -z "$line" ] && continue
-        CYCLE="${CYCLE_START}\"${line}\"))"
-        CYCLE=$(sed 's/,/","/g' <<< ${CYCLE})
-        sed -i "s/\[KFGame.KFGameInfo\]/&\n${CYCLE}/" ${LIVE_CONF}/LinuxServer-KFGame.ini
-    done < ${CYCLE_LIST}
-    ${ECHO_DONE}
-
-    # cycle string reset
-    CYCLE="${CYCLE_START}"
-    # track if we need a comma or not
-    FIRST=1
-
     # parse map list
-    echo -n 'Applying workshop subscriptions and updating webadmin map entries... '
+    echo -n 'Adding workshop maps to webadmin map list... '
     check_file ${MAP_LIST}
     while read -r line
     do
-        # skip comments and empty lines
-        [[ $line = \#* ]] || [ -z "$line" ] && continue
-        ID=$(awk -F "," '{print $1}' <<< ${line})
+        [[ $line = \#* ]] || [ -z "$line" ] && continue # skip comments & empty lines
         NAME=$(awk -F "," '{print $2}' <<< ${line})
-
-        # add entry to workshop list, can't use crudini here because parameters aren't unique
-        echo "ServerSubscribedWorkshopItems=${ID}" >> ${LIVE_CONF}/LinuxServer-KFEngine.ini
 
         # delete old entry from KFGame list to make sure all custom entries are at the end
         crudini --del ${LIVE_CONF}/LinuxServer-KFGame.ini "${NAME} KFMapSummary"
 
         # add new entry to KFGame list
         crudini --set ${LIVE_CONF}/LinuxServer-KFGame.ini "${NAME} KFMapSummary" "MapName" "${NAME}"
+    done < ${MAP_LIST}
+    ${ECHO_DONE}
+}
 
-        # construct the workshop map cycle
+function add_cycle_custom ()
+{
+    # parse custom cycle list
+    echo -n 'Adding custom game cycles... '
+    check_file ${CYCLE_LIST}
+    while read -r line
+    do
+        [[ $line = \#* ]] || [ -z "$line" ] && continue # skip comments & empty lines
+        CYCLE="${CYCLE_START}${line}${CYCLE_END}"
+        CYCLE=$(sed 's/,/","/g' <<< ${CYCLE}) # quotes
+        sed -i "s/\[KFGame.KFGameInfo\]/&\n${CYCLE}/" ${LIVE_CONF}/LinuxServer-KFGame.ini
+    done < ${CYCLE_LIST}
+    ${ECHO_DONE}
+}
+
+function add_cycle_workshop ()
+{
+    CYCLE="${CYCLE_START}"
+    FIRST=1 # track if we need a comma or not
+
+    # parse map list
+    echo -n 'Adding map cycle for all workshop maps... '
+    check_file ${MAP_LIST}
+    while read -r line
+    do
+        [[ $line = \#* ]] || [ -z "$line" ] && continue # skip comments & empty lines
+        NAME=$(awk -F "," '{print $2}' <<< ${line})
+
         if [ ${FIRST} -ne 1 ]
         then
             CYCLE="${CYCLE},"
         fi
-        CYCLE="${CYCLE}\"${NAME}\""
+
+        CYCLE="${CYCLE}${NAME}"
         FIRST=0
     done < ${MAP_LIST}
-    ${ECHO_DONE}
 
-    # write the workshop map cycle
-    echo -n 'Adding map cycle for workshop maps... '
-    CYCLE="${CYCLE}))"
-    sed -i "s/\[KFGame.KFGameInfo\]/&\n${CYCLE}/" ${LIVE_CONF}/LinuxServer-KFGame.ini
-    ${ECHO_DONE}
+    CYCLE=$(sed 's/,/","/g' <<< ${CYCLE}) # quotes
+    CYCLE="${CYCLE}${CYCLE_END}" # terminate
 
-    # reset
+    # check if the csv actually contains anything
+    if [ -s ${MAP_LIST} ]
+    then
+        sed -i "s/\[KFGame.KFGameInfo\]/&\n${CYCLE}/" ${LIVE_CONF}/LinuxServer-KFGame.ini
+    fi
+
+    ${ECHO_DONE}
+}
+
+function add_cycle_stock ()
+{
     CYCLE="${CYCLE_START}"
-    FIRST=1
+    FIRST=1 # track if we need a comma or not
 
     # cycle for stock maps
-    echo -n 'Adding map cycle for stock maps... '
+    echo -n 'Adding map cycle for all stock maps... '
     for d in $(find ${MAP_DIR} -maxdepth 1 -mindepth 1 -type d -printf %f\\n | sort)
     do
         if [ ${FIRST} -ne 1 ]
         then
             CYCLE="${CYCLE},"
         fi
-        CYCLE="${CYCLE}\"KF-${d}\""
+        CYCLE="${CYCLE}KF-${d}"
         FIRST=0
     done
 
-    # always do default maps last so that it is the first cycle in the config
-    CYCLE="${CYCLE}))"
+    CYCLE=$(sed 's/,/","/g' <<< ${CYCLE}) # quotes
+    CYCLE="${CYCLE}${CYCLE_END}" # terminate
     sed -i "s/\[KFGame.KFGameInfo\]/&\n${CYCLE}/" ${LIVE_CONF}/LinuxServer-KFGame.ini
     ${ECHO_DONE}
+}
 
-    add_mutators
+function regen_config ()
+{
+    merge_config
+    reset_subscriptions
+    subscribe_mutators
+    subscribe_maps
+    add_maps
+
+    delete_cycles
+    add_cycle_custom
+    add_cycle_workshop
+    add_cycle_stock # always do default maps last so that they're the first in webadmin
+
     sanitize_config
 
-    echo 'Killing Floor 2 server configuration regenerated successfully!'
+    echo -e "\e[32mKilling Floor 2 server configuration regenerated successfully!\e[0m"
 }
 
 function purge_map ()
@@ -385,8 +423,7 @@ function count_lines ()
 
     while read -r line
     do
-        # skip comments and empty lines
-        [[ $line = \#* ]] || [ -z "$line" ] && continue
+        [[ $line = \#* ]] || [ -z "$line" ] && continue # skip comments & empty lines
         ((RET+=1))
     done < $1
 }
@@ -469,10 +506,12 @@ then
     exit 1
 fi
 
+# do away with 'changed on disk' warnings once and for all
+sudo /bin/systemctl daemon-reload
+
 case $1 in
     start)
         # we have to reload every time coz startup parameters might've changed
-        sudo /bin/systemctl daemon-reload
         start_kf2
         ;;
 
@@ -481,7 +520,6 @@ case $1 in
         ;;
 
     restart)
-        sudo /bin/systemctl daemon-reload
         sudo /bin/systemctl restart kf2.service
         ;;
 
