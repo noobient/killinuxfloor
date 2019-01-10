@@ -246,13 +246,38 @@ function stop_kf2 ()
 function init_kf2 ()
 {
     stop_kf2
+
+    # nuke old config
     rm -f ${LIVE_CONF}/KF*.ini
     rm -f ${LIVE_CONF}/LinuxServer-*.ini
-    start_kf2
+
     echo -n 'Waiting for default INI files to be generated... '
-    sleep 20
-    ${ECHO_DONE}
+    start_kf2
+
+    # we need KFWeb.ini to enable webadmin, which in turn generates KFWebAdmin.ini
+    while [ ! -f "${LIVE_CONF}/KFWeb.ini" ]
+    do
+        sleep 1
+    done
+
+    # temporarily enable webadmin
+    crudini --set "${LIVE_CONF}/KFWeb.ini" IpDrv.WebServer bEnabled true
+
     stop_kf2
+    start_kf2
+
+    # make sure all other files exist as well, otherwise klf config will be useless
+    while [ ! -f "${LIVE_CONF}/KFWebAdmin.ini" ] || [ ! -f "${LIVE_CONF}/LinuxServer-KFEngine.ini" ] || [ ! -f "${LIVE_CONF}/LinuxServer-KFGame.ini" ]
+    do
+        sleep 1
+    done
+
+    # restore the original value
+    crudini --set "${LIVE_CONF}/KFWeb.ini" IpDrv.WebServer bEnabled false
+
+    stop_kf2
+
+    ${ECHO_DONE}
 }
 
 function update_kf2 ()
