@@ -43,7 +43,7 @@ ${ECHO_DONE}
 
 # Autokick
 echo -n 'Removing auto-kick bot... '
-kf2_yum_erase nodejs yarn
+kf2_yum_erase nodejs yarn nodesource-release
 rm -f /etc/yum.repos.d/nodesource-el7.repo
 rm -f /etc/yum.repos.d/yarn.repo
 rm -rf ${STEAM_HOME}/kf2autokick
