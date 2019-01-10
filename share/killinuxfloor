@@ -379,6 +379,7 @@ function count_lines ()
 
 function check_workshop ()
 {
+    echo -n "Checking Workshop subscriptions... "
     test -e ${MUTATOR_LIST} || exit 2
     count_lines ${MUTATOR_LIST}
     MUT_COUNT=${RET}
@@ -392,12 +393,6 @@ function check_workshop ()
 
     WORKSHOP_COUNT=0
     CACHE_COUNT=0
-
-    echo -e "Subscribed mutators: \t ${MUT_COUNT}"
-    echo -e "Subscribed maps: \t ${MAP_COUNT}"
-    echo -e "All subscribed items: \t ${SUB_COUNT}"
-
-    echo '----------------------------'
 
     WORKSHOP_DL="${WORKSHOP_DIR}/content/232090"
     if [ -d ${WORKSHOP_DL} ]
@@ -424,6 +419,12 @@ function check_workshop ()
         CACHE_STR='\e[31m'
     fi
 
+    ${ECHO_DONE}
+
+    echo -e "Subscribed mutators: \t ${MUT_COUNT}"
+    echo -e "Subscribed maps: \t ${MAP_COUNT}"
+    echo -e "All subscribed items: \t ${SUB_COUNT}"
+    echo '----------------------------'
     echo -e "Items in Workshop: \t ${WORKSHOP_STR}${WORKSHOP_COUNT}\e[0m"
     echo -e "Items in Cache: \t ${CACHE_STR}${CACHE_COUNT}\e[0m"
 }
