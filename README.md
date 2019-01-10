@@ -49,6 +49,10 @@ It's a Killing Floor 2 [bug](https://forums.tripwireinteractive.com/forum/killin
 
 Webadmin is accessible via `http://YOUR_IP:8080/`. Make sure you set `AdminPassword` in `My-LinuxServer-KFGame.ini`, otherwise it won't let you in.
 
+* Why isn't auto-kick working?
+
+The auto-kick bot relies on webadmin, so if you don't set `AdminPassword`, auto-kick won't work either.
+
 * Wait, should I edit the `Config` files, or the `Config/Internal` files? It's confusing!
 
 Yes, at first sight it really is. Thanks to Tripwire, and probably to Unreal Engine for exposing _all_ friggin' options to users, making it next to impossible to keep your changes in one place and well-organized.
