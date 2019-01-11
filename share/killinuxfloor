@@ -23,6 +23,7 @@ function print_help ()
     echo -e "\e[36mkillinuxfloor update\e[0m \t\t check for and apply KF2 updates (don't forget to run 'init' and 'config' if update found)"
     echo -e "\e[36mkillinuxfloor update preview\e[0m \t apply updates from the 'preview' branch"
     echo -e "\e[36mkillinuxfloor verify\e[0m \t\t verify integrity of KF2 files"
+    echo -e "\e[36mkillinuxfloor backup\e[0m \t\t back up all KF2 settings"
     echo -e "\e[36mkillinuxfloor autokick {start|stop|restart|status|log}\e[0m"
     echo -e "\e[36mkillinuxfloor help\e[0m \t\t print this help"
     echo ""
@@ -519,6 +520,15 @@ function check_status ()
     esac
 }
 
+function save_backup ()
+{
+    DATE_STR=$(date +%Y%m%d-%H%M%S)
+    BACKUP_FILE="${HOME}/Config-${DATE_STR}.tgz"
+    echo -ne "Backing up current KF2 config as \e[36m${BACKUP_FILE}\e[0m... "
+    tar czfh ${BACKUP_FILE} -C ${STEAM_HOME} Config/*.*
+    ${ECHO_DONE}
+}
+
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]
 then
     exit 1
@@ -586,6 +596,10 @@ case $1 in
 
     autokick)
         autokick $2
+        ;;
+
+    backup)
+        save_backup
         ;;
 
     help)
