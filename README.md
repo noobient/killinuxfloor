@@ -16,9 +16,10 @@ Features:
 * Support for installing **workshop maps** and **mutators**
 * Automatically generated and updated **map cycle** for workshop maps
 * User-defined map cycles, too
-* Bundled, integrated **auto-kick bot** made by [Sinewyk](https://github.com/Sinewyk/kf2_autokick) (thanks for your work!)
+* Bundled, integrated **auto-kick bot** (thanks [Sinewyk](https://github.com/Sinewyk/kf2_autokick)!)
 * **killinuxfloor** command to manage all aspects of your KF2 server
 * Corrected mutator management on webadmin, offering your previous parameters during manual map change
+* Wave counter instead of time counter in webadmin during Endless games (thanks [zachjd](https://steamcommunity.com/app/232090/discussions/0/1696040635909757794/)!)
 
 But how easy is it to install KF2 using this, really? Well, see it for youself.
 
