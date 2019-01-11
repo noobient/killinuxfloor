@@ -3,10 +3,8 @@
 @@ -1,5 +1,9 @@
 +<dt>Wave</dt>
 +<dd><%wave.num%></dd>
- <dt>Players</dt>
- <dd><%rules.numplayers%>/<%rules.maxplayers%></dd>
 +<dt>Difficulty</dt>
 +<dd><%rules.difficulty.text%></dd>
+ <dt>Players</dt>
+ <dd><%rules.numplayers%>/<%rules.maxplayers%></dd>
  <dt>Minimum to Start</dt>
- <dd><%rules.minnetplayers%></dd>
- <dt>Spectators</dt>
