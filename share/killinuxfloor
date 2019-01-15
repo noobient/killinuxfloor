@@ -25,6 +25,7 @@ function print_help ()
     echo -e "\e[36mkillinuxfloor verify\e[0m \t\t verify integrity of KF2 files"
     echo -e "\e[36mkillinuxfloor backup\e[0m \t\t back up all KF2 settings"
     echo -e "\e[36mkillinuxfloor autokick {start|stop|restart|status|log}\e[0m"
+    echo -e "\e[36mkillinuxfloor ban {list|add|delete}\e[0m"
     echo -e "\e[36mkillinuxfloor help\e[0m \t\t print this help"
     echo ""
     echo -e "To save typing, you can also use \e[36mkfl\e[0m instead of \e[36mkillinuxfloor\e[0m."
@@ -40,6 +41,11 @@ function errorexit ()
         2)
             echo -e "\e[31merror!\e[0m"
             echo -e "File \e[36m${FILE_MISSING}\e[0m not found."
+            ;;
+
+        3)
+            echo -e "\e[31merror!\e[0m"
+            echo -e "Invalid SteamID64. It must be 17 characters long and must contain numbers only."
             ;;
 
     esac
@@ -249,6 +255,7 @@ function add_bans ()
     sed -i '/^BannedIDs.*/d' ${LIVE_CONF}/LinuxServer-KFGame.ini
 
     # insert bans after match
+    # sed is no good here because of line breaks
     # can't do in-place, so use temp file
     # should be eliminated once gawk 4.1.0 pushed to centos
     awk '{print} $0 == "[Engine.AccessControl]" {system("grep ^BannedIDs ${OWN_CONF}/My-LinuxServer-KFGame.ini")}' ${LIVE_CONF}/LinuxServer-KFGame.ini > ${LIVE_CONF}/LinuxServer-KFGame.ini.tmp
@@ -547,7 +554,141 @@ function save_backup ()
     ${ECHO_DONE}
 }
 
-if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]
+function steamID3_to_steamID64 ()
+{
+    # steamID64 = "7656" + (steamID3 + 1197960265728)
+    ID64=$1
+    ((ID64+=1197960265728))
+    ID64="7656${ID64}"
+}
+
+function steamID64_to_steamID3 ()
+{
+    # steamID3 = substr(steamID64, 4) - 1197960265728
+    ID3=${1:4}
+    ((ID3-=1197960265728))
+}
+
+function ban_applied ()
+{
+    check_file ${LIVE_CONF}/LinuxServer-KFGame.ini
+    RET=0
+    grep "^BannedIDs=(Uid=(A=${1},B=17825793))" ${LIVE_CONF}/LinuxServer-KFGame.ini > /dev/null && RET=1 || true
+}
+
+function list_bans ()
+{
+    check_file ${OWN_CONF}/My-LinuxServer-KFGame.ini
+    MISSING=0
+
+    echo -e "SteamID3\tSteamID64\t\tApplied"
+    echo '-----------------------------------------------'
+    for line in $(grep ^BannedIDs ${OWN_CONF}/My-LinuxServer-KFGame.ini)
+    do
+        # extract steamID3 from banlist entry
+        ID3=$(echo $line | cut -d= -f4 | cut -d, -f1)
+        echo -en "[U:1:${ID3}]\t"
+        steamID3_to_steamID64 "${ID3}"
+        echo -en "${ID64}\t "
+        ban_applied "${ID3}"
+
+        if [ ${RET} -eq 0 ]
+        then
+            echo -e "\e[31mNo\e[0m"
+            MISSING=1
+        else
+            echo -e "\e[32mYes\e[0m"
+        fi
+    done
+
+    if [ ${MISSING} -eq 1 ]
+    then
+        echo
+        echo -e "Some bans are still not applied. Don't forget to run \e[36mkillinuxfloor config\e[0m!"
+    fi
+}
+
+function check_steamID64 ()
+{
+    echo -n 'Checking if specified ID is a valid SteamID64... '
+
+    if [ ${#1} -ne 17 ]
+    then
+        exit 3
+    fi
+
+    [[ $1 == ?(-)+([0-9]) ]] || exit 3
+
+    ${ECHO_DONE}
+}
+
+function add_ban ()
+{
+    check_steamID64 $1
+    echo -en "Adding \e[36m$1\e[0m to ban list... "
+
+    check_file ${OWN_CONF}/My-LinuxServer-KFGame.ini
+    steamID64_to_steamID3 $1
+    BAN_STR="BannedIDs=(Uid=(A=${ID3},B=17825793))"
+
+    # simple way to skip if already added
+    grep ^${BAN_STR} ${OWN_CONF}/My-LinuxServer-KFGame.ini > /dev/null || sed -i "s/\[Engine.AccessControl\]/&\n${BAN_STR}/" ${OWN_CONF}/My-LinuxServer-KFGame.ini
+
+    ${ECHO_DONE}
+    echo 'New list of banned users:'
+    echo
+    list_bans
+}
+
+function delete_ban ()
+{
+    check_steamID64 $1
+    echo -en "Removing \e[36m$1\e[0m from ban list... "
+
+    check_file ${OWN_CONF}/My-LinuxServer-KFGame.ini
+    steamID64_to_steamID3 $1
+    BAN_STR="BannedIDs=(Uid=(A=${ID3},B=17825793))"
+    sed -i "/^${BAN_STR}/d" ${OWN_CONF}/My-LinuxServer-KFGame.ini
+
+    ${ECHO_DONE}
+    echo 'New list of banned users:'
+    echo
+    list_bans
+
+    # list_bans() can't detect removal, always print this
+    echo
+    echo -e "To apply the removal, don't forget to run \e[36mkillinuxfloor config\e[0m!"
+}
+
+function handle_bans ()
+{
+    case $1 in
+        list)
+            list_bans
+            ;;
+
+        add)
+            if [ $# -ne 2 ]
+            then
+                exit 1
+            fi
+            add_ban $2
+            ;;
+
+        del|delete)
+            if [ $# -ne 2 ]
+            then
+                exit 1
+            fi
+            delete_ban $2
+            ;;
+
+        *)
+            exit 1
+    esac
+}
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 3 ]
 then
     exit 1
 fi
@@ -612,12 +753,21 @@ case $1 in
         fi
         ;;
 
+    backup)
+        save_backup
+        ;;
+
     autokick)
         autokick $2
         ;;
 
-    backup)
-        save_backup
+    ban)
+        if [ $# -eq 1 ]
+        then
+            handle_bans list
+        else
+            handle_bans "${@:2}"
+        fi
         ;;
 
     help)
