@@ -11,6 +11,8 @@ ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/cu
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_player_row.inc
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_rules.inc
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/gamesummary.inc
+ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/policy_bans.html
+ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/policy_bans_row.inc
 # apply the patch, ignore if already applied
 ExecStartPre=-/bin/patch --forward -r /tmp/kf2-patch.rej -p1 -d /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin -i /etc/systemd/system/kf2.service.d/serveradmin.patch
 ExecStart=/home/steam/Steam/KF2Server/Binaries/Win64/KFGameSteamServer.bin.x86_64 ${KF2_PARAMS}
