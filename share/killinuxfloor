@@ -444,7 +444,7 @@ function autokick ()
             ;;
 
         status)
-            sudo /bin/systemctl status kf2autokick.service
+            sudo /bin/systemctl status kf2autokick.service || true
             ;;
 
         log)
@@ -530,7 +530,7 @@ function check_status ()
 {
     case $1 in
         service)
-            sudo /bin/systemctl status kf2.service
+            sudo /bin/systemctl status kf2.service || true
             ;;
 
         install)
