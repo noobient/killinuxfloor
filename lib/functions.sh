@@ -1,10 +1,27 @@
 function kf2_yum_install ()
 {
-    if [ ${KF2_DEBUG} -eq 1 ]
+    # yum install accepts multiple install executions for repo packages, but not for URLs
+    # have to check if URL install is already applied
+    URL_PKG=0
+    NOT_INSTALLED=1
+
+    if [[ "$@" == "https://"* ]]
     then
-        yum install "$@" || exit 3
-    else
-        yum --assumeyes --quiet install "$@" >/dev/null || exit 3
+        URL_PKG=1
+        # package name = string after last '/', then string before first '.'
+        PKG=$(awk -F/ '{print $NF}' <<< "$@" | awk -F. '{print $1}')
+        yum --quiet list installed $PKG >/dev/null 2>&1 && NOT_INSTALLED=$?
+    fi
+
+    # allow re-install for repo packages, there might be an update
+    if [ ${NOT_INSTALLED} -eq 1 ] || [ ${URL_PKG} -eq 0 ]
+    then
+        if [ ${KF2_DEBUG} -eq 1 ]
+        then
+            yum install "$@" || exit 3
+        else
+            yum --assumeyes --quiet install "$@" >/dev/null || exit 3
+        fi
     fi
 }
 
