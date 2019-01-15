@@ -25,7 +25,7 @@ function print_help ()
     echo -e "\e[36mkillinuxfloor verify\e[0m \t\t verify integrity of KF2 files"
     echo -e "\e[36mkillinuxfloor backup\e[0m \t\t back up all KF2 settings"
     echo -e "\e[36mkillinuxfloor autokick {start|stop|restart|status|log}\e[0m"
-    echo -e "\e[36mkillinuxfloor ban {list|add|delete}\e[0m"
+    echo -e "\e[36mkillinuxfloor ban {list|add <steamID64>|delete <steamID64>}\e[0m"
     echo -e "\e[36mkillinuxfloor help\e[0m \t\t print this help"
     echo ""
     echo -e "To save typing, you can also use \e[36mkfl\e[0m instead of \e[36mkillinuxfloor\e[0m."
@@ -46,6 +46,7 @@ function errorexit ()
         3)
             echo -e "\e[31merror!\e[0m"
             echo -e "Invalid SteamID64. It must be 17 characters long and must contain numbers only."
+            echo -e "If unsure, please check on \e[36mhttps://steamidfinder.com/\e[0m"
             ;;
 
     esac
