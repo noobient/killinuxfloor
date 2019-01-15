@@ -78,3 +78,64 @@ diff -ruN --strip-trailing-cr ServerAdmin.orig/gamesummary.inc ServerAdmin/games
 +  <dd class="gs_wave"><%wave.monsters.dead%>/<%wave.monsters.total%></dd>
  </dl>
 \ No newline at end of file
+diff -ruN --strip-trailing-cr ServerAdmin.orig/policy_bans.html ServerAdmin/policy_bans.html
+--- ServerAdmin.orig/policy_bans.html	2019-01-15 21:31:54.840091181 +0100
++++ ServerAdmin/policy_bans.html	2019-01-15 22:00:09.485944865 +0100
+@@ -2,6 +2,8 @@
+ 
+ <div id="content">
+ 
++<p>List of the currently applied bans. Use the <code>killinuxfloor ban</code> command to add or remove bans. Apply your changes with <code>killinuxfloor config && killinuxfloor restart</code>.</p>
++
+ <h2><%page.title%></h2>
+ 
+ <div class="section narrow">
+@@ -13,7 +15,7 @@
+     <th>Steam ID</th>
+     <th title="The Steam community ID. Can be '[unknown]' when the unique ID could not be resolved to the correct Steam ID.">Community ID</th>
+     <!--<th>Timestamp</th>-->
+-    <th></th>
++    <!--th></th-->
+ </tr>
+ </thead>
+ <tbody>
+@@ -21,7 +23,7 @@
+ </tbody>
+ </table>
+ 
+-<form method="post" action="<%page.fulluri%>+export">
++<!--form method="post" action="<%page.fulluri%>+export">
+ <p><button type="submit" title="Export the current bans to a JSON file.">Export</button></p>
+ </form>
+ </div>
+@@ -67,7 +69,7 @@
+ </dl>
+ </div>
+ </fieldset>
+-</form>
++</form-->
+ 
+ </div>
+ 
+diff -ruN --strip-trailing-cr ServerAdmin.orig/policy_bans_row.inc ServerAdmin/policy_bans_row.inc
+--- ServerAdmin.orig/policy_bans_row.inc	2019-01-15 21:31:54.839091183 +0100
++++ ServerAdmin/policy_bans_row.inc	2019-01-15 22:03:50.464542078 +0100
+@@ -1,15 +1,15 @@
+ <tr>
+   <!--<td><%ban.playername%></td>-->
+   <td><%ban.uniqueid%></td>
+-  <td><%ban.steamid%></td>
++  <td><a href="https://steamcommunity.com/profiles/<%ban.steamid%>" target="_blank"><%ban.steamid%></a></td>
+   <td><%ban.steamname%></td>
+   <!--<td><%ban.timestamp%></td>-->
+-  <td>
++  <!--td>
+     <form method="post" action="<%page.fulluri%>">
+     <div>
+     <input type="hidden" name="banid" value="<%ban.banid%>" />
+     <button type="submit" name="action" value="delete">Delete</button>
+     </div>
+     </form>
+-  </td>
++  </td-->
+ </tr>
