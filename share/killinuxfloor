@@ -238,6 +238,23 @@ function add_cycle_stock ()
     ${ECHO_DONE}
 }
 
+function add_bans ()
+{
+    echo -n "Applying bans... "
+    check_file ${LIVE_CONF}/LinuxServer-KFGame.ini
+    check_file ${OWN_CONF}/My-LinuxServer-KFGame.ini
+
+    # delete all previous bans
+    sed -i '/^BannedIDs.*/d' ${LIVE_CONF}/LinuxServer-KFGame.ini
+
+    # insert bans after match
+    # can't do in-place, so use temp file
+    # should be eliminated once gawk 4.1.0 pushed to centos
+    awk '{print} $0 == "[Engine.AccessControl]" {system("grep ^BannedIDs ${OWN_CONF}/My-LinuxServer-KFGame.ini")}' ${LIVE_CONF}/LinuxServer-KFGame.ini > ${LIVE_CONF}/LinuxServer-KFGame.ini.tmp
+    mv -f ${LIVE_CONF}/LinuxServer-KFGame.ini.tmp ${LIVE_CONF}/LinuxServer-KFGame.ini
+    ${ECHO_DONE}
+}
+
 function regen_config ()
 {
     merge_config
@@ -245,6 +262,7 @@ function regen_config ()
     subscribe_mutators
     subscribe_maps
     add_maps
+    add_bans
 
     delete_cycles
     add_cycle_custom
