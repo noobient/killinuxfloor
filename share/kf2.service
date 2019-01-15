@@ -6,15 +6,13 @@ After=syslog.target network.target
 Type=simple
 User=steam
 Group=steam
-# preserve mutators during webadmin game change
+# make sure our patches work
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_change.html
-ExecStartPre=-/bin/patch --forward -r /tmp/kf2-patch.rej -i /etc/systemd/system/kf2.service.d/current_change.html.patch /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_change.html
-# wave counter + difficulty on info page
+ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_player_row.inc
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_rules.inc
-ExecStartPre=-/bin/patch --forward -r /tmp/kf2-patch.rej -i /etc/systemd/system/kf2.service.d/current_rules.inc.patch /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_rules.inc
-# wave counter in summary
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/gamesummary.inc
-ExecStartPre=-/bin/patch --forward -r /tmp/kf2-patch.rej -i /etc/systemd/system/kf2.service.d/gamesummary.inc.patch /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/gamesummary.inc
+# apply the patch, ignore if already applied
+ExecStartPre=-/bin/patch --forward -r /tmp/kf2-patch.rej -p1 -d /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin -i /etc/systemd/system/kf2.service.d/serveradmin.patch
 ExecStart=/home/steam/Steam/KF2Server/Binaries/Win64/KFGameSteamServer.bin.x86_64 ${KF2_PARAMS}
 Restart=on-failure
 RestartSec=5

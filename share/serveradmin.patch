@@ -1,0 +1,80 @@
+diff -ruN --strip-trailing-cr ServerAdmin.orig/current_change.html ServerAdmin/current_change.html
+--- ServerAdmin.orig/current_change.html	2019-01-15 21:31:54.836091189 +0100
++++ ServerAdmin/current_change.html	2019-01-15 21:32:20.065044445 +0100
+@@ -25,13 +25,13 @@
+ </div>
+ </fieldset>
+ 
+-<fieldset id="mutators">
++<!-- fieldset id="mutators">
+ <legend>Mutators</legend>
+ <div class="section">
+ <%mutators%>
+ <input type="hidden" name="mutatorGroupCount" value="<%mutator.groups%>" />
+ </div>
+-</fieldset>
++</fieldset -->
+ 
+ <fieldset>
+ <legend>Miscellaneous</legend>
+@@ -57,6 +57,22 @@
+ </script>
+ <script type="text/javascript" src="/images/current_change.js?gzip"></script>
+ 
++<script type="text/javascript">
++mutString = "<%rules.mutators%>";
++
++if (mutString.length > 0)
++{
++    /* take the human-readable mutator list, remove whitespaces, then add them as params */
++    urlString = ("?Mutator=" + mutString + "<%urlextra%>").replace(/\s/g, "");
++}
++else
++{
++    urlString = "<%urlextra%>";
++}
++
++$("#urlextra").val(urlString);
++</script>
++
+ </div>
+ 
+ <!-- #include file="navigation.inc" -->
+diff -ruN --strip-trailing-cr ServerAdmin.orig/current_player_row.inc ServerAdmin/current_player_row.inc
+--- ServerAdmin.orig/current_player_row.inc	2019-01-15 21:31:54.837091187 +0100
++++ ServerAdmin/current_player_row.inc	2019-01-15 21:32:20.182044228 +0100
+@@ -1,7 +1,7 @@
+ <tr class="<%evenodd%>">
+   <td style="background: <%player.teamcolor%>; color: <%player.teamcolor%>;"><%player.teamid%>&#160;</td>
+   <td><%player.name%></td>
+-  <td><%player.perk.name%></td>
++  <td class="foo-bar"><%player.perk.name%>;<%player.perk.level%>;<%player.playerkey%></td>
+   <td class="right"><%player.score%></td>
+   <td class="right"><%player.pawn.health%></td>
+   <td class="right"><%player.kills%></td>
+diff -ruN --strip-trailing-cr ServerAdmin.orig/current_rules.inc ServerAdmin/current_rules.inc
+--- ServerAdmin.orig/current_rules.inc	2019-01-15 21:31:54.837091187 +0100
++++ ServerAdmin/current_rules.inc	2019-01-15 21:32:20.077044423 +0100
+@@ -1,3 +1,7 @@
++<dt>Wave</dt>
++<dd><%wave.num%></dd>
++<dt>Difficulty</dt>
++<dd><%rules.difficulty.text%></dd>
+ <dt>Players</dt>
+ <dd><%rules.numplayers%>/<%rules.maxplayers%></dd>
+ <dt>Minimum to Start</dt>
+diff -ruN --strip-trailing-cr ServerAdmin.orig/gamesummary.inc ServerAdmin/gamesummary.inc
+--- ServerAdmin.orig/gamesummary.inc	2019-01-15 21:31:54.836091189 +0100
++++ ServerAdmin/gamesummary.inc	2019-01-15 21:32:20.086044406 +0100
+@@ -4,6 +4,8 @@
+   <dd class="gs_map"><%map.title.safe%></dd>
+   <dt class="gs_players">Players</dt>
+   <dd class="gs_players"><%rules.numplayers%>/<%rules.maxplayers%></dd>
+-  <dt class="gs_time">Time</dt>
+-  <dd class="gs_time"><%time.elapsed%>/<%time.timelimit%></dd>
++  <!-- dt class="gs_time">Time</dt>
++  <dd class="gs_time"><%time.elapsed%>/<%time.timelimit%></dd -->
++  <dt class="gs_wave">Wave <%wave.num%></dt>
++  <dd class="gs_wave"><%wave.monsters.dead%>/<%wave.monsters.total%></dd>
+ </dl>
+\ No newline at end of file
