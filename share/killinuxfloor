@@ -258,7 +258,7 @@ function add_bans ()
     # sed is no good here because of line breaks
     # can't do in-place, so use temp file
     # should be eliminated once gawk 4.1.0 pushed to centos
-    awk '{print} $0 == "[Engine.AccessControl]" {system("grep ^BannedIDs ${OWN_CONF}/My-LinuxServer-KFGame.ini")}' ${LIVE_CONF}/LinuxServer-KFGame.ini > ${LIVE_CONF}/LinuxServer-KFGame.ini.tmp
+    awk -v OWN_CONF="${OWN_CONF}" '{print} $0 == "[Engine.AccessControl]" {system("grep ^BannedIDs "OWN_CONF"/My-LinuxServer-KFGame.ini")}' ${LIVE_CONF}/LinuxServer-KFGame.ini > ${LIVE_CONF}/LinuxServer-KFGame.ini.tmp
     mv -f ${LIVE_CONF}/LinuxServer-KFGame.ini.tmp ${LIVE_CONF}/LinuxServer-KFGame.ini
     ${ECHO_DONE}
 }
