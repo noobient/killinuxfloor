@@ -10,6 +10,7 @@ Group=steam
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_change.html
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_player_row.inc
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_rules.inc
+ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/default_maplist.html
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/gamesummary.inc
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/policy_bans.html
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/policy_bans_row.inc
