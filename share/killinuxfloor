@@ -344,6 +344,7 @@ function reset_kf2 ()
     # nuke old config
     rm -f ${LIVE_CONF}/KF*.ini
     rm -f ${LIVE_CONF}/LinuxServer-*.ini
+    rm -rf ${LIVE_CONF}/Defaults
 
     # nuke cache
     if [ -d ${CACHE_DIR} ] && [ ! -z "$(ls -A ${CACHE_DIR})" ]
@@ -389,6 +390,12 @@ function reset_kf2 ()
     rm -f ${OWN_CONF}/My-Startup.conf
     mv -f ${OWN_CONF}/My-Startup.conf.tmp ${OWN_CONF}/My-Startup.conf
     sudo /bin/systemctl daemon-reload
+
+    mkdir -p ${LIVE_CONF}/Defaults
+    cp -f "${LIVE_CONF}/KFWeb.ini" "${LIVE_CONF}/Defaults"
+    cp -f "${LIVE_CONF}/KFWebAdmin.ini" "${LIVE_CONF}/Defaults"
+    cp -f "${LIVE_CONF}/LinuxServer-KFEngine.ini" "${LIVE_CONF}/Defaults"
+    cp -f "${LIVE_CONF}/LinuxServer-KFGame.ini" "${LIVE_CONF}/Defaults"
 
     ${ECHO_DONE}
 
