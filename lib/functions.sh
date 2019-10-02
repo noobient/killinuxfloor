@@ -54,7 +54,7 @@ function check_firewalld ()
 function check_centos ()
 {
     RET=1
-    if [[ $(cat /etc/centos-release) == "CentOS Linux release 7.6"* ]]
+    if [[ $(cat /etc/centos-release) == "CentOS Linux release 7.7"* ]]
     then
         RET=0
     fi
