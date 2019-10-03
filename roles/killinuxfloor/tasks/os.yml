@@ -1,0 +1,16 @@
+- name: Check CentOS release
+  shell: cat /etc/centos-release | grep 'CentOS Linux release {{ centos_release }}'
+  ignore_errors: yes
+  changed_when: no
+  no_log: True
+  register: current_release
+
+- include_tasks: fail.yml
+  vars:
+  - errmsg: 'killinuxfloor supports CentOS {{ centos_release }} only.'
+  when: current_release.rc != 0
+
+- name: Make sure the OS is up-to-date
+  yum:
+    name: '*'
+    state: latest
