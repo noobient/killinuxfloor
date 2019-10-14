@@ -25,3 +25,11 @@
     state: link
     force: yes
   notify: Reload systemd configuration
+
+- name: Auto-start KF2 services on boot
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+  loop:
+  - kf2
+  - kf2autokick
