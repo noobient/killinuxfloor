@@ -5,7 +5,7 @@
 - name: Install Killing Floor 2
   become: yes
   become_user: steam
-  command: '{{ steam_home }}/Steam/steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 {% if validate != "no"%}validate {% endif %}+exit'
+  command: '{{ steam_home }}/Steam/steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 {% if (validate is defined and validate != "no") %}validate {% endif %}+exit'
   register: kf2_install
   failed_when: ("Success! App '232130' fully installed." not in kf2_install.stdout) and ("Success! App '232130' already up to date." not in kf2_install.stdout)
 
