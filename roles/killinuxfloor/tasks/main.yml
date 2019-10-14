@@ -2,3 +2,4 @@
 - include_tasks: os.yml
 - include_tasks: steam.yml
 - include_tasks: kf2.yml
+- include_tasks: systemd.yml

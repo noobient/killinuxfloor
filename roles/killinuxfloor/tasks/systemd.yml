@@ -1,0 +1,27 @@
+- name: Install KF2 services
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+  loop:
+  - kf2.service
+  - kf2autokick.service
+  notify: Reload systemd configuration
+
+- name: Prepare systemd folder
+  file:
+    path: /etc/systemd/system/kf2.service.d
+    state: directory
+
+- name: Install KF2 service extra files
+  copy:
+    src: serveradmin.patch
+    dest: /etc/systemd/system/kf2.service.d/serveradmin.patch
+  notify: Reload systemd configuration
+
+- name: Link KF2 startup config to systemd folder
+  file:
+    src: "{{ steam_home }}/Config/My-Startup.conf"
+    dest: /etc/systemd/system/kf2.service.d/kf2.service.conf
+    state: link
+    force: yes
+  notify: Reload systemd configuration
