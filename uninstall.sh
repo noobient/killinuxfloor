@@ -73,12 +73,6 @@ then
     ${ECHO_DONE}
 fi
 
-# Sudo
-echo -n 'Removing KF2 service delegation rules... '
-rm -f /etc/sudoers.d/kf2-sudo
-rm -f /etc/sudoers.d/kf2autokick-sudo
-${ECHO_DONE}
-
 # Steam + KF2
 echo -n 'Removing KF2 and Steam... '
 if [ ${SKIP_KFGAME} -ne 1 ]
