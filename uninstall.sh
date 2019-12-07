@@ -24,25 +24,6 @@ export FIREWALLCMD_FLAGS='--quiet'
 export SYSTEMCTL_FLAGS='--quiet'
 
 # functions
-function kf2_yum_erase ()
-{
-    for PKG in "$@"
-    do
-        RET=1
-        yum --quiet list installed $PKG >/dev/null 2>&1 && RET=$?
-
-        if [ ${RET} -eq 0 ]
-        then
-            if [ ${KF2_DEBUG} -eq 1  ]
-            then
-                yum erase $PKG || exit 3
-            else
-                yum --assumeyes --quiet erase $PKG || exit 3
-            fi
-        fi
-    done
-}
-
 function check_firewalld ()
 {
     # check if firewalld is running
@@ -62,15 +43,7 @@ ${ECHO_DONE}
 
 # Autokick
 echo -n 'Removing auto-kick bot... '
-kf2_yum_erase nodejs yarn nodesource-release
-rm -f /etc/yum.repos.d/nodesource-el7.repo
-rm -f /etc/yum.repos.d/yarn.repo
 rm -rf ${STEAM_HOME}/kf2autokick
-${ECHO_DONE}
-
-# Config generator
-echo -n 'Removing config generator... '
-kf2_yum_erase crudini epel-release
 ${ECHO_DONE}
 
 # Backup
@@ -115,12 +88,6 @@ then
 fi
 rm -f ${STEAM_HOME}/Cache
 rm -f ${STEAM_HOME}/Workshop
-${ECHO_DONE}
-
-# Deps
-echo -n 'Removing dependencies... '
-# skip utils, they might be used regardless
-kf2_yum_erase glibc.i686 libstdc++.i686 #unzip dos2unix patch git
 ${ECHO_DONE}
 
 # the only thing we don't remove is the steam user, because it has user config
