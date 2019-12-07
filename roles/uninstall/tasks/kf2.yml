@@ -11,6 +11,6 @@
     path: "{{ steam_home }}/{{ item }}"
     state: absent
   loop:
-  - "{{ steam_home }}/Steam"
-  - "{{ steam_home }}/.steam"
+  - "Steam"
+  - ".steam"
   when: skip_kfgame != True
