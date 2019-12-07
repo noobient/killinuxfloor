@@ -1,3 +1,6 @@
+- name: Check the state of system services
+  service_facts:
+
 - name: Deploy KF2 firewall rules
   copy:
     src: kf2.xml
