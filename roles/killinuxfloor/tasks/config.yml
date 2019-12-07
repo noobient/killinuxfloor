@@ -1,0 +1,47 @@
+# TODO GPG key?
+- name: Enable EPEL
+  yum:
+    name: epel-release
+    state: latest
+
+- name: Install config generator
+  yum:
+    name: crudini
+    state: latest
+    update_cache: yes
+
+- name: Create Config directory
+  file:
+    path: "{{ steam_home }}/Config"
+    state: directory
+    owner: steam
+    group: steam
+
+- name: Deploy default config
+  copy:
+    src: "Config/{{ item }}"
+    dest: "{{ steam_home }}/Config/{{ item }}"
+    backup: yes
+    owner: steam
+    group: steam
+  loop:
+  - My-Cycles.csv
+  - My-KFWebAdmin.ini
+  - My-KFWeb.ini
+  - My-LinuxServer-KFEngine.ini
+  - My-LinuxServer-KFGame.ini
+  - My-Maps.csv
+  - My-Mutators.csv
+  - My-Startup.conf
+  - autokick.json
+  notify: Reload systemd configuration
+
+- name: Make symlink to internal config
+  file:
+    src: "{{ steam_home }}/Steam/KF2Server/KFGame/Config"
+    dest: "{{ steam_home }}/Config/Internal"
+    state: link
+    force: yes
+    follow: no
+    owner: steam
+    group: steam

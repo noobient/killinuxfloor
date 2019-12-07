@@ -1,5 +1,3 @@
-# TODO daemon-reload doesn't seem to work properly
-# "Warning: kf2.service changed on disk."
 - name: Install KF2 services
   copy:
     src: "{{ item }}"

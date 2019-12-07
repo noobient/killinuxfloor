@@ -16,33 +16,33 @@
   - tar
 
 - name: Create main Steam directory
-  become: yes
-  become_user: steam
   file:
     path: '{{ steam_home }}/Steam'
     state: directory
+    owner: steam
+    group: steam
 
 - name: Obtain SteamCMD
-  become: yes
-  become_user: steam
   get_url:
     url: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
     dest: '{{ steam_home }}/steamcmd_linux.tar.gz'
+    owner: steam
+    group: steam
   register: steamcmd_dl
 
 - name: Extract SteamCMD
-  become: yes
-  become_user: steam
   unarchive:
     src: '{{ steam_home }}/steamcmd_linux.tar.gz'
     dest: '{{ steam_home }}/Steam'
     remote_src: yes
+    owner: steam
+    group: steam
   when: steamcmd_dl.changed
 
 - name: Add Steam to PATH
-  become: yes
-  become_user: steam
   replace:
     path: '{{ steam_home }}/.bashrc'
     regexp: 'PATH="(.*):\$PATH"$'
     replace: 'PATH="\1:$PATH:$HOME/Steam"'
+    owner: steam
+    group: steam

@@ -31,14 +31,14 @@
   failed_when: '"install state: Fully Installed" not in kf2_status.stdout'
 
 - name: Make symlinks for the Workshop and Cache folders
-  become: yes
-  become_user: steam
   file:
     src: "{{ item.target }}"
     dest: "{{ item.link }}"
     state: link
     force: yes
     follow: no
-  with_items:
+    owner: steam
+    group: steam
+  loop:
   - { target: '{{ steam_home }}/Steam/KF2Server/KFGame/Cache', link: '{{ steam_home }}/Cache' }
   - { target: '{{ steam_home }}/Steam/KF2Server/Binaries/Win64/steamapps/workshop', link: '{{ steam_home }}/Workshop' }
