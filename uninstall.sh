@@ -52,20 +52,6 @@ function check_firewalld ()
 
 # Essentially, this file should be bin/* undone, in reverse order.
 
-echo -n 'Stopping KF2 services... '
-
-if [ -f /etc/systemd/system/kf2.service ]
-then
-    systemctl ${SYSTEMCTL_FLAGS} stop kf2.service
-fi
-
-if [ -f /etc/systemd/system/kf2autokick.service ]
-then
-    systemctl ${SYSTEMCTL_FLAGS} stop kf2autokick.service
-fi
-
-${ECHO_DONE}
-
 # Helper
 echo -n 'Removing helpers... '
 # Legacy
@@ -118,28 +104,6 @@ fi
 echo -n 'Removing KF2 service delegation rules... '
 rm -f /etc/sudoers.d/kf2-sudo
 rm -f /etc/sudoers.d/kf2autokick-sudo
-${ECHO_DONE}
-
-# Systemd
-echo -n 'Removing KF2 services... '
-
-systemctl ${SYSTEMCTL_FLAGS} daemon-reload
-
-if [ -f /etc/systemd/system/kf2.service ]
-then
-    systemctl ${SYSTEMCTL_FLAGS} disable kf2.service
-fi
-
-if [ -f /etc/systemd/system/kf2autokick.service ]
-then
-    systemctl ${SYSTEMCTL_FLAGS} disable kf2autokick.service
-fi
-
-rm -f /etc/systemd/system/kf2.service
-rm -f /etc/systemd/system/kf2autokick.service
-rm -rf /etc/systemd/system/kf2.service.d
-systemctl ${SYSTEMCTL_FLAGS} daemon-reload
-
 ${ECHO_DONE}
 
 # Steam + KF2
