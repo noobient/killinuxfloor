@@ -6,3 +6,4 @@
 - include_tasks: killinuxfloor.yml
 - include_tasks: kf2.yml
 - include_tasks: config.yml
+- include_tasks: selinux.yml

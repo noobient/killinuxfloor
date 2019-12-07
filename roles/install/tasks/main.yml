@@ -8,4 +8,5 @@
 - include_tasks: config.yml
 - include_tasks: autokick.yml
 - include_tasks: killinuxfloor.yml
+- include_tasks: selinux.yml
 - include_tasks: init.yml

@@ -1,0 +1,15 @@
+- name: Delete SELinux tools and policy modules
+  file:
+    path: "{{ steam_home }}/selinux"
+    state: absent
+
+- name: Check killinuxfloor SELinux policy module status
+  shell: semodule --list | grep killinuxfloor
+  ignore_errors: yes
+  changed_when: no
+  no_log: True
+  register: klf_selinux
+
+- name: Disable SELinux policy module
+  command: semodule --remove=killinuxfloor
+  when: klf_selinux.rc == 0

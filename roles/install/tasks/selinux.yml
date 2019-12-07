@@ -1,0 +1,37 @@
+- name: Install SELinux tools
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+  - checkpolicy
+  - policycoreutils
+
+- name: Create folder for SELinux deployment script
+  file:
+    path: "{{ steam_home }}/selinux"
+    state: directory
+    owner: steam
+    group: steam
+
+- name: Deploy SELinux deployment script
+  copy:
+    src: "sedeploy.sh"
+    dest: "{{ steam_home }}/selinux/sedeploy.sh"
+    owner: steam
+    group: steam
+    mode: 0755
+
+- name: Deploy killinuxfloor SELinux policy module
+  copy:
+    src: "killinuxfloor.te"
+    dest: "{{ steam_home }}/selinux/killinuxfloor.te"
+    owner: steam
+    group: steam
+    mode: 0644
+  register: klf_selinux
+
+- name: Apply killinuxfloor SELinux policy module
+  command: "{{ steam_home }}/selinux/sedeploy.sh killinuxfloor"
+  args:
+    chdir: "{{ steam_home }}/selinux"
+  when: klf_selinux.changed
