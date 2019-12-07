@@ -6,11 +6,12 @@ require {
     type http_port_t;
     type unreserved_port_t;
     class file { open read rename execute execute_no_trans map create write append lock };
+    class dir { create };
     class lnk_file { open read };
     class tcp_socket { name_connect };
 }
 
-# allow systemd to access the config in steam's home
+# allow systemd to access config files in steam's home
 allow init_t user_home_t:file { open read rename };
 
 # allow systemd to read links in steam's home
@@ -21,6 +22,9 @@ allow init_t user_home_t:file { execute execute_no_trans map };
 
 # allow systemd to create log files in steam's home
 allow init_t user_home_t:file { create write append lock };
+
+# allow systemd to manage folders in steam's home
+allow init_t user_home_t:dir { create };
 
 # allow systemd to run webadmin and kf2 server
 allow init_t http_port_t:tcp_socket { name_connect };
