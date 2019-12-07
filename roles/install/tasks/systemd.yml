@@ -18,14 +18,7 @@
     dest: /etc/systemd/system/kf2.service.d/serveradmin.patch
   notify: Reload systemd configuration
 
-- name: Link KF2 startup config to systemd folder
-  file:
-    src: "{{ steam_home }}/Config/My-Startup.conf"
-    dest: /etc/systemd/system/kf2.service.d/kf2.service.conf
-    state: link
-    force: yes
-    follow: no
-  notify: Reload systemd configuration
+- meta: flush_handlers
 
 - name: Auto-start KF2 services on boot
   systemd:

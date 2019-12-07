@@ -25,3 +25,5 @@
   file:
     path: /etc/systemd/system/kf2.service.d
     state: absent
+
+- meta: flush_handlers

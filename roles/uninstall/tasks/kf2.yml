@@ -1,6 +1,6 @@
 - name: Remove Workshop and Cache symlinks
   file:
-    path: "{{ item.target }}"
+    path: "{{ item }}"
     state: absent
   loop:
   - "{{ steam_home }}/Cache"
