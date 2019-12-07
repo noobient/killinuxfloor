@@ -1,0 +1,13 @@
+- name: Remove killinuxfloor
+  file:
+    path: "{{ steam_home }}/killinuxfloor"
+    state: absent
+
+- name: Remove killinuxfloor commands
+  file:
+    path: "{{ steam_home }}/bin/{{ item }}"
+    state: absent
+  loop:
+  - killinuxfloor
+  - klf
+  - kf2-centos

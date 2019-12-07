@@ -2,3 +2,5 @@
 - include_tasks: systemd.yml
 - include_tasks: sudo.yml
 - include_tasks: firewalld.yml
+- include_tasks: autokick.yml
+- include_tasks: killinuxfloor.yml

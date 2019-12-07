@@ -19,19 +19,6 @@ export SKIP_KFGAME=0
 # aliases
 export ECHO_DONE='echo -e \e[32mdone\e[0m.'
 
-# Helper
-echo -n 'Removing helpers... '
-# Legacy
-rm -rf ${STEAM_HOME}/kf2-centos
-rm -rf ${STEAM_HOME}/killinuxfloor
-rm -rf ${STEAM_HOME}/bin
-${ECHO_DONE}
-
-# Autokick
-echo -n 'Removing auto-kick bot... '
-rm -rf ${STEAM_HOME}/kf2autokick
-${ECHO_DONE}
-
 # Backup
 DATE_STR=$(date +%Y%m%d-%H%M%S)
 BACKUP_FILE="${STEAM_HOME}/Config-${DATE_STR}.tgz"
