@@ -1,3 +1,6 @@
+- name: Check the state of system services
+  service_facts:
+
 - name: Stop and disable the KF2 service
   systemd:
     name: kf2
