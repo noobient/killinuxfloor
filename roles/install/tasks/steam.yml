@@ -21,6 +21,7 @@
     state: directory
     owner: steam
     group: steam
+    recurse: yes
 
 - name: Obtain SteamCMD
   get_url:
