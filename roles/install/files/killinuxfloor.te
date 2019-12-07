@@ -6,7 +6,7 @@ require {
     type http_port_t;
     type unreserved_port_t;
     class file { open read rename execute execute_no_trans map create write append lock };
-    class dir { create rename rmdir };
+    class dir { create rename rmdir reparent };
     class lnk_file { open read };
     class tcp_socket { name_connect };
 }
@@ -24,7 +24,7 @@ allow init_t user_home_t:file { execute execute_no_trans map };
 allow init_t user_home_t:file { create write append lock };
 
 # allow systemd to manage folders in steam's home
-allow init_t user_home_t:dir { create rename rmdir };
+allow init_t user_home_t:dir { create rename rmdir reparent };
 
 # allow systemd to run webadmin and kf2 server
 allow init_t http_port_t:tcp_socket { name_connect };
