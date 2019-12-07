@@ -1,0 +1,7 @@
+- name: Remove sudo roles for KF2 services
+  file:
+    path: "/etc/sudoers.d/{{ item }}"
+    state: absent
+  loop:
+  - kf2-sudo
+  - kf2autokick-sudo
