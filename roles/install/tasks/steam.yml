@@ -42,7 +42,7 @@
 
 - name: Add Steam to PATH
   replace:
-    path: '{{ steam_home }}/.bashrc'
+    path: '{{ steam_home }}/{% if ansible_distribution_major_version == '7' %}.bash_profile{% else %}.bashrc{% endif %}'
     regexp: 'PATH="(.*):\$PATH"$'
     replace: 'PATH="\1:$PATH:$HOME/Steam"'
     owner: steam
