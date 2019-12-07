@@ -37,7 +37,8 @@
     remote_src: yes
     owner: steam
     group: steam
-  when: steamcmd_dl.changed
+# this won't work if SteamCMD is downloaded but install failed
+#  when: steamcmd_dl.changed
 
 - name: Add Steam to PATH
   replace:
