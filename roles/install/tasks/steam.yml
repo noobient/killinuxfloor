@@ -31,12 +31,13 @@
   register: steamcmd_dl
 
 - name: Extract SteamCMD
+  # owner/group seem to be bugged, use become instead
+  become: yes
+  become_user: steam
   unarchive:
     src: '{{ steam_home }}/steamcmd_linux.tar.gz'
     dest: '{{ steam_home }}/Steam'
     remote_src: yes
-    owner: steam
-    group: steam
 # this won't work if SteamCMD is downloaded but install failed
 #  when: steamcmd_dl.changed
 
