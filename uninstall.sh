@@ -12,10 +12,43 @@ fi
 
 export ROOT="${BASH_SOURCE%/*}"
 
-source "${ROOT}/lib/globals.sh"
-source "${ROOT}/lib/aliases.sh"
-source "${ROOT}/lib/flags.sh"
-source "${ROOT}/lib/functions.sh"
+# globals
+export STEAM_HOME='/home/steam'
+export SKIP_KFGAME=0
+
+# aliases
+export ECHO_DONE='echo -e \e[32mdone\e[0m.'
+
+# flags
+export FIREWALLCMD_FLAGS='--quiet'
+export SYSTEMCTL_FLAGS='--quiet'
+
+# functions
+function kf2_yum_erase ()
+{
+    for PKG in "$@"
+    do
+        RET=1
+        yum --quiet list installed $PKG >/dev/null 2>&1 && RET=$?
+
+        if [ ${RET} -eq 0 ]
+        then
+            if [ ${KF2_DEBUG} -eq 1  ]
+            then
+                yum erase $PKG || exit 3
+            else
+                yum --assumeyes --quiet erase $PKG || exit 3
+            fi
+        fi
+    done
+}
+
+function check_firewalld ()
+{
+    # check if firewalld is running
+    RET=1
+    systemctl is-active --quiet firewalld.service && RET=0 || true
+}
 
 # Essentially, this file should be bin/* undone, in reverse order.
 

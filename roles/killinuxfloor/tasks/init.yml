@@ -1,0 +1,4 @@
+- name: Initialize KF2 config
+  become: yes
+  become_user: steam
+  command: "{{ steam_home }}/bin/killinuxfloor reset"

@@ -7,3 +7,13 @@
   yum:
     name: '*'
     state: latest
+
+- name: Check the state of system services
+  service_facts:
+
+# we don't need to deal with autokick, the unit stops if kf2 stops
+- name: Make sure the KF2 service isn't running
+  systemd:
+    name: kf2
+    state: stopped
+  when: ansible_facts.services["kf2.service"] is defined and ansible_facts.services["kf2.service"].state == "running"

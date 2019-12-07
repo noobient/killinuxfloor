@@ -1,6 +1,3 @@
-- name: Check firewalld status
-  service_facts:
-
 - name: Deploy KF2 firewall rules
   copy:
     src: kf2.xml

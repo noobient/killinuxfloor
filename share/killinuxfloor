@@ -9,7 +9,8 @@ function print_help ()
     echo ""
     echo "Usage:"
     echo "------"
-    echo -e "\e[36mkillinuxfloor config\e[0m \t\t apply your own settings to the internal KF2 server config"
+    echo -e "\e[36mkillinuxfloor config\e[0m \t\t insert your own settings into the internal KF2 server config without restarting KF2"
+    echo -e "\e[36mkillinuxfloor apply\e[0m \t\t apply your changes instantly, equivalent to running 'config' and 'restart'"
     echo -e "\e[36mkillinuxfloor reset\e[0m \t\t reset internal config and erase the Workshop and Cache folders (don't forget to run 'config' afterwards)"
     echo -e "\e[36mkillinuxfloor start\e[0m \t\t start KF2"
     echo -e "\e[36mkillinuxfloor stop\e[0m \t\t stop KF2"
@@ -769,6 +770,11 @@ case $1 in
         else
             handle_bans "${@:2}"
         fi
+        ;;
+
+    apply)
+        regen_config
+        sudo /bin/systemctl restart kf2.service
         ;;
 
     help)
