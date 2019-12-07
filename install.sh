@@ -15,7 +15,7 @@ sudo yum -y install ansible
 
 export ROOT="${BASH_SOURCE%/*}"
 
-sudo ansible-playbook "${ROOT}/killinuxfloor.yml"
+sudo ansible-playbook "${ROOT}/install.yml"
 
 echo -e "\e[32mkillinuxfloor successfully installed!\e[0m"
 echo

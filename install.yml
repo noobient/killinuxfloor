@@ -2,4 +2,4 @@
   connection: local
   become: yes
   roles:
-  - killinuxfloor
+  - install
