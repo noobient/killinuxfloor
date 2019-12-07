@@ -1,8 +1,12 @@
-# TODO GPG key?
-- name: Enable EPEL
+- name: Install EPEL repo
   yum:
     name: epel-release
     state: latest
+
+- name: Import EPEL GPG key
+  rpm_key:
+    state: present
+    key: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
 
 - name: Install config generator
   yum:

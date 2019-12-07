@@ -1,2 +1,3 @@
 ---
 steam_home: /home/steam
+nodejs_version: 12
