@@ -1,0 +1,8 @@
+- name: Enable sudo roles for KF2 services
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/sudoers.d/{{ item }}"
+    mode: '0440'
+  loop:
+  - kf2-sudo
+  - kf2autokick-sudo

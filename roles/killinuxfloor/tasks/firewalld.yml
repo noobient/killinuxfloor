@@ -1,0 +1,20 @@
+- name: Check firewalld status
+  service_facts:
+
+- name: Deploy KF2 firewall rules
+  copy:
+    src: kf2.xml
+    dest: /etc/firewalld/services/kf2.xml
+  register: kf2_fw
+
+- name: Reload firewalld config
+  command: firewall-cmd --reload
+  when: kf2_fw.changed and ansible_facts.services["firewalld.service"] is defined and ansible_facts.services["firewalld.service"].state == "running"
+
+- name: Enable KF2 firewall rules
+  firewalld:
+    service: kf2
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: ansible_facts.services["firewalld.service"] is defined and ansible_facts.services["firewalld.service"].state == "running"
