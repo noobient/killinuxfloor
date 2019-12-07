@@ -16,11 +16,11 @@
 - name: Enable killinuxfloor commands
   file:
     src: "{{ item.target }}"
-    dest: "{{ item.link }}"
+    dest: "{{ steam_home }}/bin/{{ item.link }}"
     state: link
     force: yes
     owner: steam
     group: steam
   loop:
-  - { target: '{{ steam_home }}/killinuxfloor/share/killinuxfloor', link: '{{ steam_home }}/bin/killinuxfloor' }
-  - { target: '{{ steam_home }}/bin/killinuxfloor', link: '{{ steam_home }}/bin/klf' }
+  - { target: '{{ steam_home }}/killinuxfloor/share/killinuxfloor', link: 'killinuxfloor' }
+  - { target: '{{ steam_home }}/bin/killinuxfloor', link: 'klf' }
