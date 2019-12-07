@@ -1,0 +1,16 @@
+- name: Remove Workshop and Cache symlinks
+  file:
+    path: "{{ item.target }}"
+    state: absent
+  loop:
+  - "{{ steam_home }}/Cache"
+  - "{{ steam_home }}/Workshop"
+
+- name: Remove KF2
+  file:
+    path: "{{ steam_home }}/{{ item }}"
+    state: absent
+  loop:
+  - "{{ steam_home }}/Steam"
+  - "{{ steam_home }}/.steam"
+  when: skip_kfgame != True

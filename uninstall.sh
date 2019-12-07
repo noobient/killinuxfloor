@@ -27,15 +27,4 @@ rm -f ${STEAM_HOME}/Config/Internal
 sudo -u steam sh -c "tar czfh ${BACKUP_FILE} -C ${STEAM_HOME} Config"
 ${ECHO_DONE}
 
-# Steam + KF2
-echo -n 'Removing KF2 and Steam... '
-if [ ${SKIP_KFGAME} -ne 1 ]
-then
-    rm -rf ${STEAM_HOME}/Steam
-    rm -rf ${STEAM_HOME}/.steam
-fi
-rm -f ${STEAM_HOME}/Cache
-rm -f ${STEAM_HOME}/Workshop
-${ECHO_DONE}
-
 echo -e "\e[32mkillinuxfloor successfully uninstalled.\e[0m"
