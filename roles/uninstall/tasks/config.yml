@@ -1,0 +1,19 @@
+- name: Remove symlink to internal config
+  file:
+    path: "{{ steam_home }}/Config/Internal"
+    state: absent
+
+- name: Check if any KF2 config is present
+  stat:
+    path: "{{ steam_home }}/Config"
+  register: config_dir
+
+- name: "Backup current KF2 config as {{ steam_home }}/Config-{{ date_str }}.tgz"
+  command: "tar czfh {{ steam_home }}/Config-{{ date_str }}.tgz -C {{ steam_home }} Config"
+  when: config_dir.stat.exists
+
+# this is necessary for idempotency
+- name: Delete KF2 config
+  file:
+    path: "{{ steam_home }}/Config"
+    state: absent

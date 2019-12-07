@@ -10,21 +10,11 @@ then
     exit
 fi
 
+sudo yum -y install epel-release
+sudo yum -y install ansible
+
 export ROOT="${BASH_SOURCE%/*}"
 
-# globals
-export STEAM_HOME='/home/steam'
-export SKIP_KFGAME=0
-
-# aliases
-export ECHO_DONE='echo -e \e[32mdone\e[0m.'
-
-# Backup
-DATE_STR=$(date +%Y%m%d-%H%M%S)
-BACKUP_FILE="${STEAM_HOME}/Config-${DATE_STR}.tgz"
-echo -ne "Backing up current KF2 config as \e[36m${BACKUP_FILE}\e[0m... "
-rm -f ${STEAM_HOME}/Config/Internal
-sudo -u steam sh -c "tar czfh ${BACKUP_FILE} -C ${STEAM_HOME} Config"
-${ECHO_DONE}
+sudo ansible-playbook "${ROOT}/uninstall.yml"
 
 echo -e "\e[32mkillinuxfloor successfully uninstalled.\e[0m"
