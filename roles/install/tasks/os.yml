@@ -3,10 +3,21 @@
   - errmsg: 'killinuxfloor supports CentOS 7 and 8 only.'
   when: (ansible_distribution_major_version != '7') and (ansible_distribution_major_version != '8')
 
+- name: Enable CentOS Release stream
+  yum:
+    name: centos-release-stream
+    state: latest
+  when: ansible_distribution_major_version == '8'
+
 - name: Make sure the OS is up-to-date
   yum:
     name: '*'
     state: latest
+
+- include_tasks: fail.yml
+  vars:
+  - errmsg: 'Due to a bug in the running kernel version, you must reboot before the installation of killinuxfloor can continue.'
+  when: (ansible_distribution_major_version == '8') and (ansible_facts['kernel'] is version('4.18.0-147', '<'))
 
 - name: Check the state of system services
   service_facts:
