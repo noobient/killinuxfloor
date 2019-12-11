@@ -5,15 +5,17 @@
 
 - name: Install dependencies
   yum:
-    name: "{{ item }}"
-  loop:
-  - glibc.i686
-  - libstdc++.i686
-  - unzip
-  - dos2unix
-  - patch
-  - git
-  - tar
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - glibc.i686
+    - libstdc++.i686
+    - nss-softokn-freebl.i686
+    - unzip
+    - dos2unix
+    - patch
+    - git
+    - tar
 
 - name: Create main Steam directory
   file:
