@@ -1,10 +1,11 @@
 - name: Install SELinux tools
   yum:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: latest
-  loop:
-  - checkpolicy
-  - policycoreutils
+  vars:
+    packages:
+    - checkpolicy
+    - policycoreutils
 
 - name: Install CentOS 7 SELinux tools
   yum:

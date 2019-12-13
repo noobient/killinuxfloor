@@ -18,11 +18,12 @@
 
 - name: Install Node.js and Yarn
   yum:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: latest
-  loop:
-  - nodejs
-  - yarn
+  vars:
+    packages:
+    - nodejs
+    - yarn
 
 - name: Obtain kf2_autokick sources
   become: yes
