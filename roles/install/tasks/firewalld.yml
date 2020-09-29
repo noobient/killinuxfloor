@@ -6,6 +6,7 @@
     src: kf2.xml
     dest: /etc/firewalld/services/kf2.xml
   register: kf2_fw
+  when: ansible_facts.services["firewalld.service"] is defined
 
 - name: Reload firewalld config
   command: firewall-cmd --reload
