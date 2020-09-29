@@ -2,6 +2,8 @@
   yum:
     name: "https://rpm.nodesource.com/pub_{{ nodejs_version }}.x/el/{{ ansible_distribution_major_version }}/x86_64/nodesource-release-el{{ ansible_distribution_major_version }}-1.noarch.rpm"
     state: latest
+    # Node does not provide a separate GPG file to import, so ignore GPG checks for this very first package that will in turn install the GPG key locally
+    disable_gpg_check: yes
 
 - name: Install Yarn repo
   get_url:
