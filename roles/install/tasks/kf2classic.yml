@@ -11,24 +11,34 @@
 - name: Obtain DepotDownloader
   get_url:
     url: "https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_{{ depotdownloader_version }}/depotdownloader-{{ depotdownloader_version }}.zip"
-    dest: /opt/depotdownloader.zip
+    dest: "{{ steam_home }}/depotdownloader.zip"
+    owner: steam
+    group: steam
     mode: '0644'
   register: dd_dl
 
 - name: Remove old DepotDownloader
   file:
-    path: /opt/depotdownloader
+    path: "{{ steam_home }}/depotdownloader"
     state: absent
   when: dd_dl.changed
 
+- name: Create DepotDownloader directory
+  file:
+    path: "{{ steam_home }}/depotdownloader"
+    state: directory
+    owner: steam
+    group: steam
+    mode: '0755'
+
 - name: Extract DepotDownloader
   unarchive:
-    src: /opt/depotdownloader.zip
-    dest: /opt/depotdownloader
+    src: "{{ steam_home }}/depotdownloader.zip"
+    dest: "{{ steam_home }}/depotdownloader"
   when: dd_dl.changed
 
 - name: Install Killing Floor 2 Classic (be patient, 16 GB+)
-  command: /opt/depotdownloader/depotdownloader -app 232130 -depot 232131 -manifest 2346945547354693824 -validate -os linux -max-downloads 32 -dir "{{ steam_home }}/Steam/KF2Server"
+  command: "{{ steam_home }}/depotdownloader/depotdownloader -app 232130 -depot 232131 -manifest 2346945547354693824 -validate -os linux -max-downloads 32 -dir {{ steam_home }}/Steam/KF2Server"
   no_log: True
   become: yes
   become_user: steam
