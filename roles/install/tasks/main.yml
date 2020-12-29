@@ -1,7 +1,8 @@
 ---
 - include_tasks: os.yml
 - include_tasks: steam.yml
-- include_tasks: kf2.yml
+#- include_tasks: kf2.yml
+- include_tasks: kf2classic.yml
 - include_tasks: systemd.yml
 - include_tasks: sudo.yml
 - include_tasks: firewalld.yml

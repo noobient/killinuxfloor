@@ -1,3 +1,5 @@
 ---
 steam_home: /home/steam
 nodejs_version: 12
+depotdownloader_version: 2.3.6
+dotnet_version: 5.0
