@@ -17,13 +17,14 @@ function print_help ()
     echo -e "\e[36mkillinuxfloor restart\e[0m \t\t restart KF2"
     echo -e "\e[36mkillinuxfloor status\e[0m \t\t query the status of the KF2 service"
     echo -e "\e[36mkillinuxfloor status service\e[0m \t same as \e[36mkillinuxfloor status\e[0m"
-    echo -e "\e[36mkillinuxfloor status install\e[0m \t show KF2 installation status"
+#    echo -e "\e[36mkillinuxfloor status install\e[0m \t show KF2 installation status"
     echo -e "\e[36mkillinuxfloor status workshop\e[0m \t show Workshop download status"
     echo -e "\e[36mkillinuxfloor log\e[0m \t\t display the KF2 logs"
     echo -e "\e[36mkillinuxfloor purge <map_id>\e[0m \t remove an installed workshop map"
-    echo -e "\e[36mkillinuxfloor update\e[0m \t\t check for and apply KF2 updates (don't forget to run 'init' and 'config' if update found)"
-    echo -e "\e[36mkillinuxfloor update preview\e[0m \t apply updates from the 'preview' branch"
+#    echo -e "\e[36mkillinuxfloor update\e[0m \t\t check for and apply KF2 updates (don't forget to run 'init' and 'config' if update found)"
+#    echo -e "\e[36mkillinuxfloor update preview\e[0m \t apply updates from the 'preview' branch"
     echo -e "\e[36mkillinuxfloor verify\e[0m \t\t verify integrity of KF2 files"
+#    echo -e "\e[36mkillinuxfloor verify preview\e[0m \t verify integrity of KF2 files in the 'preview' branch"
     echo -e "\e[36mkillinuxfloor backup\e[0m \t\t back up all KF2 settings"
     echo -e "\e[36mkillinuxfloor autokick {start|stop|restart|status|log}\e[0m"
     echo -e "\e[36mkillinuxfloor ban {list|add <steamID64>|delete <steamID64>}\e[0m"
@@ -418,15 +419,17 @@ function update_kf2 ()
 
 function check_integrity ()
 {
-    case $# in
-        0)
-            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta +exit
-            ;;
+#    case $# in
+#        0)
+#            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta +exit
+#            ;;
+#
+#        1)
+#            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta $1 +exit
+#            ;;
+#    esac
 
-        1)
-            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta $1 +exit
-            ;;
-    esac
+    dotnet "${HOME}/depotdownloader/DepotDownloader.dll" -app 232130 -depot 232131 -manifest 2346945547354693824 -validate -os linux -max-downloads 32 -dir "${HOME}/Steam/KF2Server"
 }
 
 function autokick ()
@@ -534,9 +537,9 @@ function check_status ()
             sudo /bin/systemctl status kf2.service || true
             ;;
 
-        install)
-            check_install
-            ;;
+#        install)
+#            check_install
+#            ;;
 
         workshop)
             check_workshop
@@ -721,14 +724,14 @@ case $1 in
         fi
         ;;
 
-    update)
-        if [ $# -eq 2 ]
-        then
-            update_kf2 $2
-        else
-            update_kf2
-        fi
-        ;;
+#    update)
+#        if [ $# -eq 2 ]
+#        then
+#            update_kf2 $2
+#        else
+#            update_kf2
+#        fi
+#        ;;
 
     log)
         sudo /bin/journalctl --system --unit=kf2.service --follow
