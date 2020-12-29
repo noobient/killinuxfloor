@@ -49,11 +49,6 @@
   register: kf2_install
   changed_when: '"Total downloaded: 0 bytes (0 bytes uncompressed) from 1 depots" not in kf2_install.stdout'
 
-- name: Make KF2 executable
-  file:
-    path: "{{ steam_home }}/Steam/KF2Server/Binaries/Win64/KFGameSteamServer.bin.x86_64"
-    mode: '0755'
-
 - name: Make symlinks for the Workshop and Cache folders
   file:
     src: "{{ item.target }}"
