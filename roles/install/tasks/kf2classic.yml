@@ -53,3 +53,16 @@
   file:
     path: "{{ steam_home }}/Steam/KF2Server/Binaries/Win64/KFGameSteamServer.bin.x86_64"
     mode: '0755'
+
+- name: Make symlinks for the Workshop and Cache folders
+  file:
+    src: "{{ item.target }}"
+    dest: "{{ item.link }}"
+    state: link
+    force: yes
+    follow: no
+    owner: steam
+    group: steam
+  loop:
+  - { target: '{{ steam_home }}/Steam/KF2Server/KFGame/Cache', link: '{{ steam_home }}/Cache' }
+  - { target: '{{ steam_home }}/Steam/KF2Server/Binaries/Win64/steamapps/workshop', link: '{{ steam_home }}/Workshop' }
