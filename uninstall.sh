@@ -15,6 +15,6 @@ sudo yum -y -q install ansible
 
 export ROOT="${BASH_SOURCE%/*}"
 
-sudo ansible-playbook "${ROOT}/uninstall.yml"
+sudo ansible-playbook "${ROOT}/uninstall.yml" "$@"
 
 echo -e "\e[32mkillinuxfloor successfully uninstalled.\e[0m"
