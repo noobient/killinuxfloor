@@ -3,3 +3,4 @@ steam_home: /home/steam
 nodejs_version: 12
 depotdownloader_version: 2.3.6
 dotnet_version: 5.0
+kf2_installed_str: 'Total downloaded: 0 bytes (0 bytes uncompressed) from 1 depots'

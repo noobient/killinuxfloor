@@ -33,7 +33,7 @@
   become: yes
   become_user: steam
   register: kf2_install
-  changed_when: ('Total downloaded: 0 bytes (0 bytes uncompressed) from 1 depots' not in kf2_install.stdout)
+  changed_when: (kf2_installed_str not in kf2_install.stdout)
 
 - name: Make KF2 executable
   file:
