@@ -3,11 +3,15 @@
   - errmsg: 'killinuxfloor supports CentOS 7 and 8 only.'
   when: (ansible_distribution_major_version != '7') and (ansible_distribution_major_version != '8')
 
-- name: Enable CentOS Release stream
-  yum:
-    name: centos-release-stream
-    state: latest
-  when: ansible_distribution_major_version == '8'
+# don't install stream, the new kernel is already in base
+# and stream breaks libstdc++.i686 install over some file conflicts
+# the x86_64 version (8.4) is different from the i686 (8.3) on some systems
+# https://www.mail-archive.com/centos@centos.org/msg136831.html
+#- name: Enable CentOS Release stream
+#  yum:
+#    name: centos-release-stream
+#    state: latest
+#  when: ansible_distribution_major_version == '8'
 
 - name: Make sure the OS is up-to-date
   yum:
