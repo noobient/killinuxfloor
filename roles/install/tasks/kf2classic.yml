@@ -42,7 +42,7 @@
 
 # don't use the wrapper as it lacks the shebang so ansible errors out with an exec format error
 - name: Install Killing Floor 2 Classic (be patient, 16 GB+)
-  command: "dotnet {{ steam_home }}/depotdownloader/DepotDownloader.dll -app 232130 -depot 232131 -manifest 2346945547354693824 -validate -os linux -max-downloads 32 -dir {{ steam_home }}/Steam/KF2Server"
+  command: "dotnet {{ steam_home }}/depotdownloader/DepotDownloader.dll -app 232130 -depot 232131 -manifest 2346945547354693824 -validate -os linux -max-downloads 16 -dir {{ steam_home }}/Steam/KF2Server"
   no_log: True
   become: yes
   become_user: steam
