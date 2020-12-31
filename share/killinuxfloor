@@ -251,13 +251,22 @@ function add_cycle_str ()
 
 function add_cycles ()
 {
+    # the cycles added here will be shown in webadmin in reverse order due to sed
+
     add_cycle_custom
 
     find_maps_workshop
     find_maps_stock
 
     add_cycle_str "${MAPS_WORKSHOP[@]}"
-    add_cycle_str "${MAPS_STOCK[@]}" # always do default maps last so that they're the first in webadmin
+    add_cycle_str "${MAPS_STOCK[@]}"
+
+    if [ ${#MAPS_WORKSHOP[@]} -gt 0 ]
+    then
+        # bash 4 magic to sort an array, also concatenate the 2 arrays in-place while we're at it
+        readarray -t MAPS_ALL < <(printf '%s\0' "${MAPS_STOCK[@]}" "${MAPS_WORKSHOP[@]}" | sort -z | xargs -0n1)
+        add_cycle_str "${MAPS_ALL[@]}"
+    fi
 }
 
 function add_bans ()
