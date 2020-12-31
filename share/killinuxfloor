@@ -232,7 +232,7 @@ function add_cycle_stock ()
 
     # cycle for stock maps
     echo -n 'Adding map cycle for all stock maps... '
-    for d in $(find ${MAP_DIR} -maxdepth 1 -mindepth 1 -type d -printf %f\\n | sort)
+    for d in $(find ${MAP_DIR} -maxdepth 1 -mindepth 1 -type d -printf %f\\n | grep -v SDK | sort)
     do
         if [ ${FIRST} -ne 1 ]
         then
