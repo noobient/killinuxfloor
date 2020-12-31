@@ -25,6 +25,8 @@ ExecStartPre=/bin/ln -sTf /home/steam/Steam/linux64/steamclient.so /home/steam/S
 ExecStartPre=/bin/chmod +x /home/steam/Steam/KF2Server/Binaries/Win64/KFGameSteamServer.bin.x86_64
 ExecStartPre=/bin/chmod +x /home/steam/Steam/KF2Server/Binaries/Win64/lib64/libSDL2-2.0.so.0
 ExecStartPre=/bin/chmod +x /home/steam/Steam/KF2Server/Binaries/Win64/lib64/libsteam_api.so
+# ensure Steam is up-to-date
+ExecStartPre=/home/steam/Steam/steamcmd.sh --help
 ExecStart=/home/steam/Steam/KF2Server/Binaries/Win64/KFGameSteamServer.bin.x86_64 ${KF2_PARAMS}
 Restart=on-failure
 RestartSec=5
