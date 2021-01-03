@@ -16,4 +16,4 @@ chmod 0644 "${BALANCE_DIR}/balance_tweaks.bin"
 chown root:root "${BALANCE_DIR}/balance_tweaks.bin"
 
 # build package
-time fpm --input-type=dir --output-type=rpm --rpm-compression=xzmt --name="${PKG_NAME}-${PKG_VER}" --package="/pkg" "${BALANCE_DIR}"
+time fpm --input-type=dir --output-type=rpm --rpm-compression=xzmt --name="${PKG_NAME}" --version="${PKG_VER}" --package="/pkg" "${BALANCE_DIR}"
