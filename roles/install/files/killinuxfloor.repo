@@ -1,5 +1,0 @@
-[killinuxfloor]
-name=killinuxfloor packages
-baseurl=https://nexus.noobient.com/repository/killinuxfloor/
-gpgcheck=0
-enabled=1
