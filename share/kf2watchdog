@@ -2,6 +2,8 @@
 
 set -eu
 
+echo "$(date --rfc-3339=seconds) KF2 Watchdog started" | tee -a /home/steam/Steam/logs/kf2watchdog.txt
+
 while true
 do
     # this shouldn't be needed since the watchdog service depends on the KF2 service
@@ -14,8 +16,8 @@ do
 
         if [ ${RET} -ne 0 ]
         then
-            sudo /bin/systemctl restart kf2.service
             echo "$(date --rfc-3339=seconds) KF2 restarted" | tee -a /home/steam/Steam/logs/kf2watchdog.txt
+            sudo /bin/systemctl restart kf2.service
         fi
     fi
     sleep 60
