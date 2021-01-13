@@ -1,0 +1,19 @@
+[Unit]
+Description=KF2 Watchdog
+# start after KF2 started
+After=syslog.target network.target kf2.service
+# watchdog won't work if KF2 isn't running
+Requires=kf2.service
+# restart and stop automatically if KF2 is restarted/stopped
+PartOf=kf2.service
+
+[Service]
+Type=simple
+User=steam
+Group=steam
+ExecStart=/home/steam/bin/kf2watchdog
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

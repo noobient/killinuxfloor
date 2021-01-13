@@ -5,6 +5,7 @@
   loop:
   - kf2.service
   - kf2autokick.service
+  - kf2watchdog.service
   notify: Reload systemd configuration
 
 - name: Prepare systemd folder
@@ -27,3 +28,4 @@
   loop:
   - kf2
 #  - kf2autokick
+  - kf2watchdog

@@ -28,6 +28,7 @@ function print_help ()
     echo -e "\e[36mkillinuxfloor backup\e[0m \t\t back up all KF2 settings"
     echo -e "\e[36mkillinuxfloor autokick {start|stop|restart|status|log}\e[0m"
     echo -e "\e[36mkillinuxfloor ban {list|add <steamID64>|delete <steamID64>}\e[0m"
+    echo -e "\e[36mkillinuxfloor watchdog {enable|disable}\e[0m"
     echo -e "\e[36mkillinuxfloor help\e[0m \t\t print this help"
     echo ""
     echo -e "To save typing, you can also use \e[36mkfl\e[0m instead of \e[36mkillinuxfloor\e[0m."
@@ -715,6 +716,24 @@ function handle_bans ()
     esac
 }
 
+function handle_watchdog ()
+{
+    case $1 in
+        enable)
+            sudo /bin/systemctl enable kf2watchdog.service
+            sudo /bin/systemctl restart kf2watchdog.service
+            ;;
+
+        disable)
+            sudo /bin/systemctl stop kf2watchdog.service
+            sudo /bin/systemctl disable kf2watchdog.service
+            ;;
+
+        *)
+            exit 1
+    esac
+}
+
 if [ "$#" -lt 1 ] || [ "$#" -gt 3 ]
 then
     exit 1
@@ -800,6 +819,10 @@ case $1 in
     apply)
         regen_config
         sudo /bin/systemctl restart kf2.service
+        ;;
+
+    watchdog)
+        handle_watchdog $2
         ;;
 
     help)

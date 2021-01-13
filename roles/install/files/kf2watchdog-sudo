@@ -1,0 +1,5 @@
+%steam ALL=NOPASSWD: /bin/systemctl start kf2watchdog.service
+%steam ALL=NOPASSWD: /bin/systemctl stop kf2watchdog.service
+%steam ALL=NOPASSWD: /bin/systemctl restart kf2watchdog.service
+%steam ALL=NOPASSWD: /bin/systemctl status kf2watchdog.service
+%steam ALL=NOPASSWD: /bin/journalctl --system --unit=kf2watchdog.service --follow

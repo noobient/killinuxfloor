@@ -23,4 +23,5 @@
     group: steam
   loop:
   - { target: '{{ steam_home }}/killinuxfloor/share/killinuxfloor', link: 'killinuxfloor' }
+  - { target: '{{ steam_home }}/killinuxfloor/share/kf2watchdog', link: 'kf2watchdog' }
   - { target: '{{ steam_home }}/bin/killinuxfloor', link: 'klf' }

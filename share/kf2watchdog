@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -eu
+
+while true
+do
+    # this shouldn't be needed since the watchdog service depends on the KF2 service
+    # but it doesn't hurt to check anyway
+    if [ $(/bin/systemctl is-active kf2.service) ]
+    then
+        # give enough time for map changes and even workshop -> cache flushes
+        curl -L -s -S --connect-timeout 120 --retry 10 --retry-connrefused --retry-delay 10 localhost:8080 > /dev/null || sudo /bin/systemctl restart kf2.service
+    fi
+    sleep 60
+done
