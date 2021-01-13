@@ -789,7 +789,8 @@ case $1 in
 #        ;;
 
     log)
-        sudo /bin/journalctl --system --unit=kf2.service --follow
+        #sudo /bin/journalctl --system --unit=kf2.service --follow
+        tail -f /home/steam/Steam/logs/kf2.txt
         ;;
 
     config)
