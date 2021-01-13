@@ -9,7 +9,14 @@ do
     if [ $(/bin/systemctl is-active kf2.service) ]
     then
         # give enough time for map changes and even workshop -> cache flushes
-        curl -L -s -S --connect-timeout 120 --retry 10 --retry-connrefused --retry-delay 10 localhost:8080 > /dev/null || sudo /bin/systemctl restart kf2.service
+        RET=1
+        curl -L -s -S --connect-timeout 120 --retry 10 --retry-connrefused --retry-delay 10 localhost:8080 > /dev/null && RET=$? || true
+
+        if [ ${RET} -ne 0 ]
+        then
+            sudo /bin/systemctl restart kf2.service
+            echo "$(date --rfc-3339=seconds) KF2 restarted" | tee -a /home/steam/Steam/logs/kf2watchdog.txt
+        fi
     fi
     sleep 60
 done
