@@ -6,3 +6,4 @@
   loop:
   - kf2-sudo
   - kf2autokick-sudo
+  - kf2watchdog-sudo
