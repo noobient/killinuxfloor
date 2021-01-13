@@ -6,6 +6,13 @@ After=syslog.target network.target
 Type=simple
 User=steam
 Group=steam
+# KF2 is way too noisy and writes to both journald and messages, disable it
+# gotta rm first because systemd can only append or overwrite from beginning, because reasons
+# https://github.com/systemd/systemd/issues/8983
+# and the file is always owned by root:root regardless of service ownership, because reaosns
+# https://github.com/systemd/systemd/issues/14385
+StandardOutput=file:/home/steam/Steam/logs/kf2.txt
+ExecStartPre=/usr/bin/rm /home/steam/Steam/logs/kf2.txt
 # make sure our patches work
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_change.html
 ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_player_row.inc
