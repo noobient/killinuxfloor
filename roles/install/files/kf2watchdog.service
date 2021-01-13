@@ -11,7 +11,7 @@ PartOf=kf2.service
 Type=simple
 User=steam
 Group=steam
-ExecStart=/home/steam/bin/kf2watchdog
+ExecStart=/bin/bash /home/steam/bin/kf2watchdog
 Restart=on-failure
 RestartSec=5
 
