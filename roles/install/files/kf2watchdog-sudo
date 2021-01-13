@@ -3,3 +3,5 @@
 %steam ALL=NOPASSWD: /bin/systemctl restart kf2watchdog.service
 %steam ALL=NOPASSWD: /bin/systemctl status kf2watchdog.service
 %steam ALL=NOPASSWD: /bin/journalctl --system --unit=kf2watchdog.service --follow
+%steam ALL=NOPASSWD: /bin/systemctl enable kf2watchdog.service
+%steam ALL=NOPASSWD: /bin/systemctl disable kf2watchdog.service
