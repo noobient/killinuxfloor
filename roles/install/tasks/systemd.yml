@@ -26,4 +26,4 @@
     enabled: yes
   loop:
   - kf2
-  - kf2autokick
+#  - kf2autokick
