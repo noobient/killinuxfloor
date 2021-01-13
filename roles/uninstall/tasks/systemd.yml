@@ -15,6 +15,13 @@
     enabled: no
   when: ansible_facts.services["kf2autokick.service"] is defined
 
+- name: Stop and disable the KF2 watchdog service
+  systemd:
+    name: kf2watchdog
+    state: stopped
+    enabled: no
+  when: ansible_facts.services["kf2watchdog.service"] is defined
+
 - name: Remove KF2 services
   file:
     path: "/etc/systemd/system/{{ item }}"
@@ -22,6 +29,7 @@
   loop:
   - kf2.service
   - kf2autokick.service
+  - kf2watchdog.service
   notify: Reload systemd configuration
 
 - name: Remove service extra files
