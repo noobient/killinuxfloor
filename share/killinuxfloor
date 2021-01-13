@@ -29,7 +29,7 @@ function print_help ()
     echo -e "\e[36mkillinuxfloor backup\e[0m \t\t back up all KF2 settings"
     echo -e "\e[36mkillinuxfloor autokick {start|stop|restart|status|log}\e[0m"
     echo -e "\e[36mkillinuxfloor ban {list|add <steamID64>|delete <steamID64>}\e[0m"
-    echo -e "\e[36mkillinuxfloor watchdog {enable|disable}\e[0m"
+    echo -e "\e[36mkillinuxfloor watchdog {enable|disable|status}\e[0m"
     echo -e "\e[36mkillinuxfloor help\e[0m \t\t print this help"
     echo ""
     echo -e "To save typing, you can also use \e[36mkfl\e[0m instead of \e[36mkillinuxfloor\e[0m."
@@ -554,6 +554,11 @@ function check_workshop ()
     echo -e "Items in Cache: \t ${CACHE_STR}${CACHE_COUNT}\e[0m (${CACHE_SPACE} MB)"
 }
 
+function check_watchdog ()
+{
+    sudo /bin/systemctl status kf2watchdog.service || true
+}
+
 function check_status ()
 {
     case $1 in
@@ -566,7 +571,7 @@ function check_status ()
 #            ;;
 
         watchdog)
-            sudo /bin/systemctl status kf2watchdog.service || true
+            check_watchdog
             ;;
 
         workshop)
@@ -732,6 +737,10 @@ function handle_watchdog ()
         disable)
             sudo /bin/systemctl stop kf2watchdog.service
             sudo /bin/systemctl disable kf2watchdog.service
+            ;;
+
+        status)
+            check_watchdog
             ;;
 
         *)
