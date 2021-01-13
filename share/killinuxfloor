@@ -18,6 +18,7 @@ function print_help ()
     echo -e "\e[36mkillinuxfloor status\e[0m \t\t query the status of the KF2 service"
     echo -e "\e[36mkillinuxfloor status service\e[0m \t same as \e[36mkillinuxfloor status\e[0m"
 #    echo -e "\e[36mkillinuxfloor status install\e[0m \t show KF2 installation status"
+    echo -e "\e[36mkillinuxfloor status watchdog\e[0m \t show Watchdog status"
     echo -e "\e[36mkillinuxfloor status workshop\e[0m \t show Workshop download status"
     echo -e "\e[36mkillinuxfloor log\e[0m \t\t display the KF2 logs"
     echo -e "\e[36mkillinuxfloor purge <map_id>\e[0m \t remove an installed workshop map"
@@ -563,6 +564,10 @@ function check_status ()
 #        install)
 #            check_install
 #            ;;
+
+        watchdog)
+            sudo /bin/systemctl status kf2watchdog.service || true
+            ;;
 
         workshop)
             check_workshop
