@@ -289,6 +289,16 @@ function add_bans ()
     ${ECHO_DONE}
 }
 
+function add_geoip ()
+{
+    GEOIP_CITY=$(curl -s "http://geoiplookup.net/ip/$(curl -s https://ipecho.net/plain)" | grep -A1 'City:' | grep -v 'City:' | sed -E 's@.*<div.*>(.*)</div>@\1@' || true)
+
+    if [ ! -z "${GEOIP_CITY+x}" ]
+    then
+        sed -i "s/^ServerName=.*/& @ ${GEOIP_CITY}/" "${LIVE_CONF}/LinuxServer-KFGame.ini"
+    fi
+}
+
 function regen_config ()
 {
     merge_config
@@ -297,6 +307,7 @@ function regen_config ()
     subscribe_maps
     add_maps
     add_bans
+    add_geoip
 
     delete_cycles
     add_cycles
