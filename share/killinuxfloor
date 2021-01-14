@@ -293,7 +293,7 @@ function add_geoip ()
 {
     GEOIP_CITY=$(curl -s "http://geoiplookup.net/ip/$(curl -s https://ipecho.net/plain)" | grep -A1 'City:' | grep -v 'City:' | sed -E 's@.*<div.*>(.*)</div>@\1@' || true)
 
-    if [ ! -z "${GEOIP_CITY+x}" ]
+    if [ ! -z "${GEOIP_CITY+x}" && "${#GEOIP_CITY}" -gt 0 ]
     then
         sed -i "s/^ServerName=.*/& @ ${GEOIP_CITY}/" "${LIVE_CONF}/LinuxServer-KFGame.ini"
     fi
