@@ -3,9 +3,9 @@
 - include_tasks: steam.yml
 
 - include_tasks: kf2.yml
-  when: kf2_classic != True
+  when: not kf2_classic|bool
 - include_tasks: kf2classic.yml
-  when: kf2_classic == True
+  when: kf2_classic|bool
 
 - include_tasks: systemd.yml
 - include_tasks: sudo.yml
