@@ -9,7 +9,7 @@
   become: yes
   become_user: steam
   git:
-    repo: https://github.com/bviktor/killinuxfloor.git
+    repo: https://github.com/noobient/killinuxfloor.git
     dest: "{{ steam_home }}/killinuxfloor"
     force: yes
 
