@@ -1,0 +1,10 @@
+- name: Install Bash
+  dnf:
+    name: bash
+    state: latest
+
+- name: Create dedicated steam user
+  user:
+    name: steam
+    shell: /bin/bash
+    create_home: True

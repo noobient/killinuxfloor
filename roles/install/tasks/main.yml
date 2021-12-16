@@ -1,5 +1,6 @@
 - include_tasks: flavor.yml
 - include_tasks: os.yml
+- include_tasks: user.yml
 - include_tasks: selinux.yml
 - include_tasks: steam.yml
 
