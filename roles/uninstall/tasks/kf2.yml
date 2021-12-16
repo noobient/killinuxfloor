@@ -13,4 +13,4 @@
   loop:
   - "Steam"
   - ".steam"
-  when: skip_kfgame != True
+  when: not skip_kfgame|bool

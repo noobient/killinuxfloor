@@ -12,3 +12,8 @@
   - klf
   - kf2-centos
   - kf2watchdog
+
+- name: Remove DepotDownloader
+  file:
+    path: "{{ steam_home }}/depotdownloader"
+    state: absent
