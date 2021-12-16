@@ -1,0 +1,7 @@
+- debug:
+    msg: "Installing killinuxfloor in Classic mode"
+  when: kf2_classic|bool
+
+- debug:
+    msg: "Installing killinuxfloor in Retail mode"
+  when: not kf2_classic|bool
