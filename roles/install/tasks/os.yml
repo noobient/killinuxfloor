@@ -24,3 +24,8 @@
     name: kf2
     state: stopped
   when: ansible_facts.services["kf2.service"] is defined
+
+- name: Create dedicated steam user
+  user:
+    name: steam
+    create_home: True
