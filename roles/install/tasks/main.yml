@@ -1,5 +1,6 @@
 - include_tasks: flavor.yml
 - include_tasks: os.yml
+- include_tasks: selinux.yml
 - include_tasks: steam.yml
 
 - include_tasks: kf2.yml
@@ -10,7 +11,6 @@
 - include_tasks: systemd.yml
 - include_tasks: sudo.yml
 - include_tasks: firewalld.yml
-- include_tasks: selinux.yml
 - include_tasks: config.yml
 - include_tasks: autokick.yml
 - include_tasks: killinuxfloor.yml
