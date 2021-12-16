@@ -1,31 +1,23 @@
-- name: Install Node.js repo
-  yum:
-    name: "https://rpm.nodesource.com/pub_{{ nodejs_version }}.x/el/{{ ansible_distribution_major_version }}/x86_64/nodesource-release-el{{ ansible_distribution_major_version }}-1.noarch.rpm"
-    state: latest
-    # Node does not provide a separate GPG file to import, so ignore GPG checks for this very first package that will in turn install the GPG key locally
-    disable_gpg_check: yes
+# use dnf modules
+- name: Install Node.js
+  dnf:
+    name: "@nodejs:12"
+    state: present
+
+- name: Import Yarn GPG key
+  rpm_key:
+    state: present
+    key: https://dl.yarnpkg.com/rpm/pubkey.gpg
 
 - name: Install Yarn repo
   get_url:
     url: https://dl.yarnpkg.com/rpm/yarn.repo
     dest: /etc/yum.repos.d/yarn.repo
 
-- name: Import GPG keys
-  rpm_key:
-    state: present
-    key: "{{ item }}"
-  loop:
-  - /etc/pki/rpm-gpg/NODESOURCE-GPG-SIGNING-KEY-EL
-  - https://dl.yarnpkg.com/rpm/pubkey.gpg
-
-- name: Install Node.js and Yarn
-  yum:
-    name: "{{ packages }}"
+- name: Install Yarn
+  dnf:
+    name: yarn
     state: latest
-  vars:
-    packages:
-    - nodejs
-    - yarn
 
 - name: Obtain kf2_autokick sources
   become: yes

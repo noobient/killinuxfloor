@@ -1,0 +1,10 @@
+# no guarantees, but this should work on most EL distributions and releases
+- name: Install EPEL repo
+  dnf:
+    name: epel-release
+    state: latest
+
+- name: Import EPEL GPG key
+  rpm_key:
+    state: present
+    key: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"

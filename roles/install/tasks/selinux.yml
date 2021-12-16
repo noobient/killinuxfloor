@@ -1,17 +1,11 @@
 - name: Install SELinux tools
-  yum:
+  dnf:
     name: "{{ packages }}"
     state: latest
   vars:
     packages:
     - checkpolicy
     - policycoreutils
-
-- name: Install CentOS 7 SELinux tools
-  yum:
-    name: policycoreutils-python
-    state: latest
-  when: ansible_distribution_major_version == '7'
 
 - name: Create folder for SELinux deployment script
   file:

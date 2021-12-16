@@ -1,15 +1,9 @@
-- name: Install EPEL repo
-  yum:
-    name: epel-release
-    state: latest
-
-- name: Import EPEL GPG key
-  rpm_key:
-    state: present
-    key: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
+# Fedora has the EPEL packages in main
+- include_tasks: epel.yml
+  when: ansible_distribution != 'Fedora'
 
 - name: Install config generator
-  yum:
+  dnf:
     name: crudini
     state: latest
     update_cache: yes

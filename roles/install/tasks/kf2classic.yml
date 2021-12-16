@@ -1,17 +1,22 @@
+# Fedora has this built-in, only v5 though, "coming soon"
+# TODO once we need to upgrade, this'll break
 - name: Add .NET Core repo
   template:
     src: microsoft-prod.repo.j2
     dest: /etc/yum.repos.d/microsoft-prod.repo
+  when: ansible_distribution != 'Fedora'
 
 - name: Install .NET Core runtime
-  yum:
+  dnf:
     name: "dotnet-runtime-{{ dotnet_version }}"
     state: latest
 
+# the zip file needs to be versioned, otherwise version bumps won't trigger a re-download
+# we could checksum it to avoid that, but that's more effort and maintenance
 - name: Obtain DepotDownloader
   get_url:
     url: "https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_{{ depotdownloader_version }}/depotdownloader-{{ depotdownloader_version }}.zip"
-    dest: "{{ steam_home }}/depotdownloader.zip"
+    dest: "{{ steam_home }}/depotdownloader-{{ depotdownloader_version }}.zip"
     owner: steam
     group: steam
     mode: '0644'
@@ -35,7 +40,7 @@
   become: yes
   become_user: steam
   unarchive:
-    src: "{{ steam_home }}/depotdownloader.zip"
+    src: "{{ steam_home }}/depotdownloader-{{ depotdownloader_version }}.zip"
     dest: "{{ steam_home }}/depotdownloader"
     remote_src: yes
   when: dd_dl.changed

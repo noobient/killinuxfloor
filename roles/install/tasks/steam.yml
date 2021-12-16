@@ -4,7 +4,7 @@
     create_home: True
 
 - name: Install dependencies
-  yum:
+  dnf:
     name: "{{ packages }}"
   vars:
     packages:

@@ -1,27 +1,19 @@
-- include_tasks: fail.yml
-  vars:
-  - errmsg: 'killinuxfloor supports CentOS 7 and 8 only.'
-  when: (ansible_distribution_major_version != '7') and (ansible_distribution_major_version != '8')
+- name: Check distribtution flavor
+  fail:
+    msg: 'Sorry, killinuxfloor only supports Red Hat-based distributions. Officially supported OS and release: {{ klf_dist }} {{ klf_rel }}.'
+  when: ansible_distribution_file_variety != 'RedHat'
 
-# don't install stream, the new kernel is already in base
-# and stream breaks libstdc++.i686 install over some file conflicts
-# the x86_64 version (8.4) is different from the i686 (8.3) on some systems
-# https://www.mail-archive.com/centos@centos.org/msg136831.html
-#- name: Enable CentOS Release stream
-#  yum:
-#    name: centos-release-stream
-#    state: latest
-#  when: ansible_distribution_major_version == '8'
+# Node.js requires dnf modules
+# we could probably mess around to implement idempotent software collection management on EL7, but... effort
+- name: Check package manager
+  fail:
+    msg: 'Sorry, killinuxfloor only supports the DNF package manager.'
+  when: ansible_pkg_mgr != 'dnf'
 
 - name: Make sure the OS is up-to-date
-  yum:
+  dnf:
     name: '*'
     state: latest
-
-- include_tasks: fail.yml
-  vars:
-  - errmsg: 'Due to a bug in the running kernel version, you must reboot before the installation of killinuxfloor can continue.'
-  when: (ansible_distribution_major_version == '8') and (ansible_facts['kernel'] is version('4.18.0-147', '<'))
 
 - name: Check the state of system services
   service_facts:
