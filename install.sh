@@ -14,10 +14,10 @@ FEDORA=0
 grep 'ID=fedora' /etc/os-release > /dev/null && FEDORA=1 || true
 if [ "${FEDORA}" -ne 1 ]
 then
-    sudo yum -y -q install epel-release
+    sudo dnf -y -q install epel-release
 fi
 
-sudo yum -y -q install ansible
+sudo dnf -y -q install ansible
 
 export ROOT="${BASH_SOURCE%/*}"
 

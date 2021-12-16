@@ -10,8 +10,8 @@ then
     exit
 fi
 
-sudo yum -y -q install epel-release
-sudo yum -y -q install ansible
+sudo dnf -y -q install epel-release
+sudo dnf -y -q install ansible
 
 export ROOT="${BASH_SOURCE%/*}"
 
