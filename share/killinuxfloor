@@ -17,15 +17,24 @@ function print_help ()
     echo -e "\e[36mkillinuxfloor restart\e[0m \t\t restart KF2"
     echo -e "\e[36mkillinuxfloor status\e[0m \t\t query the status of the KF2 service"
     echo -e "\e[36mkillinuxfloor status service\e[0m \t same as \e[36mkillinuxfloor status\e[0m"
-#    echo -e "\e[36mkillinuxfloor status install\e[0m \t show KF2 installation status"
+    if [ "${CLASSIC_MODE}" -eq 1 ]
+    then
+        echo -e "\e[36mkillinuxfloor status install\e[0m \t show KF2 installation status"
+    fi
     echo -e "\e[36mkillinuxfloor status watchdog\e[0m \t show Watchdog status"
     echo -e "\e[36mkillinuxfloor status workshop\e[0m \t show Workshop download status"
     echo -e "\e[36mkillinuxfloor log\e[0m \t\t display the KF2 logs"
     echo -e "\e[36mkillinuxfloor purge <map_id>\e[0m \t remove an installed workshop map"
-#    echo -e "\e[36mkillinuxfloor update\e[0m \t\t check for and apply KF2 updates (don't forget to run 'init' and 'config' if update found)"
-#    echo -e "\e[36mkillinuxfloor update preview\e[0m \t apply updates from the 'preview' branch"
+    if [ "${CLASSIC_MODE}" -eq 1 ]
+    then
+        echo -e "\e[36mkillinuxfloor update\e[0m \t\t check for and apply KF2 updates (don't forget to run 'init' and 'config' if update found)"
+        echo -e "\e[36mkillinuxfloor update preview\e[0m \t apply updates from the 'preview' branch"
+    fi
     echo -e "\e[36mkillinuxfloor verify\e[0m \t\t verify integrity of KF2 files"
-#    echo -e "\e[36mkillinuxfloor verify preview\e[0m \t verify integrity of KF2 files in the 'preview' branch"
+    if [ "${CLASSIC_MODE}" -eq 1 ]
+    then
+        echo -e "\e[36mkillinuxfloor verify preview\e[0m \t verify integrity of KF2 files in the 'preview' branch"
+    fi
     echo -e "\e[36mkillinuxfloor backup\e[0m \t\t back up all KF2 settings"
     echo -e "\e[36mkillinuxfloor autokick {start|stop|restart|status|log}\e[0m"
     echo -e "\e[36mkillinuxfloor ban {list|add <steamID64>|delete <steamID64>}\e[0m"
@@ -53,6 +62,11 @@ function errorexit ()
             echo -e "If unsure, please check on \e[36mhttps://steamidfinder.com/\e[0m"
             ;;
 
+        4)
+            echo -e "\e[31merror!\e[0m"
+            echo -e "Function not supported in Classic mode. If you didn't intend to install KF2 Classic, please reinstall."
+            ;;
+
     esac
 }
 
@@ -67,6 +81,7 @@ MUTATOR_LIST="${OWN_CONF}/My-Mutators.csv"
 CYCLE_LIST="${OWN_CONF}/My-Cycles.csv"
 CACHE_DIR="${HOME}/Steam/KF2Server/KFGame/Cache"
 WORKSHOP_DIR="${HOME}/Steam/KF2Server/Binaries/Win64/steamapps/workshop"
+DEPOT_FILE="${HOME}/Steam/KF2Server/.DepotDownloader/depot.config"
 
 ECHO_DONE='echo -e \e[32mdone\e[0m.'
 CYCLE_START='GameMapCycles=(Maps=("'
@@ -436,6 +451,11 @@ function reset_kf2 ()
 
 function update_kf2 ()
 {
+    if [ "${CLASSIC_MODE}" -eq 1 ]
+    then
+        exit 4
+    fi
+
     # hack: gotta use -beta without a branch name to force non-beta
     # https://forums.tripwireinteractive.com/forum/killing-floor-2/kf2-news-and-announcements/news-and-announcements-af/2321016-summer-sideshow-2018-treacherous-skies?p=2321049#post2321049
     case $# in
@@ -451,17 +471,20 @@ function update_kf2 ()
 
 function check_integrity ()
 {
-#    case $# in
-#        0)
-#            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta +exit
-#            ;;
-#
-#        1)
-#            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta $1 +exit
-#            ;;
-#    esac
+    if [ "${CLASSIC_MODE}" -eq 1 ]
+    then
+        dotnet "${HOME}/depotdownloader/DepotDownloader.dll" -app 232130 -depot 232131 -manifest 2346945547354693824 -validate -os linux -max-downloads 32 -dir "${HOME}/Steam/KF2Server"
+    else
+        case $# in
+            0)
+                steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta +exit
+                ;;
 
-    dotnet "${HOME}/depotdownloader/DepotDownloader.dll" -app 232130 -depot 232131 -manifest 2346945547354693824 -validate -os linux -max-downloads 32 -dir "${HOME}/Steam/KF2Server"
+            1)
+                steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta $1 +exit
+                ;;
+        esac
+    fi
 }
 
 function autokick ()
@@ -495,6 +518,11 @@ function autokick ()
 
 function check_install ()
 {
+    if [ "${CLASSIC_MODE}" -eq 1 ]
+    then
+        exit 4
+    fi
+
     steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_status 232130 +exit
 }
 
@@ -577,9 +605,9 @@ function check_status ()
             sudo /bin/systemctl status kf2.service || true
             ;;
 
-#        install)
-#            check_install
-#            ;;
+        install)
+            check_install
+            ;;
 
         watchdog)
             check_watchdog
@@ -759,6 +787,7 @@ function handle_watchdog ()
     esac
 }
 
+# check argument count
 if [ "$#" -lt 1 ] || [ "$#" -gt 3 ]
 then
     exit 1
@@ -767,9 +796,16 @@ fi
 # do away with 'changed on disk' warnings once and for all
 sudo /bin/systemctl daemon-reload
 
+# determine if classic install or current
+CLASSIC_MODE=0
+if [ -f "${DEPOT_FILE}" ]
+then
+    CLASSIC_MODE=1
+fi
+
+# main()
 case $1 in
     start)
-        # we have to reload every time coz startup parameters might've changed
         start_kf2
         ;;
 
@@ -790,14 +826,14 @@ case $1 in
         fi
         ;;
 
-#    update)
-#        if [ $# -eq 2 ]
-#        then
-#            update_kf2 $2
-#        else
-#            update_kf2
-#        fi
-#        ;;
+    update)
+        if [ $# -eq 2 ]
+        then
+            update_kf2 $2
+        else
+            update_kf2
+        fi
+        ;;
 
     log)
         #sudo /bin/journalctl --system --unit=kf2.service --follow

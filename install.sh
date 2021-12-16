@@ -10,12 +10,24 @@ then
     exit
 fi
 
-sudo yum -y -q install epel-release
+FEDORA=0
+grep 'ID=fedora' /etc/os-release > /dev/null && FEDORA=1 || true
+if [ "${FEDORA}" -ne 1 ]
+then
+    sudo yum -y -q install epel-release
+fi
+
 sudo yum -y -q install ansible
 
 export ROOT="${BASH_SOURCE%/*}"
 
-sudo ansible-playbook "${ROOT}/install.yml" "$@"
+if [ $1 == '--classic' ]
+then
+    shift
+    sudo ansible-playbook "${ROOT}/install.yml" --extra-vars "kf2_classic=True" "$@"
+else
+    sudo ansible-playbook "${ROOT}/install.yml" "$@"
+fi
 
 echo -e "\e[32mkillinuxfloor successfully installed!\e[0m"
 echo
