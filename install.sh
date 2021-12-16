@@ -21,7 +21,7 @@ sudo dnf -y -q install ansible
 
 export ROOT="${BASH_SOURCE%/*}"
 
-if [ $1 == '--classic' ]
+if [ $# -ge 1 ] && [ $1 == '--classic' ]
 then
     shift
     sudo ansible-playbook "${ROOT}/install.yml" --extra-vars "kf2_classic=True" "$@"
