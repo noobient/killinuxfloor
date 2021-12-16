@@ -1,5 +1,5 @@
----
-steam_home: /home/steam
+klf_dist: 'Fedora Server'
+klf_rel: '35'
 nodejs_version: 12
-depotdownloader_version: 2.3.6
+depotdownloader_version: 2.4.5
 dotnet_version: 5.0
