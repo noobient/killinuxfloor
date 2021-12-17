@@ -460,11 +460,11 @@ function update_kf2 ()
     # https://forums.tripwireinteractive.com/forum/killing-floor-2/kf2-news-and-announcements/news-and-announcements-af/2321016-summer-sideshow-2018-treacherous-skies?p=2321049#post2321049
     case $# in
         0)
-            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 -beta +exit
+            steamcmd.sh +force_install_dir ./KF2Server +login anonymous +app_update 232130 -beta +exit
             ;;
 
         1)
-            steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 -beta $1 +exit
+            steamcmd.sh +force_install_dir ./KF2Server +login anonymous +app_update 232130 -beta $1 +exit
             ;;
     esac
 }
@@ -477,11 +477,11 @@ function check_integrity ()
     else
         case $# in
             0)
-                steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta +exit
+                steamcmd.sh +force_install_dir ./KF2Server +login anonymous +app_update 232130 validate -beta +exit
                 ;;
 
             1)
-                steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_update 232130 validate -beta $1 +exit
+                steamcmd.sh +force_install_dir ./KF2Server +login anonymous +app_update 232130 validate -beta $1 +exit
                 ;;
         esac
     fi
@@ -523,7 +523,7 @@ function check_install ()
         exit 4
     fi
 
-    steamcmd.sh +login anonymous +force_install_dir ./KF2Server +app_status 232130 +exit
+    steamcmd.sh +force_install_dir ./KF2Server +login anonymous +app_status 232130 +exit
 }
 
 function count_lines ()
