@@ -1,4 +1,4 @@
-- name: Install dependencies
+- name: Install Steam dependencies
   dnf:
     name: "{{ packages }}"
   vars:
