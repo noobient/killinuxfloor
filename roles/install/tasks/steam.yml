@@ -11,6 +11,7 @@
     - patch
     - git
     - tar
+    - langpacks-en
 
 - name: Create main Steam directory
   file:
