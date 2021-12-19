@@ -1,6 +1,13 @@
 - name: Check the state of system services
   service_facts:
 
+- name: Check systemd status
+  command:
+    cmd: systemctl is-system-running
+  failed_when: no
+  changed_when: no
+  register: systemd_running
+
 - name: Stop and disable the KF2 service
   systemd:
     name: kf2

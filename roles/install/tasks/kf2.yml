@@ -1,44 +1,4 @@
-# w/ validate:
-# Success! App '232130' fully installed.
-# w/o validate:
-# Success! App '232130' already up to date.
-- name: Install Killing Floor 2 Retail (be patient, 26 GB+)
-  become: yes
-  become_user: steam
-  command: '{{ steam_home }}/Steam/steamcmd.sh +force_install_dir ./KF2Server +login anonymous +app_update 232130 {% if (validate is defined and validate != "no") %}validate {% endif %}+exit'
-  register: kf2_install
-  failed_when: ("Success! App '232130' fully installed." not in kf2_install.stdout) and ("Success! App '232130' already up to date." not in kf2_install.stdout)
-  changed_when: ("Success! App '232130' already up to date." not in kf2_install.stdout)
-
-# - release state: released (Subscribed,Permanent,)
-# - owner account: xxx
-# - install state: Fully Installed,
-# - install dir: "/home/steam/Steam/KF2Server"
-# - mounted depots: 
-#   1006 (5876061545293758389)
-#   232131 (8628312043631154953)
-# - size on disk: 20917712983 bytes, BuildID 4228500
-# - update progress: 0/0 MB 0%, Downloaded: 20/20 MB 100% - 0 KB/s
-# - update state:  ( No Error )
-# - user config: "UserConfig"
-- name: Check Killing Floor 2 install state
-  become: yes
-  become_user: steam
-  command: '{{ steam_home }}/Steam/steamcmd.sh +force_install_dir ./KF2Server +login anonymous +app_status 232130 +exit'
-  changed_when: no
-  no_log: True
-  register: kf2_status
-  failed_when: '"install state: Fully Installed" not in kf2_status.stdout'
-
-- name: Make symlinks for the Workshop and Cache folders
-  file:
-    src: "{{ item.target }}"
-    dest: "{{ item.link }}"
-    state: link
-    force: yes
-    follow: no
-    owner: steam
-    group: steam
-  loop:
-  - { target: '{{ steam_home }}/Steam/KF2Server/KFGame/Cache', link: '{{ steam_home }}/Cache' }
-  - { target: '{{ steam_home }}/Steam/KF2Server/Binaries/Win64/steamapps/workshop', link: '{{ steam_home }}/Workshop' }
+- include_tasks: kf2-retail.yml
+  when: not skip_kfgame|bool and not kf2_classic|bool
+- include_tasks: kf2-classic.yml
+  when: not skip_kfgame|bool and kf2_classic|bool

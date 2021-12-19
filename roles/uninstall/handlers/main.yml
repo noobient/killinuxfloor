@@ -1,3 +1,4 @@
 - name: Reload systemd configuration
   systemd:
     daemon_reload: yes
+  when: systemd_running.rc == 0
