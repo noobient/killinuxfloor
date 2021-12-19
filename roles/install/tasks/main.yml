@@ -1,4 +1,3 @@
-foobar
 - include_tasks: flavor.yml
 - include_tasks: os.yml
 - include_tasks: user.yml
