@@ -7,6 +7,7 @@
     - checkpolicy
     - policycoreutils
     - python3-libselinux
+    - selinux-policy
 
 - name: Create folder for SELinux deployment script
   file:
