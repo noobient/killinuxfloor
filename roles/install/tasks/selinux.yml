@@ -8,6 +8,7 @@
     - policycoreutils
     - python3-libselinux
     - selinux-policy
+    - selinux-policy-targeted
 
 - name: Create folder for SELinux deployment script
   file:
