@@ -22,7 +22,7 @@
     dest: "{{ steam_home }}/selinux/sedeploy.sh"
     owner: steam
     group: steam
-    mode: 0755
+    mode: '0755'
 
 - name: Deploy killinuxfloor SELinux policy module
   copy:
@@ -30,7 +30,7 @@
     dest: "{{ steam_home }}/selinux/killinuxfloor.te"
     owner: steam
     group: steam
-    mode: 0644
+    mode: '0644'
   register: klf_selinux
 
 - name: Apply killinuxfloor SELinux policy module
