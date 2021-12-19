@@ -1,3 +1,2 @@
-docker/pkg
 ansible.log
 hosts/*.host
