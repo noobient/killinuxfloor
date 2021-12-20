@@ -12,6 +12,7 @@
     - git
     - tar
     - langpacks-en
+    - sudo
 
 - name: Create main Steam directory
   file:
