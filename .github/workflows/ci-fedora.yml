@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Fedora
 
 on:
   push:
@@ -9,14 +9,22 @@ on:
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     #  with:
     #    submodules: 'recursive'
     - name: Build the Docker image
       run: docker build --tag killinuxfloor-fedora docker/fedora
-    - name: Run killinuxfloor
-      run:  docker run killinuxfloor-fedora -e "skip_kfgame=True"
+
+  install:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install killinuxfloor
+      run:  docker run killinuxfloor-fedora install.yml -e "skip_kfgame=True"
+
+  uninstall:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Uninstall killinuxfloor
+      run:  docker run killinuxfloor-fedora uninstall.yml -e "skip_kfgame=True"
