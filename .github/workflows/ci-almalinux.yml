@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  killinuxfloor:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -16,15 +16,7 @@ jobs:
     #    submodules: 'recursive'
     - name: Build the Docker image
       run: docker build --tag killinuxfloor-almalinux docker/almalinux
-
-  install:
-    runs-on: ubuntu-latest
-    steps:
     - name: Install killinuxfloor
       run:  docker run killinuxfloor-almalinux install.yml -e "skip_kfgame=True"
-
-  uninstall:
-    runs-on: ubuntu-latest
-    steps:
     - name: Uninstall killinuxfloor
       run:  docker run killinuxfloor-almalinux uninstall.yml -e "skip_kfgame=True"
