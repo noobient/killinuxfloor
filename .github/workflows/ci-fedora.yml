@@ -17,4 +17,4 @@ jobs:
     - name: Build the Docker image
       run: docker build --tag killinuxfloor-fedora docker/fedora
     - name: Test killinuxfloor
-      run:  docker run killinuxfloor-fedora /bin/bash -c "ansible-playbook install.yml -e 'skip_kfgame=True' && ansible-playbook uninstall.yml"
+      run:  docker run killinuxfloor-fedora /bin/bash -c "./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"

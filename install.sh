@@ -10,16 +10,10 @@ then
     exit
 fi
 
-FEDORA=0
-grep 'ID=fedora' /etc/os-release > /dev/null && FEDORA=1 || true
-if [ "${FEDORA}" -ne 1 ]
-then
-    sudo dnf -y -q install epel-release
-fi
-
-sudo dnf -y -q install ansible
-
 export ROOT="${BASH_SOURCE%/*}"
+source "${ROOT}/common.sh"
+
+init_klf
 
 if [ $# -ge 1 ] && [ $1 == '--classic' ]
 then
