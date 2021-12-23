@@ -1,0 +1,3 @@
+skip_list:
+- package-latest
+- git-latest

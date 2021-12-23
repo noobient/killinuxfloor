@@ -1,7 +1,9 @@
-- debug:
+- name: Determine install flavor
+  debug:
     msg: "Installing killinuxfloor in Classic mode"
   when: kf2_classic|bool
 
-- debug:
+- name: Determine install flavor
+  debug:
     msg: "Installing killinuxfloor in Retail mode"
   when: not kf2_classic|bool
