@@ -1,7 +1,12 @@
 - include_tasks: flavor.yml
 - include_tasks: os.yml
 - include_tasks: user.yml
-- include_tasks: selinux.yml
+
+- include_role:
+    name: selinux-cil
+  loop:
+  - { module: killinuxfloor }
+
 - include_tasks: steam.yml
 - include_tasks: kf2.yml
 - include_tasks: systemd.yml
