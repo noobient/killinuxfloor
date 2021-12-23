@@ -12,8 +12,6 @@
   command:
     cmd: "tar czfh {{ steam_home }}/Config-{{ date_str }}.tgz -C {{ steam_home }} Config"
   when: config_dir.stat.exists
-  args:
-    warn: false
 
 # this is necessary for idempotency
 - name: Delete KF2 config
