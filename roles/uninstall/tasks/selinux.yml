@@ -12,5 +12,8 @@
 
 - name: Delete SELinux policy module
   file:
-    path: "{{ semodule_dir }}/killinuxfloor.cil"
+    path: "{{ item }}"
     state: absent
+  loop:
+  - "{{ steam_home }}/selinux"
+  - "{{ semodule_dir }}/killinuxfloor.cil"
