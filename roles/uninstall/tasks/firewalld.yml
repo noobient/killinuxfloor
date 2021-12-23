@@ -21,5 +21,6 @@
   register: kf2_fw_delete
 
 - name: Reload firewalld config
-  command: firewall-cmd --reload
+  command:
+    cmd: firewall-cmd --reload
   when: ansible_facts.services["firewalld.service"] is defined and ansible_facts.services["firewalld.service"].state == "running" and kf2_fw_delete.changed

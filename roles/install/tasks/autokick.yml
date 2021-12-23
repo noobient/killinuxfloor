@@ -31,5 +31,6 @@
 - name: Build kf2_autokick
   become: yes
   become_user: steam
-  shell: "cd {{ steam_home }}/kf2autokick && yarn --silent --prod --frozen-lockfile"
+  shell:
+    cmd: "cd {{ steam_home }}/kf2autokick && yarn --silent --prod --frozen-lockfile"
   when: autokick_git.changed

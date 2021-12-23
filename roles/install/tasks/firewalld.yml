@@ -17,7 +17,8 @@
   when: ansible_facts.services["firewalld.service"] is defined
 
 - name: Reload firewalld config
-  command: firewall-cmd --reload
+  command:
+    cmd: firewall-cmd --reload
   when: kf2_fw.changed and ansible_facts.services["firewalld.service"] is defined and ansible_facts.services["firewalld.service"].state == "running"
 
 - name: Enable KF2 firewall rules

@@ -52,7 +52,8 @@
 - name: Bootstrap SteamCMD
   become: yes
   become_user: steam
-  command: "{{ steam_home }}/Steam/steamcmd.sh --help"
+  command:
+    cmd: "{{ steam_home }}/Steam/steamcmd.sh --help"
   no_log: True
   register: steamcmd_init
   changed_when: '"Update complete, launching" not in steamcmd_init.stdout'

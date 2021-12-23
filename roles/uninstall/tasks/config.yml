@@ -9,7 +9,8 @@
   register: config_dir
 
 - name: "Backup current KF2 config as {{ steam_home }}/Config-{{ date_str }}.tgz"
-  command: "tar czfh {{ steam_home }}/Config-{{ date_str }}.tgz -C {{ steam_home }} Config"
+  command:
+    cmd: "tar czfh {{ steam_home }}/Config-{{ date_str }}.tgz -C {{ steam_home }} Config"
   when: config_dir.stat.exists
   args:
     warn: false

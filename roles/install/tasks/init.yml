@@ -1,5 +1,6 @@
 - name: Initialize KF2 config
   become: yes
   become_user: steam
-  command: "{{ steam_home }}/bin/killinuxfloor reset"
+  command:
+    cmd: "{{ steam_home }}/bin/killinuxfloor reset"
   when: systemd_running.rc == 0
