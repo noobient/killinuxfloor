@@ -16,7 +16,5 @@ jobs:
     #    submodules: 'recursive'
     - name: Build the Docker image
       run: docker build --tag killinuxfloor-almalinux docker/almalinux
-    - name: Install killinuxfloor
-      run:  docker run killinuxfloor-almalinux install.yml -e "skip_kfgame=True"
-    - name: Uninstall killinuxfloor
-      run:  docker run killinuxfloor-almalinux uninstall.yml -e "skip_kfgame=True"
+    - name: Test killinuxfloor
+      run:  docker run killinuxfloor-almalinux /bin/bash -c "ansible-playbook install.yml -e 'skip_kfgame=True' && ansible-playbook uninstall.yml"

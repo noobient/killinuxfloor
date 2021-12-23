@@ -16,7 +16,5 @@ jobs:
     #    submodules: 'recursive'
     - name: Build the Docker image
       run: docker build --tag killinuxfloor-fedora docker/fedora
-    - name: Install killinuxfloor
-      run:  docker run killinuxfloor-fedora install.yml -e "skip_kfgame=True"
-    - name: Uninstall killinuxfloor
-      run:  docker run killinuxfloor-fedora uninstall.yml -e "skip_kfgame=True"
+    - name: Test killinuxfloor
+      run:  docker run killinuxfloor-fedora /bin/bash -c "ansible-playbook install.yml -e 'skip_kfgame=True' && ansible-playbook uninstall.yml"
