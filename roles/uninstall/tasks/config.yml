@@ -8,13 +8,10 @@
     path: "{{ steam_home }}/Config"
   register: config_dir
 
+# use remove to keep it idempotent on subsequent runs
 - name: "Backup current KF2 config as {{ steam_home }}/Config-{{ date_str }}.tgz"
-  command:
-    cmd: "tar czfh {{ steam_home }}/Config-{{ date_str }}.tgz -C {{ steam_home }} Config"
-  when: config_dir.stat.exists
-
-# this is necessary for idempotency
-- name: Delete KF2 config
-  file:
+  archive:
     path: "{{ steam_home }}/Config"
-    state: absent
+    dest: "{{ steam_home }}/Config-{{ date_str }}.tgz"
+    remove: yes
+  when: config_dir.stat.exists
