@@ -3,7 +3,7 @@
 - include_tasks: user.yml
 
 - include_role:
-    name: selinux-cil
+    name: selinux_cil
   loop:
   - { module: killinuxfloor }
 
