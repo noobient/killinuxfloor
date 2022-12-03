@@ -1,3 +1,4 @@
+---
 - name: Create Steam bin directory
   file:
     path: "{{ steam_home }}/bin"
@@ -6,22 +7,22 @@
     group: steam
 
 - name: Obtain killinuxfloor sources
-  become: yes
+  become: true
   become_user: steam
   git:
     repo: https://github.com/noobient/killinuxfloor.git
     dest: "{{ steam_home }}/killinuxfloor"
-    force: yes
+    force: true
 
 - name: Enable killinuxfloor commands
   file:
     src: "{{ item.target }}"
     dest: "{{ steam_home }}/bin/{{ item.link }}"
     state: link
-    force: yes
+    force: true
     owner: steam
     group: steam
   loop:
-  - { target: '{{ steam_home }}/killinuxfloor/share/killinuxfloor', link: 'killinuxfloor' }
-  - { target: '{{ steam_home }}/killinuxfloor/share/kf2watchdog', link: 'kf2watchdog' }
-  - { target: '{{ steam_home }}/bin/killinuxfloor', link: 'klf' }
+    - { target: '{{ steam_home }}/killinuxfloor/share/killinuxfloor', link: 'killinuxfloor' }
+    - { target: '{{ steam_home }}/killinuxfloor/share/kf2watchdog', link: 'kf2watchdog' }
+    - { target: '{{ steam_home }}/bin/killinuxfloor', link: 'klf' }

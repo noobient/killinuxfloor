@@ -1,3 +1,4 @@
+---
 # Fedora has this built-in, only v5 though, "coming soon"
 # TODO once we need to upgrade, this'll break
 - name: Add .NET Core repo
@@ -37,20 +38,20 @@
     mode: '0755'
 
 - name: Extract DepotDownloader
-  become: yes
+  become: true
   become_user: steam
   unarchive:
     src: "{{ steam_home }}/depotdownloader-{{ depotdownloader_version }}.zip"
     dest: "{{ steam_home }}/depotdownloader"
-    remote_src: yes
+    remote_src: true
   when: dd_dl.changed
 
 # don't use the wrapper as it lacks the shebang so ansible errors out with an exec format error
 - name: Install Killing Floor 2 Classic (be patient, 16 GB+)
   command:
     cmd: "dotnet {{ steam_home }}/depotdownloader/DepotDownloader.dll -app 232130 -depot 232131 -manifest 2346945547354693824 -validate -os linux -max-downloads 16 -dir {{ steam_home }}/Steam/KF2Server"
-  no_log: True
-  become: yes
+  no_log: true
+  become: true
   become_user: steam
   register: kf2_install
   changed_when: '"Total downloaded: 0 bytes (0 bytes uncompressed) from 1 depots" not in kf2_install.stdout'
@@ -60,10 +61,10 @@
     src: "{{ item.target }}"
     dest: "{{ item.link }}"
     state: link
-    force: yes
-    follow: no
+    force: true
+    follow: false
     owner: steam
     group: steam
   loop:
-  - { target: '{{ steam_home }}/Steam/KF2Server/KFGame/Cache', link: '{{ steam_home }}/Cache' }
-  - { target: '{{ steam_home }}/Steam/KF2Server/Binaries/Win64/steamapps/workshop', link: '{{ steam_home }}/Workshop' }
+    - { target: '{{ steam_home }}/Steam/KF2Server/KFGame/Cache', link: '{{ steam_home }}/Cache' }
+    - { target: '{{ steam_home }}/Steam/KF2Server/Binaries/Win64/steamapps/workshop', link: '{{ steam_home }}/Workshop' }

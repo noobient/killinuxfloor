@@ -1,18 +1,19 @@
+---
 - name: Install Steam dependencies
   dnf:
     name: "{{ packages }}"
   vars:
     packages:
-    - glibc.i686
-    - libstdc++.i686
-    - nss-softokn-freebl.i686
-    - unzip
-    - dos2unix
-    - patch
-    - git
-    - tar
-    - langpacks-en
-    - sudo
+      - glibc.i686
+      - libstdc++.i686
+      - nss-softokn-freebl.i686
+      - unzip
+      - dos2unix
+      - patch
+      - git
+      - tar
+      - langpacks-en
+      - sudo
 
 - name: Create main Steam directory
   file:
@@ -20,7 +21,7 @@
     state: directory
     owner: steam
     group: steam
-    recurse: yes
+    recurse: true
 
 - name: Obtain SteamCMD
   get_url:
@@ -32,12 +33,12 @@
 
 - name: Extract SteamCMD
   # owner/group seem to be bugged, use become instead
-  become: yes
+  become: true
   become_user: steam
   unarchive:
     src: '{{ steam_home }}/steamcmd_linux.tar.gz'
     dest: '{{ steam_home }}/Steam'
-    remote_src: yes
+    remote_src: true
 # this won't work if SteamCMD is downloaded but install failed
 #  when: steamcmd_dl.changed
 
@@ -50,10 +51,10 @@
     group: steam
 
 - name: Bootstrap SteamCMD
-  become: yes
+  become: true
   become_user: steam
   command:
     cmd: "{{ steam_home }}/Steam/steamcmd.sh --help"
-  no_log: True
+  no_log: true
   register: steamcmd_init
   changed_when: '"Update complete, launching" not in steamcmd_init.stdout'

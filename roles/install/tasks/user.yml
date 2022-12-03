@@ -1,3 +1,4 @@
+---
 - name: Install Bash
   dnf:
     name: bash
@@ -7,4 +8,4 @@
   user:
     name: steam
     shell: /bin/bash
-    create_home: True
+    create_home: true

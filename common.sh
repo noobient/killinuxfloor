@@ -29,6 +29,7 @@ function check_epel ()
 function install_ansible ()
 {
     sudo dnf -y -q install ansible
+    ansible-galaxy install --force -r requirements.yml
 }
 
 function init_klf ()

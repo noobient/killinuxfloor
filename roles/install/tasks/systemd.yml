@@ -1,11 +1,12 @@
+---
 - name: Install KF2 services
   copy:
     src: "{{ item }}"
     dest: "/etc/systemd/system/{{ item }}"
   loop:
-  - kf2.service
-  - kf2autokick.service
-  - kf2watchdog.service
+    - kf2.service
+    - kf2autokick.service
+    - kf2watchdog.service
   notify: Reload systemd configuration
 
 - name: Prepare systemd folder
@@ -24,8 +25,8 @@
 - name: Auto-start KF2 services on boot
   systemd:
     name: "{{ item }}"
-    enabled: yes
+    enabled: true
   loop:
-  - kf2
-#  - kf2autokick
-#  - kf2watchdog
+  - kf2.service
+#  - kf2autokick.service
+#  - kf2watchdog.service

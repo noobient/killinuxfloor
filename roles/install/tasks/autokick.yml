@@ -1,3 +1,4 @@
+---
 # use dnf modules
 - name: Install Node.js
   dnf:
@@ -20,7 +21,7 @@
     state: latest
 
 - name: Obtain kf2_autokick sources
-  become: yes
+  become: true
   become_user: steam
   git:
     repo: https://github.com/Sinewyk/kf2_autokick.git
@@ -29,7 +30,7 @@
   register: autokick_git
 
 - name: Build kf2_autokick
-  become: yes
+  become: true
   become_user: steam
   shell:
     cmd: "cd {{ steam_home }}/kf2autokick && yarn --silent --prod --frozen-lockfile"

@@ -1,3 +1,4 @@
+---
 - name: Remove kf2_autokick
   file:
     path: "{{ steam_home }}/kf2autokick"

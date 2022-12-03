@@ -1,8 +1,9 @@
+---
 - name: Check killinuxfloor SELinux policy module status
   shell:
     cmd: semodule --list | grep killinuxfloor
-  failed_when: no
-  changed_when: no
+  failed_when: false
+  changed_when: false
   register: klf_selinux
 
 - name: Disable SELinux policy module

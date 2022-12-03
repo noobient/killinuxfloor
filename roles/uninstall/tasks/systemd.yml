@@ -1,32 +1,33 @@
+---
 - name: Check the state of system services
   service_facts:
 
 - name: Check systemd status
   command:
     cmd: systemctl is-system-running
-  failed_when: no
-  changed_when: no
+  failed_when: false
+  changed_when: false
   register: systemd_running
 
 - name: Stop and disable the KF2 service
   systemd:
-    name: kf2
+    name: kf2.service
     state: stopped
-    enabled: no
+    enabled: false
   when: ansible_facts.services["kf2.service"] is defined
 
 - name: Stop and disable the KF2 autokick service
   systemd:
-    name: kf2autokick
+    name: kf2autokick.service
     state: stopped
-    enabled: no
+    enabled: false
   when: ansible_facts.services["kf2autokick.service"] is defined
 
 - name: Stop and disable the KF2 watchdog service
   systemd:
-    name: kf2watchdog
+    name: kf2watchdog.service
     state: stopped
-    enabled: no
+    enabled: false
   when: ansible_facts.services["kf2watchdog.service"] is defined
 
 - name: Remove KF2 services
@@ -34,9 +35,9 @@
     path: "/etc/systemd/system/{{ item }}"
     state: absent
   loop:
-  - kf2.service
-  - kf2autokick.service
-  - kf2watchdog.service
+    - kf2.service
+    - kf2autokick.service
+    - kf2watchdog.service
   notify: Reload systemd configuration
 
 - name: Remove service extra files

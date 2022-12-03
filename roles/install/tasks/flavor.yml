@@ -1,3 +1,4 @@
+---
 - name: Determine install flavor
   debug:
     msg: "Installing killinuxfloor in Classic mode"

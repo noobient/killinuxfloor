@@ -1,3 +1,4 @@
+---
 - name: Remove symlink to internal config
   file:
     path: "{{ steam_home }}/Config/Internal"

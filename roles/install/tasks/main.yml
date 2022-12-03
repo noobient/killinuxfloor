@@ -1,11 +1,12 @@
+---
 - include_tasks: flavor.yml
 - include_tasks: os.yml
 - include_tasks: user.yml
 
 - include_role:
-    name: selinux_cil
-  loop:
-  - { module: killinuxfloor }
+    name: bviktor.selinux_cil
+  vars:
+    - module: killinuxfloor
 
 - include_tasks: steam.yml
 - include_tasks: kf2.yml

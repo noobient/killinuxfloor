@@ -1,7 +1,8 @@
+---
 - name: Check distribtution flavor
   fail:
     msg: 'Sorry, killinuxfloor only supports Red Hat-based distributions. Officially supported OS and release: {{ klf_dist }} {{ klf_rel }}.'
-  when: ansible_distribution_file_variety != 'RedHat'
+  when: ansible_os_family != 'RedHat'
 
 # Node.js requires dnf modules
 # we could probably mess around to implement idempotent software collection management on EL7, but... effort
@@ -28,6 +29,6 @@
 - name: Check systemd status
   command:
     cmd: systemctl is-system-running
-  failed_when: no
-  changed_when: no
+  failed_when: false
+  changed_when: false
   register: systemd_running

@@ -1,3 +1,4 @@
+---
 # Fedora has the EPEL packages in main
 - include_tasks: epel.yml
   when: ansible_distribution != 'Fedora'
@@ -6,7 +7,7 @@
   dnf:
     name: crudini
     state: latest
-    update_cache: yes
+    update_cache: true
 
 - name: Create Config directory
   file:
@@ -19,19 +20,19 @@
   copy:
     src: "Config/{{ item }}"
     dest: "{{ steam_home }}/Config/{{ item }}"
-    backup: yes
+    backup: true
     owner: steam
     group: steam
   loop:
-  - My-Cycles.csv
-  - My-KFWebAdmin.ini
-  - My-KFWeb.ini
-  - My-LinuxServer-KFEngine.ini
-  - My-LinuxServer-KFGame.ini
-  - My-Maps.csv
-  - My-Mutators.csv
-  - My-Startup.conf
-  - autokick.json
+    - My-Cycles.csv
+    - My-KFWebAdmin.ini
+    - My-KFWeb.ini
+    - My-LinuxServer-KFEngine.ini
+    - My-LinuxServer-KFGame.ini
+    - My-Maps.csv
+    - My-Mutators.csv
+    - My-Startup.conf
+    - autokick.json
   notify: Reload systemd configuration
 
 - name: Link KF2 startup config to systemd folder
@@ -39,8 +40,8 @@
     src: "{{ steam_home }}/Config/My-Startup.conf"
     dest: /etc/systemd/system/kf2.service.d/kf2.service.conf
     state: link
-    force: yes
-    follow: no
+    force: true
+    follow: false
   notify: Reload systemd configuration
 
 - meta: flush_handlers
@@ -50,7 +51,7 @@
     src: "{{ steam_home }}/Steam/KF2Server/KFGame/Config"
     dest: "{{ steam_home }}/Config/Internal"
     state: link
-    force: yes
-    follow: no
+    force: true
+    follow: false
     owner: steam
     group: steam

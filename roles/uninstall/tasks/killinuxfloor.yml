@@ -1,3 +1,4 @@
+---
 - name: Remove killinuxfloor
   file:
     path: "{{ steam_home }}/killinuxfloor"
@@ -8,10 +9,10 @@
     path: "{{ steam_home }}/bin/{{ item }}"
     state: absent
   loop:
-  - killinuxfloor
-  - klf
-  - kf2-centos
-  - kf2watchdog
+    - killinuxfloor
+    - klf
+    - kf2-centos
+    - kf2watchdog
 
 - name: Remove DepotDownloader
   file:

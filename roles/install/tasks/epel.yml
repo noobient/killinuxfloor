@@ -1,3 +1,4 @@
+---
 # no guarantees, but this should work on most EL distributions and releases
 - name: Install EPEL repo
   dnf:

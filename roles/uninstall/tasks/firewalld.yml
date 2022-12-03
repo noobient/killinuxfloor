@@ -1,3 +1,4 @@
+---
 - name: Check the state of system services
   service_facts:
 
@@ -8,9 +9,9 @@
 
 - name: Disable KF2 firewall rules
   firewalld:
-    service: kf2
-    permanent: yes
-    immediate: yes
+    service: kf2.service
+    permanent: true
+    immediate: true
     state: disabled
   when: ansible_facts.services["firewalld.service"] is defined and ansible_facts.services["firewalld.service"].state == "running" and kf2_fw_file.stat.exists
 
