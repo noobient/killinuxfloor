@@ -14,15 +14,23 @@ jobs:
       - name: Obtain sources
         uses: actions/checkout@v3
 
+  Build:
+    runs-on: [ self-hosted, Windows ]
+    steps:
+      - name: Build Docker images
+        run: |
+            docker build --tag klf-fedora36 docker/fedora/36
+            docker build --tag klf-fedora37 docker/fedora/37
+
   Run:
     runs-on: [ self-hosted, Windows ]
     steps:
       - name: Fedora 36
         run: >
-            docker run -v ${{ github.workspace }}:/klf fedora:36 /bin/bash -c
+            docker run -v ${{ github.workspace }}:/klf klf-fedora36 /bin/bash -c
             "dnf -y install ansible git && cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
 
       - name: Fedora 37
         run: >
-            docker run -v ${{ github.workspace }}:/klf fedora:37 /bin/bash -c
+            docker run -v ${{ github.workspace }}:/klf klf-fedora37 /bin/bash -c
             "dnf -y install ansible git && cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"

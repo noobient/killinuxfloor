@@ -8,14 +8,29 @@ on:
 
 jobs:
 
-  killinuxfloor:
+  Clone:
     runs-on: [ self-hosted, Windows ]
     steps:
-      - name: Obtain killinuxfloor sources
+      - name: Obtain sources
         uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: docker build --tag killinuxfloor-almalinux docker/almalinux
-      - name: Test killinuxfloor
+
+  Build:
+    runs-on: [ self-hosted, Windows ]
+    steps:
+      - name: Build Docker images
+        run: |
+            docker build --tag klf-almalinux36 docker/almalinux/36
+            docker build --tag klf-almalinux37 docker/almalinux/37
+
+  Run:
+    runs-on: [ self-hosted, Windows ]
+    steps:
+      - name: AlmaLinux 36
         run: >
-            docker run -v ${{ github.workspace }}:/klf killinuxfloor-almalinux /bin/bash -c
-            "cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
+            docker run -v ${{ github.workspace }}:/klf klf-almalinux36 /bin/bash -c
+            "dnf -y install ansible git && cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
+
+      - name: AlmaLinux 37
+        run: >
+            docker run -v ${{ github.workspace }}:/klf klf-almalinux37 /bin/bash -c
+            "dnf -y install ansible git && cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
