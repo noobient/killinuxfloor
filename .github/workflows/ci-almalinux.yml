@@ -23,7 +23,7 @@ jobs:
             docker build --tag klf-almalinux8 docker/almalinux/8
             docker build --tag klf-almalinux9 docker/almalinux/9
 
-  run:
+  run-previous:
     needs: build
     runs-on: [ self-hosted, Windows ]
     steps:
@@ -32,6 +32,10 @@ jobs:
             docker run -v ${{ github.workspace }}:/klf klf-almalinux8 /bin/bash -c
             "dnf -y install ansible git && cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
 
+  run-current:
+    needs: build
+    runs-on: [ self-hosted, Windows ]
+    steps:
       - name: AlmaLinux 9
         run: >
             docker run -v ${{ github.workspace }}:/klf klf-almalinux9 /bin/bash -c

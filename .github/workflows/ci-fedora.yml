@@ -23,7 +23,7 @@ jobs:
             docker build --tag klf-fedora36 docker/fedora/36
             docker build --tag klf-fedora37 docker/fedora/37
 
-  run:
+  run-previous:
     needs: build
     runs-on: [ self-hosted, Windows ]
     steps:
@@ -32,6 +32,10 @@ jobs:
             docker run -v ${{ github.workspace }}:/klf klf-fedora36 /bin/bash -c
             "dnf -y install ansible git && cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
 
+  run-current:
+    needs: build
+    runs-on: [ self-hosted, Windows ]
+    steps:
       - name: Fedora 37
         run: >
             docker run -v ${{ github.workspace }}:/klf klf-fedora37 /bin/bash -c
