@@ -8,14 +8,21 @@ on:
 
 jobs:
 
-  killinuxfloor:
+  Clone:
     runs-on: [ self-hosted, Windows ]
     steps:
-      - name: Obtain killinuxfloor sources
+      - name: Obtain sources
         uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: docker build --tag killinuxfloor-fedora docker/fedora
-      - name: Test killinuxfloor
+
+  Run:
+    runs-on: [ self-hosted, Windows ]
+    steps:
+      - name: Fedora 36
         run: >
-            docker run -v ${{ github.workspace }}:/klf killinuxfloor-fedora /bin/bash -c
-            "cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
+            docker run -v ${{ github.workspace }}:/klf fedora:36 /bin/bash -c
+            "dnf -y install ansible git && cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
+
+      - name: Fedora 37
+        run: >
+            docker run -v ${{ github.workspace }}:/klf fedora:37 /bin/bash -c
+            "dnf -y install ansible git && cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
