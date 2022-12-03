@@ -23,7 +23,7 @@
     mode: '0644'
   register: dd_dl
 
-- name: Remove old DepotDownloader
+- name: Remove old DepotDownloader # noqa no-handler
   file:
     path: "{{ steam_home }}/depotdownloader"
     state: absent
@@ -37,7 +37,7 @@
     group: steam
     mode: '0755'
 
-- name: Extract DepotDownloader
+- name: Extract DepotDownloader # noqa no-handler
   become: true
   become_user: steam
   unarchive:

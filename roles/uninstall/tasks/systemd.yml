@@ -2,7 +2,7 @@
 - name: Check the state of system services
   service_facts:
 
-- name: Check systemd status
+- name: Check systemd status # noqa command-instead-of-module
   command:
     cmd: systemctl is-system-running
   failed_when: false

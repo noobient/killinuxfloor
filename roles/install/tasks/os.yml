@@ -26,7 +26,7 @@
     state: stopped
   when: ansible_facts.services["kf2.service"] is defined
 
-- name: Check systemd status
+- name: Check systemd status # noqa command-instead-of-module
   command:
     cmd: systemctl is-system-running
   failed_when: false

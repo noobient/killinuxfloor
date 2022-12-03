@@ -29,7 +29,7 @@
     force: true
   register: autokick_git
 
-- name: Build kf2_autokick
+- name: Build kf2_autokick # noqa no-handler
   become: true
   become_user: steam
   shell:
