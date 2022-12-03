@@ -4,17 +4,18 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ master ]
+    branches: []
 
 jobs:
 
   killinuxfloor:
-    runs-on: [ self-hosted, ubuntu-latest ]
+    runs-on: [ self-hosted, Windows ]
     steps:
-    - uses: actions/checkout@v2
-    #  with:
-    #    submodules: 'recursive'
-    - name: Build the Docker image
-      run: docker build --tag killinuxfloor-almalinux docker/almalinux
-    - name: Test killinuxfloor
-      run:  docker run killinuxfloor-almalinux /bin/bash -c "./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
+      - name: Obtain killinuxfloor sources
+        uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build --tag killinuxfloor-almalinux docker/almalinux
+      - name: Test killinuxfloor
+        run: >
+            docker run -v ${{ github.workspace }}:/klf killinuxfloor-almalinux /bin/bash -c
+            "cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"

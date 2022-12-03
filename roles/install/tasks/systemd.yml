@@ -1,4 +1,9 @@
 ---
+- name: Install systemd
+  dnf:
+    name: systemd
+    state: latest
+
 - name: Install KF2 services
   copy:
     src: "{{ item }}"

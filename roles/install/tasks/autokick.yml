@@ -2,7 +2,7 @@
 # use dnf modules
 - name: Install Node.js
   dnf:
-    name: "@nodejs:12"
+    name: "@nodejs:18/common"
     state: present
 
 - name: Import Yarn GPG key
