@@ -20,19 +20,19 @@ jobs:
     steps:
       - name: Build Docker images
         run: |
-            docker build --tag klf-almalinux36 docker/almalinux/36
-            docker build --tag klf-almalinux37 docker/almalinux/37
+            docker build --tag klf-almalinux8 docker/almalinux/8
+            docker build --tag klf-almalinux9 docker/almalinux/9
 
   run:
     needs: build
     runs-on: [ self-hosted, Windows ]
     steps:
-      - name: AlmaLinux 36
+      - name: AlmaLinux 8
         run: >
-            docker run -v ${{ github.workspace }}:/klf klf-almalinux36 /bin/bash -c
+            docker run -v ${{ github.workspace }}:/klf klf-almalinux8 /bin/bash -c
             "dnf -y install ansible git && cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
 
-      - name: AlmaLinux 37
+      - name: AlmaLinux 9
         run: >
-            docker run -v ${{ github.workspace }}:/klf klf-almalinux37 /bin/bash -c
+            docker run -v ${{ github.workspace }}:/klf klf-almalinux9 /bin/bash -c
             "dnf -y install ansible git && cd /klf && ./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
