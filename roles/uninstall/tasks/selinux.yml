@@ -16,5 +16,5 @@
     path: "{{ item }}"
     state: absent
   loop:
-  - "{{ steam_home }}/selinux"
-  - "{{ semodule_dir }}/killinuxfloor.cil"
+    - "{{ steam_home }}/selinux"
+    - "{{ semodule_dir }}/killinuxfloor.cil"

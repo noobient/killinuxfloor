@@ -14,5 +14,5 @@
   archive:
     path: "{{ steam_home }}/Config"
     dest: "{{ steam_home }}/Config-{{ date_str }}.tgz"
-    remove: yes
+    remove: true
   when: config_dir.stat.exists

@@ -1,5 +1,6 @@
+---
 - hosts: "{{ target | default('127.0.0.1') }}"
   connection: "{% if target is defined %}ssh{% else %}local{% endif %}"
-  become: yes
+  become: true
   roles:
-  - install
+    - install

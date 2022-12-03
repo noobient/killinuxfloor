@@ -32,6 +32,6 @@
     name: "{{ item }}"
     enabled: true
   loop:
-  - kf2.service
-#  - kf2autokick.service
-#  - kf2watchdog.service
+    - kf2.service
+    #- kf2autokick.service
+    #- kf2watchdog.service

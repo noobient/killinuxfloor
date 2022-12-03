@@ -1,4 +1,5 @@
+---
 steam_home: /home/steam
-kf2_classic: False
-skip_kfgame: False
+kf2_classic: false
+skip_kfgame: false
 semodule_dir: /usr/local/etc/selinux/modules

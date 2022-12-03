@@ -26,7 +26,7 @@
   git:
     repo: https://github.com/Sinewyk/kf2_autokick.git
     dest: "{{ steam_home }}/kf2autokick"
-    force: yes
+    force: true
   register: autokick_git
 
 - name: Build kf2_autokick

@@ -1,22 +1,23 @@
+---
 name: AlmaLinux
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
     branches: []
 
 jobs:
 
   clone:
-    runs-on: [ self-hosted, Windows ]
+    runs-on: [self-hosted, Windows]
     steps:
       - name: Obtain sources
         uses: actions/checkout@v3
 
   build:
     needs: clone
-    runs-on: [ self-hosted, Windows ]
+    runs-on: [self-hosted, Windows]
     steps:
       - name: Build Docker images
         run: |
@@ -25,7 +26,7 @@ jobs:
 
   run-previous:
     needs: build
-    runs-on: [ self-hosted, Windows ]
+    runs-on: [self-hosted, Windows]
     steps:
       - name: AlmaLinux 8
         run: >
@@ -34,7 +35,7 @@ jobs:
 
   run-current:
     needs: build
-    runs-on: [ self-hosted, Windows ]
+    runs-on: [self-hosted, Windows]
     steps:
       - name: AlmaLinux 9
         run: >
