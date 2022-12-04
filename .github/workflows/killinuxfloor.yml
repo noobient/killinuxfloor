@@ -37,7 +37,7 @@ jobs:
             docker run --rm -v ${{ github.workspace }}:/klf:ro klf-lint /bin/bash -c
             "yamllint --strict --config-file .yamllint . && ansible-lint --config-file .ansible-lint"
 
-  almalinux 8:
+  almalinux-8:
     needs: lint
     runs-on: [self-hosted, Windows]
     steps:
@@ -46,7 +46,7 @@ jobs:
             docker run --rm -v ${{ github.workspace }}:/klf:ro klf-almalinux8 /bin/bash -c
             "./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
 
-  almalinux 9:
+  almalinux-9:
     needs: lint
     runs-on: [self-hosted, Windows]
     steps:
@@ -55,7 +55,7 @@ jobs:
             docker run --rm -v ${{ github.workspace }}:/klf:ro klf-almalinux9 /bin/bash -c
             "./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
 
-  fedora 36:
+  fedora-36:
     needs: lint
     runs-on: [self-hosted, Windows]
     steps:
@@ -64,7 +64,7 @@ jobs:
             docker run --rm -v ${{ github.workspace }}:/klf:ro klf-fedora36 /bin/bash -c
             "./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
 
-  fedora 37:
+  fedora-37:
     needs: lint
     runs-on: [self-hosted, Windows]
     steps:
