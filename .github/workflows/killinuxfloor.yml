@@ -34,9 +34,19 @@ jobs:
     steps:
       - name: Lint sources
         # TODO strict ansible-lint
+        # We need pip installed linter because packaged one ignores config file.
+        # We need --login because pip installs to ~/.local/bin and that is added
+        # to PATH via .bashrc and that's not read by default.
+        # We need ANSIBLE_CONFIG otherwise Ansible complains about word-writable
+        # permissions:
+        # https://docs.ansible.com/ansible/devel/reference_appendices/config.html#avoiding-security-risks-with-ansible-cfg-in-the-current-directory
+        # No, there's no way to make it work with different modes on Windows:
+        # https://stackoverflow.com/a/66390200/1708230
+        # Then it complains about the log file being read-only, so override it.
+        # Simple!
         run: >
-            docker run --rm -v ${{ github.workspace }}:/klf:ro klf-lint /bin/bash -c
-            "yamllint --strict --config-file .yamllint . && ansible-lint --config-file .ansible-lint"
+            docker run --rm -v ${{ github.workspace }}:/klf:ro klf-lint /bin/bash --login -c
+            "yamllint --strict . && ANSIBLE_CONFIG=ansible.cfg ANSIBLE_LOG_PATH=/tmp/ansible.log ansible-lint"
 
   almalinux-8:
     needs: lint
