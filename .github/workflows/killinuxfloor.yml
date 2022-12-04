@@ -26,6 +26,7 @@ jobs:
             docker build --tag klf-fedora36 docker/fedora/36
             docker build --tag klf-fedora37 docker/fedora/37
             docker build --tag klf-lint docker/lint
+            docker image prune --force
 
   lint:
     needs: docker
