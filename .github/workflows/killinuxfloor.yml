@@ -33,7 +33,6 @@ jobs:
     runs-on: [self-hosted, Windows]
     steps:
       - name: Lint sources
-        # TODO strict ansible-lint
         # We need pip installed linter because packaged one ignores config file.
         # We need --login because pip installs to ~/.local/bin and that is added
         # to PATH via .bashrc and that's not read by default.
@@ -46,7 +45,7 @@ jobs:
         # Simple!
         run: >
             docker run --rm -v ${{ github.workspace }}:/klf:ro klf-lint /bin/bash --login -c
-            "yamllint --strict . && ANSIBLE_CONFIG=ansible.cfg ANSIBLE_LOG_PATH=/tmp/ansible.log ansible-lint"
+            "yamllint --strict . && ANSIBLE_CONFIG=ansible.cfg ANSIBLE_LOG_PATH=/tmp/ansible.log ansible-lint --strict"
 
   almalinux-8:
     needs: lint
