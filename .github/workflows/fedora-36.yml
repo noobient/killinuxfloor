@@ -16,8 +16,8 @@ jobs:
       - name: Obtain sources
         uses: actions/checkout@v3
       - name: Build Docker image
-        run: docker build --tag klf-fedora36 docker/fedora/36
+        run: docker build --tag ${{ github.repository_owner }}-fedora36 docker/fedora/36
       - name: Run playbooks
         run: >
-            docker run --rm -v ${{ github.workspace }}:/klf klf-fedora36 /bin/bash -c
+            docker run --rm -v ${{ github.workspace }}:/repo ${{ github.repository_owner }}-fedora36 /bin/bash -c
             "./install.sh --extra-vars 'skip_kfgame=true' <<< y && ./uninstall.sh <<< y && ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y"

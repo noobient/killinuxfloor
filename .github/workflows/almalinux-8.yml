@@ -16,8 +16,8 @@ jobs:
       - name: Obtain sources
         uses: actions/checkout@v3
       - name: Build Docker image
-        run: docker build --tag klf-almalinux8 docker/almalinux/8
+        run: docker build --tag ${{ github.repository_owner }}-almalinux8 docker/almalinux/8
       - name: Run playbooks
         run: >
-            docker run --rm -v ${{ github.workspace }}:/klf klf-almalinux8 /bin/bash -c
+            docker run --rm -v ${{ github.workspace }}:/repo ${{ github.repository_owner }}-almalinux8 /bin/bash -c
             "./install.sh --extra-vars 'skip_kfgame=true' <<< y && ./uninstall.sh <<< y && ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y"

@@ -16,7 +16,7 @@ jobs:
       - name: Obtain sources
         uses: actions/checkout@v3
       - name: Build Docker image
-        run: docker build --tag klf-lint docker/lint
+        run: docker build --tag ${{ github.repository_owner }}-lint docker/lint
       - name: Lint sources
         # We need pip installed linter because packaged one ignores config file.
         # We need --login because pip installs to ~/.local/bin and that is added
@@ -26,5 +26,5 @@ jobs:
         # > ownership in repository at '/klf'
         # warning, so suppress that, too.
         run: >
-            docker run --rm -v ${{ github.workspace }}:/klf klf-lint /bin/bash --login -c
-            "git config --global --add safe.directory /klf && yamllint --strict . && ansible-lint --strict"
+            docker run --rm -v ${{ github.workspace }}:/repo ${{ github.repository_owner }}-lint /bin/bash --login -c
+            "git config --global --add safe.directory /repo && yamllint --strict . && ansible-lint --strict"
