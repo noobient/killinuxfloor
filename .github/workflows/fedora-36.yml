@@ -1,0 +1,32 @@
+---
+name: Fedora 37
+
+on: # yamllint disable-line rule:truthy
+  push:
+    branches: [master]
+  pull_request:
+    branches: []
+
+jobs:
+
+  clone:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtain sources
+        uses: actions/checkout@v3
+
+  docker:
+    needs: clone
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Docker images
+        run: docker build --tag klf-fedora37 docker/fedora/37
+
+  fedora-37:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fedora 37
+        run: >
+            docker run --rm -v ${{ github.workspace }}:/klf klf-fedora37 /bin/bash -c
+            "./install.sh --extra-vars 'skip_kfgame=true' <<< y && ./uninstall.sh <<< y && ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y"

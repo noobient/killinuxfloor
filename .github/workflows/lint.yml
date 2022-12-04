@@ -1,0 +1,35 @@
+---
+name: killinuxfloor
+
+on: # yamllint disable-line rule:truthy
+  push:
+    branches: [master]
+  pull_request:
+    branches: []
+
+jobs:
+
+  clone:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtain sources
+        uses: actions/checkout@v3
+
+  docker:
+    needs: clone
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Docker image
+        run: docker build --tag klf-lint docker/lint
+
+  lint:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lint sources
+        # We need pip installed linter because packaged one ignores config file.
+        # We need --login because pip installs to ~/.local/bin and that is added
+        # to PATH via .bashrc and that's not read by default.
+        run: >
+            docker run --rm -v ${{ github.workspace }}:/klf klf-lint /bin/bash --login -c
+            "yamllint --strict . && ansible-lint --strict"
