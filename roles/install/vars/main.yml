@@ -2,5 +2,4 @@
 klf_dist: 'Fedora Server'
 klf_rel: '35'
 nodejs_version: 18
-depotdownloader_version: 2.4.5
 dotnet_version: 6.0

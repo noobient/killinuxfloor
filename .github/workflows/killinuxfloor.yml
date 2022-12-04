@@ -55,7 +55,7 @@ jobs:
       - name: AlmaLinux 8
         run: >
             docker run --rm -v ${{ github.workspace }}:/klf:ro klf-almalinux8 /bin/bash -c
-            "./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
+            "./install.sh --extra-vars 'skip_kfgame=true' <<< y && ./uninstall.sh <<< y && ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y"
 
   almalinux-9:
     needs: lint
@@ -64,7 +64,7 @@ jobs:
       - name: AlmaLinux 9
         run: >
             docker run --rm -v ${{ github.workspace }}:/klf:ro klf-almalinux9 /bin/bash -c
-            "./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
+            "./install.sh --extra-vars 'skip_kfgame=true' <<< y && ./uninstall.sh <<< y && ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y"
 
   fedora-36:
     needs: lint
@@ -73,7 +73,7 @@ jobs:
       - name: Fedora 36
         run: >
             docker run --rm -v ${{ github.workspace }}:/klf:ro klf-fedora36 /bin/bash -c
-            "./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
+            "./install.sh --extra-vars 'skip_kfgame=true' <<< y && ./uninstall.sh <<< y && ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y"
 
   fedora-37:
     needs: lint
@@ -82,4 +82,4 @@ jobs:
       - name: Fedora 37
         run: >
             docker run --rm -v ${{ github.workspace }}:/klf:ro klf-fedora37 /bin/bash -c
-            "./install.sh --extra-vars 'skip_kfgame=True' <<< y && ./uninstall.sh <<< y"
+            "./install.sh --extra-vars 'skip_kfgame=true' <<< y && ./uninstall.sh <<< y && ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y"

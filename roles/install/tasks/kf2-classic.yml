@@ -4,11 +4,19 @@
     name: "dotnet-runtime-{{ dotnet_version }}"
     state: latest
 
+- include_role:
+    name: bviktor.github_release
+  vars:
+    - owner: 'SteamRE'
+    - repo: 'DepotDownloader'
+    - prefix: 'depotdownloader-'
+    - suffix: '.zip'
+
 # the zip file needs to be versioned, otherwise version bumps won't trigger a re-download
 # we could checksum it to avoid that, but that's more effort and maintenance
 - name: Obtain DepotDownloader
   get_url:
-    url: "https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_{{ depotdownloader_version }}/depotdownloader-{{ depotdownloader_version }}.zip"
+    url: "{{ noobuntu_github_release_url }}"
     dest: "{{ steam_home }}/depotdownloader-{{ depotdownloader_version }}.zip"
     owner: steam
     group: steam

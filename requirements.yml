@@ -1,3 +1,4 @@
 ---
+- src: bviktor.github_release
 - src: bviktor.selinux_cil
 - src: bviktor.thirdparty
