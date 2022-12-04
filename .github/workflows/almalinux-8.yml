@@ -3,7 +3,9 @@ name: AlmaLinux 8
 
 on: # yamllint disable-line rule:truthy
   push:
-    branches: [master]
+    branches:
+      - main
+      - master
   pull_request:
     branches: []
 
