@@ -17,7 +17,7 @@
 - name: Obtain DepotDownloader
   get_url:
     url: "{{ noobuntu_github_release_url }}"
-    dest: "{{ steam_home }}/depotdownloader-{{ depotdownloader_version }}.zip"
+    dest: "{{ steam_home }}/{{ noobuntu_github_release_url.split('/') | last }}"
     owner: steam
     group: steam
     mode: '0644'
@@ -41,7 +41,7 @@
   become: true
   become_user: steam
   unarchive:
-    src: "{{ steam_home }}/depotdownloader-{{ depotdownloader_version }}.zip"
+    src: "{{ steam_home }}/{{ noobuntu_github_release_url.split('/') | last }}"
     dest: "{{ steam_home }}/depotdownloader"
     remote_src: true
   when: dd_dl.changed
