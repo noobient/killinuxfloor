@@ -8,6 +8,9 @@
   copy:
     src: "{{ item }}"
     dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
   loop:
     - kf2.service
     - kf2autokick.service
@@ -18,11 +21,17 @@
   file:
     path: /etc/systemd/system/kf2.service.d
     state: directory
+    owner: root
+    group: root
+    mode: '0755'
 
 - name: Install KF2 service extra files
   copy:
     src: serveradmin.patch
     dest: /etc/systemd/system/kf2.service.d/serveradmin.patch
+    owner: root
+    group: root
+    mode: '0644'
   notify: Reload systemd configuration
 
 - meta: flush_handlers

@@ -1,12 +1,4 @@
 ---
-# Fedora has this built-in, only v5 though, "coming soon"
-# TODO once we need to upgrade, this'll break
-- name: Add .NET Core repo
-  template:
-    src: microsoft-prod.repo.j2
-    dest: /etc/yum.repos.d/microsoft-prod.repo
-  when: ansible_distribution != 'Fedora'
-
 - name: Install .NET Core runtime
   dnf:
     name: "dotnet-runtime-{{ dotnet_version }}"

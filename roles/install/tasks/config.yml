@@ -15,6 +15,7 @@
     state: directory
     owner: steam
     group: steam
+    mode: '0755'
 
 - name: Deploy default config
   copy:
@@ -23,6 +24,7 @@
     backup: true
     owner: steam
     group: steam
+    mode: '0644'
   loop:
     - My-Cycles.csv
     - My-KFWebAdmin.ini

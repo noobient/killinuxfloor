@@ -5,6 +5,7 @@
     state: directory
     owner: steam
     group: steam
+    mode: '0755'
 
 - name: Obtain killinuxfloor sources
   become: true

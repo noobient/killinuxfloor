@@ -2,7 +2,7 @@
 # use dnf modules
 - name: Install Node.js
   dnf:
-    name: "@nodejs:18/common"
+    name: "@nodejs:{{ nodejs_version }}/common"
     state: present
 
 - include_role:

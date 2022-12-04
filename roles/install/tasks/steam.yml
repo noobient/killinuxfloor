@@ -29,6 +29,7 @@
     dest: '{{ steam_home }}/steamcmd_linux.tar.gz'
     owner: steam
     group: steam
+    mode: '0644'
   register: steamcmd_dl
 
 - name: Extract SteamCMD
