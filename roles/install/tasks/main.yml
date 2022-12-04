@@ -6,7 +6,7 @@
 - include_role:
     name: bviktor.selinux_cil
   vars:
-    - module: killinuxfloor
+    module: killinuxfloor
 
 - include_tasks: steam.yml
 - include_tasks: kf2.yml

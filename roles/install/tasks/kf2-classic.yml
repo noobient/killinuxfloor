@@ -7,10 +7,10 @@
 - include_role:
     name: bviktor.github_release
   vars:
-    - owner: 'SteamRE'
-    - repo: 'DepotDownloader'
-    - prefix: 'depotdownloader-'
-    - suffix: '.zip'
+    owner: 'SteamRE'
+    repo: 'DepotDownloader'
+    prefix: 'depotdownloader-'
+    suffix: '.zip'
 
 # the zip file needs to be versioned, otherwise version bumps won't trigger a re-download
 # we could checksum it to avoid that, but that's more effort and maintenance
