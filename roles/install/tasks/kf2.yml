@@ -1,5 +1,6 @@
 ---
 - include_tasks: kf2-retail.yml
-  when: not skip_kfgame|bool and not kf2_classic|bool
+  when: not kf2_classic|bool
+
 - include_tasks: kf2-classic.yml
-  when: not skip_kfgame|bool and kf2_classic|bool
+  when: kf2_classic|bool

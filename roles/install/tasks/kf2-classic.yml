@@ -55,6 +55,7 @@
   become_user: steam
   register: kf2_install
   changed_when: '"Total downloaded: 0 bytes (0 bytes uncompressed) from 1 depots" not in kf2_install.stdout'
+  when: not skip_kfgame|bool
 
 - name: Make symlinks for the Workshop and Cache folders
   file:

@@ -11,6 +11,7 @@
   register: kf2_install
   failed_when: ("Success! App '232130' fully installed." not in kf2_install.stdout) and ("Success! App '232130' already up to date." not in kf2_install.stdout)
   changed_when: ("Success! App '232130' already up to date." not in kf2_install.stdout)
+  when: not skip_kfgame|bool
 
 # - release state: released (Subscribed,Permanent,)
 # - owner account: xxx
@@ -32,6 +33,7 @@
   no_log: true
   register: kf2_status
   failed_when: '"install state: Fully Installed" not in kf2_status.stdout'
+  when: not skip_kfgame|bool
 
 - name: Make symlinks for the Workshop and Cache folders
   file:
