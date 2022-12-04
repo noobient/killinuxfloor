@@ -19,6 +19,10 @@ jobs:
         # We need pip installed linter because packaged one ignores config file.
         # We need --login because pip installs to ~/.local/bin and that is added
         # to PATH via .bashrc and that's not read by default.
+        # On cloud runners, we also get a
+        # > Failed to discover lintable files using git: fatal: detected dubious
+        # > ownership in repository at '/klf'
+        # warning, so suppress that, too.
         run: >
             docker run --rm -v ${{ github.workspace }}:/klf klf-lint /bin/bash --login -c
-            "yamllint --strict . && ansible-lint --strict"
+            "git config --global --add safe.directory /klf && yamllint --strict . && ansible-lint --strict"
