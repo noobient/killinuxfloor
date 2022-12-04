@@ -5,20 +5,13 @@
     name: "@nodejs:18/common"
     state: present
 
-- name: Import Yarn GPG key
-  rpm_key:
-    state: present
-    key: https://dl.yarnpkg.com/rpm/pubkey.gpg
-
-- name: Install Yarn repo
-  get_url:
-    url: https://dl.yarnpkg.com/rpm/yarn.repo
-    dest: /etc/yum.repos.d/yarn.repo
-
-- name: Install Yarn
-  dnf:
-    name: yarn
-    state: latest
+- include_role:
+    name: bviktor.thirdparty
+  vars:
+    - name: Yarn
+    - gpg_url: https://dl.yarnpkg.com/rpm/pubkey.gpg
+    - repo_url: https://dl.yarnpkg.com/rpm/yarn.repo
+    - package: yarn
 
 - name: Obtain kf2_autokick sources
   become: true
