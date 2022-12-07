@@ -9,3 +9,6 @@ skip_list:
   - name # this is covered by yamllint with exceptions on include_role
   - risky-shell-pipe
   - schema[tasks] # TODO ansible-lint randomly complains, e.g. it/tftpd
+  - role-name
+  - schema[meta] # TODO ansible-lint believes the official dependency syntax is wrong
+  - meta-no-info # we leave platform empty
