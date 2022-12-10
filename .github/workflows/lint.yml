@@ -15,16 +15,9 @@ jobs:
     steps:
       - name: Obtain sources
         uses: actions/checkout@v3
-      - name: Build Docker image
-        run: docker build --tag ${{ github.repository_owner }}-lint docker/lint
       - name: Lint sources
-        # We need pip installed linter because packaged one ignores config file.
-        # We need --login because pip installs to ~/.local/bin and that is added
-        # to PATH via .bashrc and that's not read by default.
-        # On cloud runners, we also get a
-        # > Failed to discover lintable files using git: fatal: detected dubious
-        # > ownership in repository at '/klf'
-        # warning, so suppress that, too.
         run: >
-            docker run --rm -v ${{ github.workspace }}:/repo ${{ github.repository_owner }}-lint /bin/bash --login -c
-            "git config --global --add safe.directory /repo && yamllint --strict . && ansible-lint --strict"
+            podman run --rm -v ${{ github.workspace }}:/repo bviktor/ansible-systemd-lint:latest /bin/bash -c
+            "git config --global --add safe.directory /repo &&
+            yamllint --strict . &&
+            ansible-lint --strict"

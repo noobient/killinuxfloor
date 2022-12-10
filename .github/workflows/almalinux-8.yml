@@ -10,14 +10,18 @@ on: # yamllint disable-line rule:truthy
     branches: []
 
 jobs:
-  almalinux-8:
+  ansible-ci:
     runs-on: ubuntu-latest
     steps:
       - name: Obtain sources
         uses: actions/checkout@v3
-      - name: Build Docker image
-        run: docker build --tag ${{ github.repository_owner }}-almalinux8 docker/almalinux/8
-      - name: Run playbooks
+      - name: Test Galaxy role
         run: >
-            docker run --rm -v ${{ github.workspace }}:/repo ${{ github.repository_owner }}-almalinux8 /bin/bash -c
-            "./install.sh --extra-vars 'skip_kfgame=true' <<< y && ./uninstall.sh <<< y && ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y"
+            CONT_ID=$(podman run --rm -v ${{ github.workspace }}:/repo -v /sys/fs/cgroup:/sys/fs/cgroup:ro
+            --tmpfs /tmp --tmpfs /run --privileged --detach bviktor/ansible-systemd-almalinux:8) &&
+            podman exec ${CONT_ID} /bin/bash -c
+            "if [ -f requirements.yml ]; then ansible-galaxy role install --force -r requirements.yml -p ..; fi &&
+            ANSIBLE_ROLES_PATH=.. ANSIBLE_FORCE_COLOR=true ./install.sh --extra-vars 'skip_kfgame=true' <<< y &&
+            ANSIBLE_ROLES_PATH=.. ANSIBLE_FORCE_COLOR=true ./uninstall.sh <<< y &&
+            ANSIBLE_ROLES_PATH=.. ANSIBLE_FORCE_COLOR=true ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y" &&
+            podman stop ${CONT_ID}
