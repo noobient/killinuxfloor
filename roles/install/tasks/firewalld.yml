@@ -1,14 +1,10 @@
 ---
-- name: Check the state of system services
-  service_facts:
-
 - name: Check if HTTPS port is open on firewall
   shell:
     cmd: firewall-cmd --list-services | grep https
   failed_when: false
   changed_when: false
   register: fw_https_open
-  when: ansible_facts.services["firewalld.service"] is defined
 
 - name: Deploy KF2 firewall rules
   template:
@@ -18,12 +14,11 @@
     group: root
     mode: '0644'
   register: kf2_fw
-  when: ansible_facts.services["firewalld.service"] is defined
 
 - name: Reload firewalld config
   command:
     cmd: firewall-cmd --reload
-  when: kf2_fw.changed and ansible_facts.services["firewalld.service"] is defined and ansible_facts.services["firewalld.service"].state == "running"
+  when: kf2_fw.changed and firewalld_running.rc == 0
 
 - name: Enable KF2 firewall rules
   firewalld:
@@ -31,4 +26,4 @@
     permanent: true
     immediate: true
     state: enabled
-  when: ansible_facts.services["firewalld.service"] is defined and ansible_facts.services["firewalld.service"].state == "running"
+  when: firewalld_running.rc == 0
