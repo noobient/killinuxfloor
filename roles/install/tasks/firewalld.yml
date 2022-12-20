@@ -1,29 +1,16 @@
 ---
-- name: Check if HTTPS port is open on firewall
-  shell:
-    cmd: firewall-cmd --list-services | grep https
-  failed_when: false
-  changed_when: false
-  register: fw_https_open
+- include_role:
+    name: bviktor.servicecheck
+  vars:
+    unit: firewalld.service
 
-- name: Deploy KF2 firewall rules
-  template:
-    src: kf2.xml.j2
-    dest: /etc/firewalld/services/kf2.xml
-    owner: root
-    group: root
-    mode: '0644'
-  register: kf2_fw
-
-- name: Reload firewalld config
-  command:
-    cmd: firewall-cmd --reload
-  when: kf2_fw.changed and firewalld_running.rc == 0
-
-- name: Enable KF2 firewall rules
-  firewalld:
-    service: kf2.service
-    permanent: true
-    immediate: true
-    state: enabled
-  when: firewalld_running.rc == 0
+- include_role:
+    name: bviktor.firewalld
+  vars:
+    service: 'kf2'
+    port: "{{ item }}"
+  loop:
+    - '7777/udp'
+    - '20560/udp'
+    - '27015/udp'
+  when: servicecheck.started

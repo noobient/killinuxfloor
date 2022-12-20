@@ -1,4 +1,6 @@
 ---
+- src: bviktor.firewalld
 - src: bviktor.github_release
 - src: bviktor.selinux_cil
+- src: bviktor.servicecheck
 - src: bviktor.thirdparty
