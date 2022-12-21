@@ -1,9 +1,11 @@
 ## killinuxfloor 2.0 (TBD)
 
+* Add AlmaLinux, Fedora, Ubuntu support
+* Remove CentOS support
 * Port installer and uninstaller to Ansible
-* Add support for CentOS 8
 * Add `killinuxfloor apply` command
-* Update Node.js to 12
+* Update Node.js to 18
+* Update .NET to 6
 
 ## killinuxfloor 1.1 (2019-05-15)
 
