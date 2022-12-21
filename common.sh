@@ -44,10 +44,16 @@ function install_ansible ()
     ansible-galaxy install --force -r requirements.yml
 }
 
+function find_ip ()
+{
+    export IP_ADDR=$(ip -4 a s | grep inet | grep -v '127\.0\.0' | awk '{print $2}' | cut -d'/' -f1)
+}
+
 function init_klf ()
 {
     check_os
     check_sudo
     check_epel
     install_ansible
+    find_ip
 }
