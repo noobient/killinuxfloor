@@ -8,6 +8,12 @@
     name: crudini
     state: latest
 
+# TODO eliminate once update released on all systems
+- name: Patch config generator
+  patch:
+    src: crudini.patch
+    dest: /usr/bin/crudini
+
 - name: Create Config directory
   file:
     path: "{{ steam_home }}/Config"
