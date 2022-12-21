@@ -21,8 +21,8 @@ jobs:
             --tmpfs /tmp --tmpfs /run --privileged --detach bviktor/ansible-systemd-ubuntu:20.04) &&
             podman exec ${CONT_ID} /bin/bash -c
             "if [ -f requirements.yml ]; then ansible-galaxy role install --force -r requirements.yml -p ..; fi &&
-            dnf -y install firewalld && systemctl start firewalld.service &&
             ./install.sh --extra-vars 'skip_kfgame=true' <<< y &&
+            apt -y install firewalld && systemctl start firewalld.service &&
             ./uninstall.sh <<< y &&
             ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y" &&
             podman stop ${CONT_ID}
