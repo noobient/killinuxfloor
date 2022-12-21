@@ -1,8 +1,18 @@
 ---
-- name: Install .NET Core runtime
+- name: Install .NET Runtime
   package:
     name: "dotnet-runtime-{{ dotnet_version }}"
     state: latest
+  when: ansible_os_family == 'RedHat'
+
+- include_role:
+    name: bviktor.thirdparty
+  vars:
+    name: '.NET Runtime'
+    gpg_url: 'https://packages.microsoft.com/keys/microsoft.asc'
+    repo_file: 'microsoft-prod'
+    package: "dotnet-runtime-{{ dotnet_version }}"
+  when: ansible_os_family == 'Debian'
 
 - include_role:
     name: bviktor.github_release
