@@ -1,34 +1,39 @@
 ---
-- name: Check the state of system services
-  service_facts:
-
-- name: Check systemd status # noqa command-instead-of-module
-  command:
-    cmd: systemctl is-system-running
-  failed_when: false
-  changed_when: false
-  register: systemd_running
+- include_role:
+    name: bviktor.servicecheck
+  vars:
+    unit: kf2.service
 
 - name: Stop and disable the KF2 service
   systemd:
     name: kf2.service
     state: stopped
     enabled: false
-  when: ansible_facts.services["kf2.service"] is defined
+  when: servicecheck.exists
+
+- include_role:
+    name: bviktor.servicecheck
+  vars:
+    unit: kf2autokick.service
 
 - name: Stop and disable the KF2 autokick service
   systemd:
     name: kf2autokick.service
     state: stopped
     enabled: false
-  when: ansible_facts.services["kf2autokick.service"] is defined
+  when: servicecheck.exists
+
+- include_role:
+    name: bviktor.servicecheck
+  vars:
+    unit: kf2watchdog.service
 
 - name: Stop and disable the KF2 watchdog service
   systemd:
     name: kf2watchdog.service
     state: stopped
     enabled: false
-  when: ansible_facts.services["kf2watchdog.service"] is defined
+  when: servicecheck.exists
 
 - name: Remove KF2 services
   file:

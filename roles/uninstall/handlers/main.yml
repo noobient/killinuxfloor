@@ -2,4 +2,4 @@
 - name: Reload systemd configuration
   systemd:
     daemon_reload: true
-  when: systemd_running.rc == 0
+  when: servicecheck.systemd
