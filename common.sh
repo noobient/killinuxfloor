@@ -41,7 +41,7 @@ function install_ansible ()
     fi
 
     sudo "${PKG_MGR}" -y -q install ansible > /dev/null
-    ansible-galaxy install --force -r requirements.yml
+    sudo ansible-galaxy install --force -r requirements.yml
 }
 
 function find_ip ()
