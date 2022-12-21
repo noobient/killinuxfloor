@@ -13,4 +13,5 @@
     - '7777/udp'
     - '20560/udp'
     - '27015/udp'
+    - '8080/tcp'
   when: servicecheck.started
