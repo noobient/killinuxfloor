@@ -13,6 +13,7 @@
   patch:
     src: crudini.patch
     dest: /usr/bin/crudini
+    backup: true
 
 - name: Create Config directory
   file:
