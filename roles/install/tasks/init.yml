@@ -2,5 +2,8 @@
 - name: Initialize KF2 config
   become_user: steam
   command:
-    cmd: "{{ steam_home }}/bin/killinuxfloor reset"
+    cmd: "{{ steam_home }}/bin/killinuxfloor {{ item }}"
+  loop:
+    - reset
+    - apply
   when: servicecheck.systemd and not skip_kfgame
