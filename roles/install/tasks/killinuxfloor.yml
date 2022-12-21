@@ -8,7 +8,6 @@
     mode: '0755'
 
 - name: Obtain killinuxfloor sources
-  become: true
   become_user: steam
   git:
     repo: https://github.com/noobient/killinuxfloor.git

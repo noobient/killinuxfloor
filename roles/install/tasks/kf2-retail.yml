@@ -4,7 +4,6 @@
 # w/o validate:
 # Success! App '232130' already up to date.
 - name: Install Killing Floor 2 Retail (be patient, 28 GB+)
-  become: true
   become_user: steam
   command:
     cmd: '{{ steam_home }}/Steam/steamcmd.sh +force_install_dir ./KF2Server +login anonymous +app_update 232130 {% if (validate is defined and validate != "no") %}validate {% endif %}+exit'
@@ -25,7 +24,6 @@
 # - update state:  ( No Error )
 # - user config: "UserConfig"
 - name: Check Killing Floor 2 install state
-  become: true
   become_user: steam
   command:
     cmd: '{{ steam_home }}/Steam/steamcmd.sh +force_install_dir ./KF2Server +login anonymous +app_status 232130 +exit'

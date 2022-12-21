@@ -18,9 +18,9 @@ init_klf
 if [ $# -ge 1 ] && [ $1 == '--classic' ]
 then
     shift
-    sudo ansible-playbook "${ROOT}/install.yml" --extra-vars "kf2_classic=True" "$@"
+    ansible-playbook "${ROOT}/install.yml" --extra-vars "kf2_classic=True" "$@"
 else
-    sudo ansible-playbook "${ROOT}/install.yml" "$@"
+    ansible-playbook "${ROOT}/install.yml" "$@"
 fi
 
 echo -e "\e[32mkillinuxfloor successfully installed!\e[0m"

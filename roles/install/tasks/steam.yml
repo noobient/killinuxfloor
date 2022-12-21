@@ -50,7 +50,6 @@
 
 - name: Extract SteamCMD
   # owner/group seem to be bugged, use become instead
-  become: true
   become_user: steam
   unarchive:
     src: '{{ steam_home }}/steamcmd_linux.tar.gz'
@@ -68,7 +67,6 @@
     group: steam
 
 - name: Bootstrap SteamCMD
-  become: true
   become_user: steam
   command:
     cmd: "{{ steam_home }}/Steam/steamcmd.sh --help"

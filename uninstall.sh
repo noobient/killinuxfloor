@@ -15,6 +15,6 @@ source "${ROOT}/common.sh"
 
 init_klf
 
-sudo ansible-playbook "${ROOT}/uninstall.yml" "$@"
+ansible-playbook "${ROOT}/uninstall.yml" "$@"
 
 echo -e "\e[32mkillinuxfloor successfully uninstalled.\e[0m"

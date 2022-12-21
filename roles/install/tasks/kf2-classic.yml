@@ -48,7 +48,6 @@
     mode: '0755'
 
 - name: Extract DepotDownloader # noqa no-handler
-  become: true
   become_user: steam
   unarchive:
     src: "{{ steam_home }}/{{ github_release_url.split('/') | last }}"
@@ -61,7 +60,6 @@
   command:
     cmd: "dotnet {{ steam_home }}/depotdownloader/DepotDownloader.dll -app 232130 -depot 232131 -manifest 2346945547354693824 -validate -os linux -max-downloads 16 -dir {{ steam_home }}/Steam/KF2Server"
   no_log: true
-  become: true
   become_user: steam
   register: kf2_install
   changed_when: '"Total downloaded: 0 bytes (0 bytes uncompressed) from 1 depots" not in kf2_install.stdout'

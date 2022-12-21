@@ -21,7 +21,6 @@
     package: yarn
 
 - name: Obtain kf2_autokick sources
-  become: true
   become_user: steam
   git:
     repo: https://github.com/Sinewyk/kf2_autokick.git
@@ -30,7 +29,6 @@
   register: autokick_git
 
 - name: Build kf2_autokick # noqa no-handler
-  become: true
   become_user: steam
   shell:
     cmd: "cd {{ steam_home }}/kf2autokick && yarn --silent --prod --frozen-lockfile"
