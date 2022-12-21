@@ -46,6 +46,15 @@ function install_ansible ()
 
 function find_ip ()
 {
+    if [ "${PKG_MGR}" == 'apt' ]
+    then
+        IP_PKG='iproute2'
+    else
+        IP_PKG='iproute'
+    fi
+
+    sudo "${PKG_MGR}" -y -q install "${IP_PKG}" > /dev/null
+
     export IP_ADDR=$(ip -4 a s | grep inet | grep -v '127\.0\.0' | awk '{print $2}' | cut -d'/' -f1)
 }
 
