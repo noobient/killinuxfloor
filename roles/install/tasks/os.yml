@@ -16,19 +16,16 @@
     name: '*'
     state: latest
 
-- name: Check the state of system services
-  service_facts:
+# Here we check not only the KF2 service, but also systemd state
+# Used in e.g. init, config, systemd
+- include_role:
+    name: bviktor.servicecheck
+  vars:
+    unit: kf2.service
 
 # we don't need to deal with autokick, the unit stops if kf2 stops
 - name: Make sure the KF2 service isn't running
   systemd:
     name: kf2
     state: stopped
-  when: ansible_facts.services["kf2.service"] is defined
-
-- name: Check systemd status # noqa command-instead-of-module
-  command:
-    cmd: systemctl is-system-running
-  failed_when: false
-  changed_when: false
-  register: systemd_running
+  when: servicecheck.started
