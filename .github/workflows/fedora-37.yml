@@ -22,7 +22,6 @@ jobs:
             podman exec ${CONT_ID} /bin/bash -c
             "if [ -f requirements.yml ]; then ansible-galaxy role install --force -r requirements.yml -p ..; fi &&
             dnf -y install firewalld && systemctl start firewalld.service &&
-            export ANSIBLE_FORCE_COLOR=true &&
             ./install.sh --extra-vars 'skip_kfgame=true' <<< y &&
             ./uninstall.sh <<< y &&
             ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y" &&
