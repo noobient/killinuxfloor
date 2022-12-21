@@ -3,7 +3,7 @@
 # Success! App '232130' fully installed.
 # w/o validate:
 # Success! App '232130' already up to date.
-- name: Install Killing Floor 2 Retail (be patient, 26 GB+)
+- name: Install Killing Floor 2 Retail (be patient, 28 GB+)
   become: true
   become_user: steam
   command:
