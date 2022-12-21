@@ -1,13 +1,12 @@
 ---
 # Fedora has the EPEL packages in main
 - include_tasks: epel.yml
-  when: ansible_distribution != 'Fedora'
+  when: ansible_os_family != 'Debian' and ansible_distribution != 'Fedora'
 
 - name: Install config generator
-  dnf:
+  package:
     name: crudini
     state: latest
-    update_cache: true
 
 - name: Create Config directory
   file:

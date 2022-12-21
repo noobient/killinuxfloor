@@ -1,6 +1,6 @@
 ---
 - name: Install .NET Core runtime
-  dnf:
+  package:
     name: "dotnet-runtime-{{ dotnet_version }}"
     state: latest
 

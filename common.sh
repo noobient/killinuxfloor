@@ -1,3 +1,8 @@
+function check_os ()
+{
+    apt --version &> /dev/null && export PKG_MGR='apt' || export PKG_MGR='dnf'
+}
+
 function check_sudo ()
 {
     CAN_SUDO=0
@@ -11,7 +16,7 @@ function check_sudo ()
             echo "Error! You are not root and sudo is unavailable!"
             exit 1
         else
-            dnf -y -q install sudo
+            "${PKG_MGR}" -y -q install sudo > /dev/null
         fi
     fi
 }
@@ -20,20 +25,28 @@ function check_epel ()
 {
     FEDORA=0
     grep 'ID=fedora' /etc/os-release > /dev/null && FEDORA=1 || true
-    if [ "${FEDORA}" -ne 1 ]
+
+    if [ "${FEDORA}" -ne 1 ] && [ "${PKG_MGR}" != 'apt' ]
     then
-        sudo dnf -y -q install epel-release
+        sudo "${PKG_MGR}" -y -q install epel-release > /dev/null
     fi
 }
 
 function install_ansible ()
 {
-    sudo dnf -y -q install ansible
+    if [ "${PKG_MGR}" == 'apt' ]
+    then
+        sudo "${PKG_MGR}" -y -q install software-properties-common > /dev/null
+        sudo add-apt-repository -y ppa:ansible/ansible > /dev/null
+    fi
+
+    sudo "${PKG_MGR}" -y -q install ansible > /dev/null
     ansible-galaxy install --force -r requirements.yml
 }
 
 function init_klf ()
 {
+    check_os
     check_sudo
     check_epel
     install_ansible

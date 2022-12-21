@@ -1,6 +1,6 @@
 ---
 - name: Install Bash
-  dnf:
+  package:
     name: bash
     state: latest
 

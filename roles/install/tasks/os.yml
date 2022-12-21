@@ -1,18 +1,18 @@
 ---
 - name: Check distribution flavor
   fail:
-    msg: 'Sorry, killinuxfloor only supports Red Hat-based distributions. Officially supported OS and release: {{ klf_dist }} {{ klf_rel }}.'
-  when: ansible_os_family != 'RedHat'
+    msg: 'Sorry, killinuxfloor only supports Red Hat and Debian-based distributions. Officially supported OS and release: {{ klf_dist }} {{ klf_rel }}.'
+  when: ansible_os_family != 'RedHat' and ansible_os_family != 'Debian'
 
 # Node.js requires dnf modules
 # we could probably mess around to implement idempotent software collection management on EL7, but... effort
 - name: Check package manager
   fail:
-    msg: 'Sorry, killinuxfloor only supports the DNF package manager.'
-  when: ansible_pkg_mgr != 'dnf'
+    msg: 'Sorry, killinuxfloor only supports the DNF and APT package managers.'
+  when: ansible_pkg_mgr != 'dnf' and ansible_pkg_mgr != 'apt'
 
 - name: Make sure the OS is up-to-date
-  dnf:
+  package:
     name: '*'
     state: latest
 

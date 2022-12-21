@@ -3,14 +3,21 @@
 - name: Install Node.js
   dnf:
     name: "@nodejs:{{ nodejs_version }}/common"
-    state: present
+    state: latest
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Node.js
+  apt:
+    name: "nodejs"
+    state: latest
+  when: ansible_os_family == 'Debian'
 
 - include_role:
     name: bviktor.thirdparty
   vars:
     name: Yarn
-    gpg_url: https://dl.yarnpkg.com/rpm/pubkey.gpg
-    repo_url: https://dl.yarnpkg.com/rpm/yarn.repo
+    gpg_url: "https://dl.yarnpkg.com/{% if ansible_os_family == 'RedHat' %}rpm{% else %}debian{% endif %}/pubkey.gpg"
+    repo_file: yarn
     package: yarn
 
 - name: Obtain kf2_autokick sources

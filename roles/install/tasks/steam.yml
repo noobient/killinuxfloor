@@ -7,12 +7,28 @@
       - glibc.i686
       - libstdc++.i686
       - nss-softokn-freebl.i686
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Steam dependencies
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - lib32gcc-s1
+  when: ansible_os_family == 'Debian'
+
+- name: Install various tools
+  package:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
       - unzip
       - dos2unix
       - patch
       - git
       - tar
-      - langpacks-en
+      - "{% if ansible_os_family == 'RedHat' %}langpacks-en{% else %}language-pack-en{% endif %}"
       - sudo
 
 - name: Create main Steam directory
