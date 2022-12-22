@@ -16,14 +16,8 @@ StandardOutput=file:/home/steam/Steam/logs/kf2.txt
 # nevermind, the + preffix runs the command with full privileges
 # prefer truncate, that way klf log keeps working even after a service restart
 ExecStartPre=+/usr/bin/truncate --size=0 /home/steam/Steam/logs/kf2.txt
-# make sure our patches work
-ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_change.html
-ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_player_row.inc
-ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/current_rules.inc
-ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/default_maplist.html
-ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/gamesummary.inc
-ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/policy_bans.html
-ExecStartPre=/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/policy_bans_row.inc
+# make sure our patches work, wildcards are prohibited so use subshell
+ExecStartPre=/bin/sh -c '/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin/*'
 # apply the patch, ignore if already applied
 ExecStartPre=-/bin/patch --forward -r /tmp/kf2-patch.rej -p1 -d /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin -i /etc/systemd/system/kf2.service.d/serveradmin.patch
 # make sure KF2 uses the Steam provided library, not the ones it bundles
