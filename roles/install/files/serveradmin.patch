@@ -1,6 +1,6 @@
-diff -ruN --strip-trailing-cr ServerAdmin.orig/current_change.html ServerAdmin/current_change.html
---- ServerAdmin.orig/current_change.html	2019-02-02 15:01:14.469571884 +0100
-+++ ServerAdmin/current_change.html	2019-02-02 15:01:32.972537118 +0100
+diff -ruN ServerAdmin.orig/current_change.html ServerAdmin/current_change.html
+--- ServerAdmin.orig/current_change.html	2022-12-22 01:43:19.509416046 +0100
++++ ServerAdmin/current_change.html	2022-12-22 01:43:52.990541726 +0100
 @@ -25,13 +25,13 @@
  </div>
  </fieldset>
@@ -40,9 +40,9 @@ diff -ruN --strip-trailing-cr ServerAdmin.orig/current_change.html ServerAdmin/c
  </div>
  
  <!-- #include file="navigation.inc" -->
-diff -ruN --strip-trailing-cr ServerAdmin.orig/current_player_row.inc ServerAdmin/current_player_row.inc
---- ServerAdmin.orig/current_player_row.inc	2019-02-02 15:01:14.476571871 +0100
-+++ ServerAdmin/current_player_row.inc	2019-02-02 15:01:32.972537118 +0100
+diff -ruN ServerAdmin.orig/current_player_row.inc ServerAdmin/current_player_row.inc
+--- ServerAdmin.orig/current_player_row.inc	2022-12-22 01:43:19.509416046 +0100
++++ ServerAdmin/current_player_row.inc	2022-12-22 01:43:52.990541726 +0100
 @@ -1,7 +1,7 @@
  <tr class="<%evenodd%>">
    <td style="background: <%player.teamcolor%>; color: <%player.teamcolor%>;"><%player.teamid%>&#160;</td>
@@ -52,9 +52,21 @@ diff -ruN --strip-trailing-cr ServerAdmin.orig/current_player_row.inc ServerAdmi
    <td class="right"><%player.score%></td>
    <td class="right"><%player.pawn.health%></td>
    <td class="right"><%player.kills%></td>
-diff -ruN --strip-trailing-cr ServerAdmin.orig/current_rules.inc ServerAdmin/current_rules.inc
---- ServerAdmin.orig/current_rules.inc	2019-02-02 15:01:14.475571873 +0100
-+++ ServerAdmin/current_rules.inc	2019-02-02 15:01:32.972537118 +0100
+diff -ruN ServerAdmin.orig/current_players_row.inc ServerAdmin/current_players_row.inc
+--- ServerAdmin.orig/current_players_row.inc	2022-12-22 01:43:19.509416046 +0100
++++ ServerAdmin/current_players_row.inc	2022-12-22 02:12:24.402731660 +0100
+@@ -2,7 +2,7 @@
+   <td style="background: <%player.teamcolor%>; color: <%player.teamcolor%>;"><%player.teamid%>&#160;</td>
+   <td><%player.name%></td>
+   <td class="right"><%player.ping%></td>
+-  <td><%player.ip%></td>
++  <td><a href="https://geoiplookup.net/ip/<%player.ip%>" target="_blank"><%player.ip%></a></td>
+   <td><%player.uniqueid%></td>
+   <td><%player.steamid%></td>
+   <td><%player.steamname%></td>
+diff -ruN ServerAdmin.orig/current_rules.inc ServerAdmin/current_rules.inc
+--- ServerAdmin.orig/current_rules.inc	2022-12-22 01:43:19.509416046 +0100
++++ ServerAdmin/current_rules.inc	2022-12-22 01:43:52.990541726 +0100
 @@ -1,3 +1,7 @@
 +<dt>Wave</dt>
 +<dd><%wave.num%></dd>
@@ -63,9 +75,9 @@ diff -ruN --strip-trailing-cr ServerAdmin.orig/current_rules.inc ServerAdmin/cur
  <dt>Players</dt>
  <dd><%rules.numplayers%>/<%rules.maxplayers%></dd>
  <dt>Minimum to Start</dt>
-diff -ruN --strip-trailing-cr ServerAdmin.orig/default_maplist.html ServerAdmin/default_maplist.html
---- ServerAdmin.orig/default_maplist.html	2019-02-02 15:01:14.473571876 +0100
-+++ ServerAdmin/default_maplist.html	2019-02-02 15:06:59.442923705 +0100
+diff -ruN ServerAdmin.orig/default_maplist.html ServerAdmin/default_maplist.html
+--- ServerAdmin.orig/default_maplist.html	2022-12-22 01:43:19.509416046 +0100
++++ ServerAdmin/default_maplist.html	2022-12-22 01:43:52.990541726 +0100
 @@ -2,6 +2,8 @@
  
  <div id="content">
@@ -120,9 +132,9 @@ diff -ruN --strip-trailing-cr ServerAdmin.orig/default_maplist.html ServerAdmin/
  });
      
  //]]>
-diff -ruN --strip-trailing-cr ServerAdmin.orig/gamesummary.inc ServerAdmin/gamesummary.inc
---- ServerAdmin.orig/gamesummary.inc	2019-02-02 15:01:14.471571880 +0100
-+++ ServerAdmin/gamesummary.inc	2019-02-02 15:01:32.972537118 +0100
+diff -ruN ServerAdmin.orig/gamesummary.inc ServerAdmin/gamesummary.inc
+--- ServerAdmin.orig/gamesummary.inc	2022-12-22 01:43:19.509416046 +0100
++++ ServerAdmin/gamesummary.inc	2022-12-22 01:43:52.990541726 +0100
 @@ -4,6 +4,8 @@
    <dd class="gs_map"><%map.title.safe%></dd>
    <dt class="gs_players">Players</dt>
@@ -135,9 +147,9 @@ diff -ruN --strip-trailing-cr ServerAdmin.orig/gamesummary.inc ServerAdmin/games
 +  <dd class="gs_wave"><%wave.monsters.dead%>/<%wave.monsters.total%></dd>
  </dl>
 \ No newline at end of file
-diff -ruN --strip-trailing-cr ServerAdmin.orig/policy_bans.html ServerAdmin/policy_bans.html
---- ServerAdmin.orig/policy_bans.html	2019-02-02 15:01:14.486571852 +0100
-+++ ServerAdmin/policy_bans.html	2019-02-02 15:01:32.972537118 +0100
+diff -ruN ServerAdmin.orig/policy_bans.html ServerAdmin/policy_bans.html
+--- ServerAdmin.orig/policy_bans.html	2022-12-22 01:43:19.509416046 +0100
++++ ServerAdmin/policy_bans.html	2022-12-22 01:43:52.990541726 +0100
 @@ -2,6 +2,8 @@
  
  <div id="content">
@@ -174,9 +186,9 @@ diff -ruN --strip-trailing-cr ServerAdmin.orig/policy_bans.html ServerAdmin/poli
  
  </div>
  
-diff -ruN --strip-trailing-cr ServerAdmin.orig/policy_bans_row.inc ServerAdmin/policy_bans_row.inc
---- ServerAdmin.orig/policy_bans_row.inc	2019-02-02 15:01:14.484571856 +0100
-+++ ServerAdmin/policy_bans_row.inc	2019-02-02 15:01:32.972537118 +0100
+diff -ruN ServerAdmin.orig/policy_bans_row.inc ServerAdmin/policy_bans_row.inc
+--- ServerAdmin.orig/policy_bans_row.inc	2022-12-22 01:43:19.509416046 +0100
++++ ServerAdmin/policy_bans_row.inc	2022-12-22 01:43:52.990541726 +0100
 @@ -1,15 +1,15 @@
  <tr>
    <!--<td><%ban.playername%></td>-->

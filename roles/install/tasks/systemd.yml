@@ -5,16 +5,16 @@
     state: latest
 
 - name: Install KF2 services
-  copy:
-    src: "{{ item }}"
-    dest: "/etc/systemd/system/{{ item }}"
+  template:
+    src: "{{ item }}.service.j2"
+    dest: "/etc/systemd/system/{{ item }}.service"
     owner: root
     group: root
     mode: '0644'
   loop:
-    - kf2.service
-    - kf2autokick.service
-    - kf2watchdog.service
+    - kf2
+    - kf2autokick
+    - kf2watchdog
   notify: Reload systemd configuration
 
 - name: Prepare systemd folder

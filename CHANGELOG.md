@@ -2,6 +2,7 @@
 
 * Add AlmaLinux, Fedora, Ubuntu support
 * Remove CentOS support
+* Add GeoIP links in webadmin player list
 * Port installer and uninstaller to Ansible
 * Add `killinuxfloor apply` command
 * Update Node.js to 18
