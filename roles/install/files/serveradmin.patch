@@ -54,16 +54,19 @@ diff -ruN ServerAdmin.orig/current_player_row.inc ServerAdmin/current_player_row
    <td class="right"><%player.kills%></td>
 diff -ruN ServerAdmin.orig/current_players_row.inc ServerAdmin/current_players_row.inc
 --- ServerAdmin.orig/current_players_row.inc	2022-12-22 01:43:19.509416046 +0100
-+++ ServerAdmin/current_players_row.inc	2022-12-22 02:12:24.402731660 +0100
-@@ -2,7 +2,7 @@
++++ ServerAdmin/current_players_row.inc	2022-12-22 03:03:42.614832917 +0100
+@@ -2,9 +2,9 @@
    <td style="background: <%player.teamcolor%>; color: <%player.teamcolor%>;"><%player.teamid%>&#160;</td>
    <td><%player.name%></td>
    <td class="right"><%player.ping%></td>
 -  <td><%player.ip%></td>
 +  <td><a href="https://geoiplookup.net/ip/<%player.ip%>" target="_blank"><%player.ip%></a></td>
    <td><%player.uniqueid%></td>
-   <td><%player.steamid%></td>
+-  <td><%player.steamid%></td>
++  <td><a href="https://steamcommunity.com/profiles/<%player.steamid%>" target="_blank"><%player.steamid%></a></td>
    <td><%player.steamname%></td>
+   <td class="center"><%player.admin%></td>
+   <td class="center"><%player.spectator%></td>
 diff -ruN ServerAdmin.orig/current_rules.inc ServerAdmin/current_rules.inc
 --- ServerAdmin.orig/current_rules.inc	2022-12-22 01:43:19.509416046 +0100
 +++ ServerAdmin/current_rules.inc	2022-12-22 01:43:52.990541726 +0100
