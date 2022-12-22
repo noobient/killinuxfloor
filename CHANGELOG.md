@@ -1,12 +1,14 @@
-## killinuxfloor 2.0 (TBD)
+## killinuxfloor 2.0 (2022-12-22)
 
+* Add option to install KF2 in Classic mode (Infinite Onslaught update)
 * Add AlmaLinux, Fedora, Ubuntu support
-* Remove CentOS support
+* Add watchdog support via `killinuxfloor watchdog`
 * Add GeoIP and Steam profile links in webadmin player list
-* Port installer and uninstaller to Ansible
 * Add `killinuxfloor apply` command
+* Port installer and uninstaller to Ansible
 * Update Node.js to 18
 * Update .NET to 6
+* Remove CentOS support
 
 ## killinuxfloor 1.1 (2019-05-15)
 
