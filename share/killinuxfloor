@@ -306,7 +306,7 @@ function add_bans ()
 
 function add_geoip ()
 {
-    GEOIP_CITY=$(curl -s "http://geoiplookup.net/ip/$(curl -s https://ipecho.net/plain)" | grep -A1 'City:' | grep -v 'City:' | sed -E 's@.*<div.*>(.*)</div>@\1@' || true)
+    GEOIP_CITY=$(curl -s "https://api.geoiplookup.net/?query=$(curl -s https://ipecho.net/plain)&json=true" | jq -r '.city') # stupid mcedit syntax hilight "
 
     if [ ! -z "${GEOIP_CITY+x}" ] && [ "${#GEOIP_CITY}" -gt 0 ]
     then
