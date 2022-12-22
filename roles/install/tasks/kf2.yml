@@ -4,3 +4,11 @@
 
 - include_tasks: kf2-classic.yml
   when: kf2_classic|bool
+
+- name: Backup webadmin files # noqa command-instead-of-module
+  command:
+    cmd: rsync --recursive --perms --owner --group --times --delete --force --itemize-changes . ../ServerAdmin.orig
+    chdir: "{{ steam_home }}/Steam/KF2Server/KFGame/Web/ServerAdmin"
+  register: webadmin_backup
+  changed_when: webadmin_backup.stdout_lines | length
+  when: not skip_kfgame

@@ -30,6 +30,7 @@
       - tar
       - "{% if ansible_os_family == 'RedHat' %}langpacks-en{% else %}language-pack-en{% endif %}"
       - sudo
+      - rsync
 
 - name: Create main Steam directory
   file:
