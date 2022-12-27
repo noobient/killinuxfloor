@@ -1,11 +1,13 @@
-# list of mutators you want to have installed
-# this won't load the mutators, just installs them
-# add entries in id format, one mutator per line
+# List of mutators you want to have installed.
+# This won't load the mutators, just installs them.
+# Add entries in "id" format, one mutator per line, without quotes.
+#
 # id = displayed on the workshop page in the url as ?id=
-# don't add spaces before or after
-# lines starting with # will be ignored
-# run "killinuxfloor stop && killinuxfloor config && killinuxfloor start" to apply your changes
-# when new mutators finish downloading, the server restarts once more
+#
+# Don't add spaces before or after.
+# Lines starting with # will be ignored.
+# Run "killinuxfloor apply" to apply your changes.
+# When new mutators finish downloading, the server restarts once more automatically.
 
 # Maxplayers Mutator
 2143104493

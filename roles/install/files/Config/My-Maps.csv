@@ -1,10 +1,13 @@
-# list of maps you want to have installed
-# add entries in id,name format, one map per line
+# List of maps you want to have installed.
+# Add entries in "id,name" format, one map per line, without quotes.
+#
 # - name = filename of the map without the .kfm extension
 # - id = displayed on the workshop page in the url as ?id=
-# don't add spaces before or after commas
-# lines starting with # will be ignored
-# run "killinuxfloor stop && killinuxfloor config && killinuxfloor start" to apply your changes
-# when new maps finish downloading, the server restarts once more
+#
+# Don't add spaces before or after commas.
+# Lines starting with # will be ignored.
+# Run "killinuxfloor apply" to apply your changes.
+# When new maps finish downloading, the server restarts automatically once more.
+
 838775511,KF-HorzineArenaRMEdition
 1210703659,KF-KillingPool

@@ -1,6 +1,7 @@
-# maps on the same line will be in the same cycle
-# separate maps with a comma
-# don't add spaces before or after commas
-# lines starting with # will be ignored
-# run "killinuxfloor stop && killinuxfloor config && killinuxfloor start" to apply your changes
+# Maps on the same line will be in the same cycle.
+# Separate maps with a comma.
+# Don't add spaces before or after commas.
+# Lines starting with # will be ignored.
+# Run "killinuxfloor apply" to apply your changes.
+
 KF-HorzineArenaRMEdition,KF-KrampusLair
