@@ -81,11 +81,37 @@ MUTATOR_LIST="${OWN_CONF}/My-Mutators.csv"
 CYCLE_LIST="${OWN_CONF}/My-Cycles.csv"
 CACHE_DIR="${HOME}/Steam/KF2Server/KFGame/Cache"
 WORKSHOP_DIR="${HOME}/Steam/KF2Server/Binaries/Win64/steamapps/workshop"
+WORKSHOP_CONTENT_DIR="${WORKSHOP_DIR}/content/232090"
 DEPOT_FILE="${HOME}/Steam/KF2Server/.DepotDownloader/depot.config"
 
 ECHO_DONE='echo -e \e[32mdone\e[0m.'
 CYCLE_START='GameMapCycles=(Maps=("'
 CYCLE_END='"))'
+
+# Associative arrays must be declared at the top level:
+# https://stackoverflow.com/a/12944790/1708230
+declare -A MAPS_WORKSHOP
+
+# Colors
+FG_BLACK=$(tput setaf 0)
+FG_RED=$(tput setaf 1)
+FG_GREEN=$(tput setaf 2)
+FG_YELLOW=$(tput setaf 3)
+FG_BLUE=$(tput setaf 4)
+FG_MAGENTA=$(tput setaf 5)
+FG_CYAN=$(tput setaf 6)
+FG_WHITE=$(tput setaf 7)
+
+BG_BLACK=$(tput setab 0)
+BG_RED=$(tput setab 1)
+BG_GREEN=$(tput setab 2)
+BG_YELLOW=$(tput setab 3)
+BG_BLUE=$(tput setab 4)
+BG_MAGENTA=$(tput setab 5)
+BG_CYAN=$(tput setab 6)
+BG_WHITE=$(tput setab 7)
+
+COLOR_RESET='\e[0m'
 
 function check_file ()
 {
@@ -210,17 +236,28 @@ function add_cycle_custom ()
 
 function find_maps_workshop ()
 {
-    MAPS_WORKSHOP=()
-
-    # parse workshop map list
-    echo -n 'Adding map cycle for all workshop maps... '
+    # Parse workshop map list
     check_file ${MAP_LIST}
     while read -r line
     do
-        [[ $line = \#* ]] || [ -z "$line" ] && continue # skip comments & empty lines
-        MAPS_WORKSHOP+=($(awk -F "," '{print $2}' <<< ${line}))
+        grep -Ei '^[0-9]+,KF-[-_a-z0-9]+$' <<< "${line}" > /dev/null || continue # skip if malformed
+        map_id=$(awk -F "," '{print $1}' <<< ${line})
+        map_name=$(awk -F "," '{print $2}' <<< ${line})
+        MAPS_WORKSHOP+=(["${map_id}"]="${map_name}")
     done < ${MAP_LIST}
-    ${ECHO_DONE}
+}
+
+function find_mutators_workshop ()
+{
+    MUTATORS_WORKSHOP=()
+
+    # Parse workshop mutator list
+    check_file ${MUTATOR_LIST}
+    while read -r line
+    do
+        grep -Ei '^[0-9]+$' <<< "${line}" > /dev/null || continue # skip if malformed
+        MUTATORS_WORKSHOP+=("${line}")
+    done < ${MUTATOR_LIST}
 }
 
 function find_maps_stock ()
@@ -228,13 +265,10 @@ function find_maps_stock ()
     MAPS_STOCK=()
 
     # cycle for stock maps
-    echo -n 'Adding map cycle for all stock maps... '
     for d in $(find ${MAP_DIR} -maxdepth 1 -mindepth 1 -type d -printf %f\\n | grep -v 'SDK\|Templates' | sort)
     do
         MAPS_STOCK+=("KF-${d}")
     done
-
-    ${ECHO_DONE}
 }
 
 function add_cycle_str ()
@@ -272,17 +306,31 @@ function add_cycles ()
 
     add_cycle_custom
 
+    echo -n 'Adding map cycle for all workshop maps... '
     find_maps_workshop
-    find_maps_stock
 
-    add_cycle_str "${MAPS_WORKSHOP[@]}"
+    # Convert the associative array to list
+    MAPS_WORKSHOP_FLAT=()
+    for map in "${MAPS_WORKSHOP[@]}"
+    do
+        MAPS_WORKSHOP_FLAT+=("${map}")
+    done
+
+    add_cycle_str "${MAPS_WORKSHOP_FLAT[@]}"
+    ${ECHO_DONE}
+
+    echo -n 'Adding map cycle for all stock maps... '
+    find_maps_stock
     add_cycle_str "${MAPS_STOCK[@]}"
+    ${ECHO_DONE}
 
     if [ ${#MAPS_WORKSHOP[@]} -gt 0 ]
     then
+        echo -n 'Adding map cycle for stock and workshop maps combined... '
         # bash 4 magic to sort an array, also concatenate the 2 arrays in-place while we're at it
         readarray -t MAPS_ALL < <(printf '%s\0' "${MAPS_STOCK[@]}" "${MAPS_WORKSHOP[@]}" | sort -z | xargs -0n1)
         add_cycle_str "${MAPS_ALL[@]}"
+        ${ECHO_DONE}
     fi
 }
 
@@ -537,7 +585,112 @@ function count_lines ()
     done < $1
 }
 
+# $1 = link
+# $2 = text
+# $3 = insert line break or not
+function echo_link ()
+{
+    if [ ${3} == true ]
+    then
+        echo -e "\e]8;;${1}\a${2}\e]8;;\a"
+    else
+        echo -en "\e]8;;${1}\a${2}\e]8;;\a"
+    fi
+}
+
 function check_workshop ()
+{
+    echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+    echo -e "${BG_CYAN}Subscribed workshop maps:                             ${COLOR_RESET}"
+    echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+
+    find_maps_workshop
+
+    for id in "${!MAPS_WORKSHOP[@]}"
+    do
+        WORKSHOP_STATE='✅'
+        CACHE_STATE='✅'
+        ITEM_COLOR=''
+
+        if [ ! -d "${WORKSHOP_CONTENT_DIR}/${id}" ] || [ ! $(find "${WORKSHOP_CONTENT_DIR}/${id}" -name '*.kfm' -type f | grep .) ]
+        then
+            WORKSHOP_STATE='❌'
+            ITEM_COLOR="${BG_RED}"
+        fi
+
+        if [ ! -d "${CACHE_DIR}/${id}" ] || [ ! $(find "${CACHE_DIR}/${id}" -name '*.kfm' -type f | grep .) ]
+        then
+            CACHE_STATE='❌'
+            ITEM_COLOR="${BG_RED}"
+        fi
+
+        # Coloring
+        echo -n "${ITEM_COLOR}"
+        # Padding
+        printf "%-16.16s%-32.32s" "${id}" "${MAPS_WORKSHOP[${id}]}"
+        # Color reset, status indicator
+        echo -en "${COLOR_RESET}${WORKSHOP_STATE}${CACHE_STATE}"
+        # Steam workshop link
+        echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${id}" "🌐" true
+    done
+
+    echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+    echo -e "${BG_CYAN}Subscribed workshop mutators:                         ${COLOR_RESET}"
+    echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+
+    find_mutators_workshop
+
+    for mut in "${MUTATORS_WORKSHOP[@]}"
+    do
+        WORKSHOP_STATE='✅'
+        CACHE_STATE='✅'
+        ITEM_COLOR=''
+
+        if [ ! -d "${WORKSHOP_CONTENT_DIR}/${mut}" ]
+        then
+            WORKSHOP_STATE='❌'
+            ITEM_COLOR="${BG_RED}"
+            mut_file=''
+        else
+            mut_file=$(find "${WORKSHOP_CONTENT_DIR}/${mut}" -name '*.u' -type f -printf "%f\n" | head -1)
+        fi
+
+        if [ ! $(grep . <<< ${mut_file}) ]
+        then
+            WORKSHOP_STATE='❌'
+            ITEM_COLOR="${BG_RED}"
+        fi
+
+        if [ ! -d "${CACHE_DIR}/${mut}" ] || [ ! $(find "${CACHE_DIR}/${mut}" -name '*.u' -type f | grep .) ]
+        then
+            CACHE_STATE='❌'
+            ITEM_COLOR="${BG_RED}"
+        fi
+
+        # Coloring
+        echo -n "${ITEM_COLOR}"
+
+        # Padding
+        printf "%-16.16s" "${mut}"
+
+        if [ -z ${mut_file} ]
+        then
+            printf "%-32.32s" 'N/A'
+        else
+            printf "%-32.32s" "${mut_file%.*}"
+        fi
+
+        # Color reset, status indicator
+        echo -en "${COLOR_RESET}${WORKSHOP_STATE}${CACHE_STATE}"
+        # Steam workshop link
+        echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${mut}" "🌐" true
+    done
+
+    #echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+    #echo '(Legend: ID, name, download state, cache state, web)'
+}
+
+function check_workshop_old ()
 {
     echo -n "Checking Workshop subscriptions... "
 
@@ -555,10 +708,9 @@ function check_workshop ()
     WORKSHOP_COUNT=0
     CACHE_COUNT=0
 
-    WORKSHOP_DL="${WORKSHOP_DIR}/content/232090"
-    if [ -d ${WORKSHOP_DL} ]
+    if [ -d ${WORKSHOP_CONTENT_DIR} ]
     then
-        WORKSHOP_COUNT=$(ls -1 ${WORKSHOP_DL} | wc -l)
+        WORKSHOP_COUNT=$(ls -1 ${WORKSHOP_CONTENT_DIR} | wc -l)
     fi
 
     if [ ${WORKSHOP_COUNT} -eq ${SUB_COUNT} ]

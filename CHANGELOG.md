@@ -1,3 +1,7 @@
+## killinuxfloor 2.1 (TBD)
+
+* Add many details to `killinuxfloor status workshop` report
+
 ## killinuxfloor 2.0 (2022-12-22)
 
 * Add option to install KF2 in Classic mode (Infinite Onslaught update)
