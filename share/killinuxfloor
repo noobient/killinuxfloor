@@ -612,7 +612,7 @@ function check_workshop ()
         CACHE_STATE='✅'
         ITEM_COLOR=''
 
-        if [ ! -d "${WORKSHOP_CONTENT_DIR}/${id}" ] || [ ! $(find "${WORKSHOP_CONTENT_DIR}/${id}" -name '*.kfm' -type f | grep .) ]
+        if [ ! -d "${WORKSHOP_CONTENT_DIR}/${id}" ] || [ ! $(find "${WORKSHOP_CONTENT_DIR}/${id}" -name '*.kfm' -type f | head -1 | grep .) ]
         then
             WORKSHOP_STATE='❌'
             ITEM_COLOR="${BG_RED}"
@@ -661,7 +661,7 @@ function check_workshop ()
             ITEM_COLOR="${BG_RED}"
         fi
 
-        if [ ! -d "${CACHE_DIR}/${mut}" ] || [ ! $(find "${CACHE_DIR}/${mut}" -name '*.u' -type f | grep .) ]
+        if [ ! -d "${CACHE_DIR}/${mut}" ] || [ ! $(find "${CACHE_DIR}/${mut}" -name '*.u' -type f | head -1 | grep .) ]
         then
             CACHE_STATE='❌'
             ITEM_COLOR="${BG_RED}"
