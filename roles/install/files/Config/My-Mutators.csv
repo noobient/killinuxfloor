@@ -9,11 +9,14 @@
 # Run "killinuxfloor apply" to apply your changes.
 # When new mutators finish downloading, the server restarts once more automatically.
 
-# Maxplayers Mutator
-2143104493
+# Maxplayers Mutator - replaced by UKFP
+#2143104493
 
-# Classic Scoreboard
-1132884083
+# Classic Scoreboard - deleted from workshop due to bug
+#1132884083
 
 # Display Damage
 2625647922
+
+# UKFP
+2875147606
