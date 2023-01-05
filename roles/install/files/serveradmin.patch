@@ -115,7 +115,7 @@ diff -ruN ServerAdmin.orig/policy_bans.html ServerAdmin/policy_bans.html
  
  <div id="content">
  
-+<p>List of the currently applied bans. Use the <code>killinuxfloor ban</code> command to add or remove bans. Apply your changes with <code>killinuxfloor config && killinuxfloor restart</code>.</p>
++<p>List of the currently applied bans. Use the <code>killinuxfloor ban</code> command to add or remove bans. Apply your changes with <code>killinuxfloor apply</code>.</p>
 +
  <h2><%page.title%></h2>
  
