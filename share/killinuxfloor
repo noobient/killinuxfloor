@@ -861,7 +861,7 @@ function add_ban ()
     BAN_STR="BannedIDs=(Uid=(A=${ID3},B=17825793))"
 
     # simple way to skip if already added
-    grep ^${BAN_STR} ${OWN_CONF}/My-LinuxServer-KFGame.ini > /dev/null || sed -i "s/\[Engine.AccessControl\]/&\n${BAN_STR}/" ${OWN_CONF}/My-LinuxServer-KFGame.ini
+    grep ^${BAN_STR} ${OWN_CONF}/My-LinuxServer-KFGame.ini > /dev/null || sed -i --follow-symlinks "s/\[Engine.AccessControl\]/&\n${BAN_STR}/" ${OWN_CONF}/My-LinuxServer-KFGame.ini
 
     ${ECHO_DONE}
     echo 'New list of banned users:'
