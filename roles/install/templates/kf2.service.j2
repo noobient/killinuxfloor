@@ -23,7 +23,8 @@ ExecStartPre=/bin/sh -c '/bin/dos2unix /home/steam/Steam/KF2Server/KFGame/Web/Se
 ExecStartPre=-/bin/patch --forward -r /tmp/kf2-patch.rej -p1 -d /home/steam/Steam/KF2Server/KFGame/Web/ServerAdmin -i /etc/systemd/system/kf2.service.d/serveradmin.patch
 {% endif %}
 # make sure KF2 uses the Steam provided library, not the ones it bundles
-ExecStartPre=/bin/ln -sTf /home/steam/Steam/linux64/steamclient.so /home/steam/Steam/KF2Server/Binaries/Win64/lib64/steamclient.so
+# update: this breaks KF2 as of 2023-02-03
+#ExecStartPre=/bin/ln -sTf /home/steam/Steam/linux64/steamclient.so /home/steam/Steam/KF2Server/Binaries/Win64/lib64/steamclient.so
 # these appear to be gone, thankfully
 #ExecStartPre=/bin/ln -sTf /home/steam/Steam/linux64/steamclient.so /home/steam/Steam/KF2Server/linux64/steamclient.so
 #ExecStartPre=/bin/ln -sTf /home/steam/Steam/linux64/steamclient.so /home/steam/Steam/KF2Server/steamclient.so
