@@ -10,6 +10,9 @@
 ; allow systemd to create log files in steam's home
 (allow init_t user_home_t (file (create write append lock)))
 
+; allow systemd to ioctl on startup config
+(allow init_t user_home_t (file (ioctl)))
+
 ; allow systemd to manage folders in steam's home
 (allow init_t user_home_t (dir (create rename rmdir reparent)))
 
