@@ -40,7 +40,7 @@ function install_ansible ()
         sudo add-apt-repository -y ppa:ansible/ansible > /dev/null
     fi
 
-    sudo "${PKG_MGR}" -y -q install ansible > /dev/null
+    sudo DEBIAN_FRONTEND=noninteractive "${PKG_MGR}" -y -q install ansible > /dev/null
     ansible-galaxy install --force -r requirements.yml
 }
 
@@ -53,7 +53,7 @@ function find_ip ()
         IP_PKG='iproute'
     fi
 
-    sudo "${PKG_MGR}" -y -q install "${IP_PKG}" > /dev/null
+    sudo DEBIAN_FRONTEND=noninteractive "${PKG_MGR}" -y -q install "${IP_PKG}" > /dev/null
 
     export IP_ADDR=$(ip -4 a s | grep inet | grep -v '127\.0\.0' | awk '{print $2}' | cut -d'/' -f1)
 }
