@@ -16,6 +16,7 @@
     packages:
       - lib32gcc-s1
       - libcurl4
+      - curl
   when: ansible_os_family == 'Debian'
 
 - name: Install various tools
