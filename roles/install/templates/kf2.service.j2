@@ -28,6 +28,12 @@ ExecStartPre=-/bin/patch --forward -r /tmp/kf2-patch.rej -p1 -d /home/steam/Stea
 # these appear to be gone, thankfully
 #ExecStartPre=/bin/ln -sTf /home/steam/Steam/linux64/steamclient.so /home/steam/Steam/KF2Server/linux64/steamclient.so
 #ExecStartPre=/bin/ln -sTf /home/steam/Steam/linux64/steamclient.so /home/steam/Steam/KF2Server/steamclient.so
+# delete all bundled libs, use Steam's only, it MUST be in this specific magic dir, because reasons
+ExecStartPre=/bin/rm -f /home/steam/Steam/KF2Server/steamclient.so
+ExecStartPre=/bin/rm -f /home/steam/Steam/KF2Server/Binaries/Win64/lib64/steamclient.so
+ExecStartPre=/bin/rm -f /home/steam/Steam/KF2Server/linux64/steamclient.so
+ExecStartPre=/bin/mkdir -p /home/steam/.steam/sdk64
+ExecStartPre=/bin/ln -sTf /home/steam/Steam/linux64/steamclient.so /home/steam/.steam/sdk64/steamclient.so
 # make sure the executables are actually executable
 ExecStartPre=/bin/chmod +x /home/steam/Steam/KF2Server/Binaries/Win64/KFGameSteamServer.bin.x86_64
 ExecStartPre=/bin/chmod +x /home/steam/Steam/KF2Server/Binaries/Win64/lib64/libSDL2-2.0.so.0
