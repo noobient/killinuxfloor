@@ -20,8 +20,7 @@ jobs:
             CONT_ID=$(podman run --rm -v ${{ github.workspace }}:/repo -v /sys/fs/cgroup:/sys/fs/cgroup:ro
             --tmpfs /tmp --tmpfs /run --privileged --detach bviktor/ansible-systemd-almalinux:8) &&
             podman exec ${CONT_ID} /bin/bash -c
-            "if [ -f requirements.yml ]; then ansible-galaxy role install --force -r requirements.yml -p ..; fi &&
-            ./install.sh --extra-vars 'skip_kfgame=true' <<< y &&
+            "./install.sh --extra-vars 'skip_kfgame=true' <<< y &&
             dnf -y install firewalld && systemctl start firewalld.service &&
             ./uninstall.sh <<< y &&
             ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y" &&
