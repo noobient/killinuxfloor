@@ -955,6 +955,9 @@ fi
 # do away with 'changed on disk' warnings once and for all
 sudo /bin/systemctl daemon-reload
 
+# Add steamcmd.sh to PATH - symlinking won't work, it's trying to be too smart.
+PATH="${PATH}:${HOME}/Steam"
+
 # main()
 case $1 in
     start)

@@ -26,4 +26,3 @@
     - { target: '{{ steam_home }}/killinuxfloor/share/killinuxfloor', link: 'killinuxfloor' }
     - { target: '{{ steam_home }}/killinuxfloor/share/kf2watchdog', link: 'kf2watchdog' }
     - { target: '{{ steam_home }}/bin/killinuxfloor', link: 'klf' }
-    - { target: '{{ steam_home }}/Steam/steamcmd.sh', link: 'steamcmd.sh' }
