@@ -1,6 +1,13 @@
 ## killinuxfloor 2.1 (TBD)
 
 * Add many details to `killinuxfloor status workshop` report
+* Add Unofficial Killing Floor 2 Patch
+* Fix Steam Workshop downloads
+* Fix various issues when installing in a container
+* Fix missing workshop items when trailing newline is missing in config files
+* Fix various commands overriding symlinks in config
+* Fix SELinux deny actions on startup config
+* Fix Ansible Galaxy dependencies being downloaded twice during install
 
 ## killinuxfloor 2.0 (2022-12-22)
 
