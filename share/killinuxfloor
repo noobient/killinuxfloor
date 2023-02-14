@@ -152,6 +152,11 @@ function sanitize_config ()
         if [ $(check_newline "${OWN_CONF}/${CONF_FILE}") -eq 0 ]
         then
             echo '' >> "${OWN_CONF}/${CONF_FILE}"
+
+            if [ "${CONF_FILE}" == 'My-Startup.conf' ]
+            then
+                sudo /bin/systemctl daemon-reload
+            fi
         fi
     done
     ${ECHO_DONE}
