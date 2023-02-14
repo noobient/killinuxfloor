@@ -130,22 +130,8 @@ function check_newline()
     fi
 }
 
-function sanitize_config ()
+function sanitize_own_config ()
 {
-    # cleanup
-    echo -n 'Making sure internal INI files are formatted properly... '
-    for INI in 'LinuxServer-KFEngine.ini' 'LinuxServer-KFGame.ini'
-    do
-        # delete repeated newlines
-        cp ${LIVE_CONF}/${INI} ${LIVE_CONF}/${INI}.tmp
-        cat -s ${LIVE_CONF}/${INI}.tmp > ${LIVE_CONF}/${INI}
-        rm ${LIVE_CONF}/${INI}.tmp
-
-        # get rid of spaces around = added by crudini
-        sed -i 's/ = /=/' ${LIVE_CONF}/${INI}
-    done
-    ${ECHO_DONE}
-
     echo -n 'Making sure own config files are formatted properly... '
     for CONF_FILE in "${CONF_LIST[@]}"
     do
@@ -158,6 +144,23 @@ function sanitize_config ()
                 sudo /bin/systemctl daemon-reload
             fi
         fi
+    done
+    ${ECHO_DONE}
+}
+
+function sanitize_internal_config ()
+{
+    # cleanup
+    echo -n 'Making sure internal INI files are formatted properly... '
+    for INI in 'LinuxServer-KFEngine.ini' 'LinuxServer-KFGame.ini'
+    do
+        # delete repeated newlines
+        cp ${LIVE_CONF}/${INI} ${LIVE_CONF}/${INI}.tmp
+        cat -s ${LIVE_CONF}/${INI}.tmp > ${LIVE_CONF}/${INI}
+        rm ${LIVE_CONF}/${INI}.tmp
+
+        # get rid of spaces around = added by crudini
+        sed -i 's/ = /=/' ${LIVE_CONF}/${INI}
     done
     ${ECHO_DONE}
 }
@@ -390,6 +393,8 @@ function add_geoip ()
 
 function regen_config ()
 {
+    sanitize_own_config
+
     merge_config
     reset_subscriptions
     subscribe_mutators
@@ -401,7 +406,7 @@ function regen_config ()
     delete_cycles
     add_cycles
 
-    sanitize_config
+    sanitize_internal_config
 
     echo -e "\e[32mKilling Floor 2 server configuration applied successfully!\e[0m"
 }
