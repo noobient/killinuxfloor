@@ -83,6 +83,7 @@ CACHE_DIR="${HOME}/Steam/KF2Server/KFGame/Cache"
 WORKSHOP_DIR="${HOME}/Steam/KF2Server/Binaries/Win64/steamapps/workshop"
 WORKSHOP_CONTENT_DIR="${WORKSHOP_DIR}/content/232090"
 DEPOT_FILE="${HOME}/Steam/KF2Server/.DepotDownloader/depot.config"
+CONF_LIST=("autokick.json" "My-Cycles.csv" "My-KFWebAdmin.ini" "My-KFWeb.ini" "My-LinuxServer-KFEngine.ini" "My-LinuxServer-KFGame.ini" "My-Maps.csv" "My-Mutators.csv" "My-Startup.conf")
 
 ECHO_DONE='echo -e \e[32mdone\e[0m.'
 CYCLE_START='GameMapCycles=(Maps=("'
@@ -119,10 +120,20 @@ function check_file ()
     test -e ${FILE_MISSING} || exit 2
 }
 
+function check_newline()
+{
+    if [[ $(tail -c1 "${1}" | wc -l) -gt 0 ]]
+    then
+        echo 1
+    else
+        echo 0
+    fi
+}
+
 function sanitize_config ()
 {
     # cleanup
-    echo -n 'Making sure INI files are formatted properly... '
+    echo -n 'Making sure internal INI files are formatted properly... '
     for INI in 'LinuxServer-KFEngine.ini' 'LinuxServer-KFGame.ini'
     do
         # delete repeated newlines
@@ -132,6 +143,16 @@ function sanitize_config ()
 
         # get rid of spaces around = added by crudini
         sed -i 's/ = /=/' ${LIVE_CONF}/${INI}
+    done
+    ${ECHO_DONE}
+
+    echo -n 'Making sure own config files are formatted properly... '
+    for CONF_FILE in "${CONF_LIST[@]}"
+    do
+        if [ $(check_newline "${OWN_CONF}/${CONF_FILE}") -eq 0 ]
+        then
+            echo '' >> "${OWN_CONF}/${CONF_FILE}"
+        fi
     done
     ${ECHO_DONE}
 }
