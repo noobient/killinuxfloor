@@ -84,6 +84,7 @@ WORKSHOP_DIR="${HOME}/Steam/KF2Server/Binaries/Win64/steamapps/workshop"
 WORKSHOP_CONTENT_DIR="${WORKSHOP_DIR}/content/232090"
 DEPOT_FILE="${HOME}/Steam/KF2Server/.DepotDownloader/depot.config"
 CONF_LIST=("autokick.json" "My-Cycles.csv" "My-KFWebAdmin.ini" "My-KFWeb.ini" "My-LinuxServer-KFEngine.ini" "My-LinuxServer-KFGame.ini" "My-Maps.csv" "My-Mutators.csv" "My-Startup.conf")
+STARTUP_CONF="${OWN_CONF}/My-Startup.conf"
 
 ECHO_DONE='echo -e \e[32mdone\e[0m.'
 CYCLE_START='GameMapCycles=(Maps=("'
@@ -629,11 +630,21 @@ function echo_link ()
     fi
 }
 
+# $1:
+# - 0 = print details report
+# - 1 = return boolean download state
+#
+# Return value:
+# - 0 = some items are missing
+# - 1 = all items are downloaded
 function check_workshop ()
 {
-    echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
-    echo -e "${BG_CYAN}Subscribed workshop maps:                             ${COLOR_RESET}"
-    echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+    if [ "${1}" -eq 0 ]
+    then
+        echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+        echo -e "${BG_CYAN}Subscribed workshop maps:                             ${COLOR_RESET}"
+        echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+    fi
 
     find_maps_workshop
 
@@ -645,29 +656,47 @@ function check_workshop ()
 
         if [ ! -d "${WORKSHOP_CONTENT_DIR}/${id}" ] || [ ! $(find "${WORKSHOP_CONTENT_DIR}/${id}" -name '*.kfm' -type f | head -1 | grep .) ]
         then
+            if [ "${1}" -eq 1 ]
+            then
+                echo 0
+                return
+            fi
+
             WORKSHOP_STATE='❌'
             ITEM_COLOR="${BG_RED}"
         fi
 
         if [ ! -d "${CACHE_DIR}/${id}" ] || [ ! $(find "${CACHE_DIR}/${id}" -name '*.kfm' -type f | grep .) ]
         then
+            if [ "${1}" -eq 1 ]
+            then
+                echo 0
+                return
+            fi
+
             CACHE_STATE='❌'
             ITEM_COLOR="${BG_RED}"
         fi
 
-        # Coloring
-        echo -n "${ITEM_COLOR}"
-        # Padding
-        printf "%-16.16s%-32.32s" "${id}" "${MAPS_WORKSHOP[${id}]}"
-        # Color reset, status indicator
-        echo -en "${COLOR_RESET}${WORKSHOP_STATE}${CACHE_STATE}"
-        # Steam workshop link
-        echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${id}" "🌐" true
+        if [ "${1}" -eq 0 ]
+        then
+            # Coloring
+            echo -n "${ITEM_COLOR}"
+            # Padding
+            printf "%-16.16s%-32.32s" "${id}" "${MAPS_WORKSHOP[${id}]}"
+            # Color reset, status indicator
+            echo -en "${COLOR_RESET}${WORKSHOP_STATE}${CACHE_STATE}"
+            # Steam workshop link
+            echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${id}" "🌐" true
+        fi
     done
 
-    echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
-    echo -e "${BG_CYAN}Subscribed workshop mutators:                         ${COLOR_RESET}"
-    echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+    if [ "${1}" -eq 0 ]
+    then
+        echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+        echo -e "${BG_CYAN}Subscribed workshop mutators:                         ${COLOR_RESET}"
+        echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+    fi
 
     find_mutators_workshop
 
@@ -679,6 +708,12 @@ function check_workshop ()
 
         if [ ! -d "${WORKSHOP_CONTENT_DIR}/${mut}" ]
         then
+            if [ "${1}" -eq 1 ]
+            then
+                echo 0
+                return
+            fi
+
             WORKSHOP_STATE='❌'
             ITEM_COLOR="${BG_RED}"
             mut_file=''
@@ -688,37 +723,57 @@ function check_workshop ()
 
         if [ ! $(grep . <<< ${mut_file}) ]
         then
+            if [ "${1}" -eq 1 ]
+            then
+                echo 0
+                return
+            fi
+
             WORKSHOP_STATE='❌'
             ITEM_COLOR="${BG_RED}"
         fi
 
         if [ ! -d "${CACHE_DIR}/${mut}" ] || [ ! $(find "${CACHE_DIR}/${mut}" -name '*.u' -type f | head -1 | grep .) ]
         then
+            if [ "${1}" -eq 1 ]
+            then
+                echo 0
+                return
+            fi
+
             CACHE_STATE='❌'
             ITEM_COLOR="${BG_RED}"
         fi
 
-        # Coloring
-        echo -n "${ITEM_COLOR}"
-
-        # Padding
-        printf "%-16.16s" "${mut}"
-
-        if [ -z ${mut_file} ]
+        if [ "${1}" -eq 0 ]
         then
-            printf "%-32.32s" 'N/A'
-        else
-            printf "%-32.32s" "${mut_file%.*}"
-        fi
+            # Coloring
+            echo -n "${ITEM_COLOR}"
 
-        # Color reset, status indicator
-        echo -en "${COLOR_RESET}${WORKSHOP_STATE}${CACHE_STATE}"
-        # Steam workshop link
-        echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${mut}" "🌐" true
+            # Padding
+            printf "%-16.16s" "${mut}"
+
+            if [ -z ${mut_file} ]
+            then
+                printf "%-32.32s" 'N/A'
+            else
+                printf "%-32.32s" "${mut_file%.*}"
+            fi
+
+            # Color reset, status indicator
+            echo -en "${COLOR_RESET}${WORKSHOP_STATE}${CACHE_STATE}"
+            # Steam workshop link
+            echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${mut}" "🌐" true
+        fi
     done
 
     #echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
     #echo '(Legend: ID, name, download state, cache state, web)'
+
+    if [ "${1}" -eq 1 ]
+    then
+        echo 1
+    fi
 }
 
 function check_workshop_old ()
@@ -797,7 +852,7 @@ function check_status ()
             ;;
 
         workshop)
-            check_workshop
+            check_workshop 0
             ;;
 
         *)
@@ -970,6 +1025,79 @@ function handle_watchdog ()
     esac
 }
 
+function startup_params_exist ()
+{
+    check_file "${STARTUP_CONF}"
+    grep '^Environment="KF2_PARAMS=.\+"$' ${STARTUP_CONF} > /dev/null && echo 1 || echo 0
+}
+
+function find_startup_map ()
+{
+    if [ $(startup_params_exist) -eq 0 ]
+    then
+        echo 0
+    else
+        echo $(grep '^Environment="KF2_PARAMS=.\+"$' "${STARTUP_CONF}" | sed 's@^Environment="KF2_PARAMS=@@' | cut -d'?' -f1)
+    fi
+}
+
+function startup_map_is_stock ()
+{
+    # If no params are set, it can only be a stock map, most likely Biotics Lab
+    STARTUP_MAP=$(find_startup_map)
+    if [ "${STARTUP_MAP}" == '0' ] || [ "${STARTUP_MAP}" == '' ]
+    then
+        echo 1
+        return
+    fi
+
+    find_maps_stock
+
+    for map in "${MAPS_STOCK[@]}"
+    do
+        if [ "${map}" == "${STARTUP_MAP}" ]
+        then
+            echo 1
+            return
+        fi
+    done
+
+    echo 0
+}
+
+function startup_mutators_exist ()
+{
+    if [ $(startup_params_exist) -eq 0 ]
+    then
+        echo 0
+        return
+    fi
+
+    grep '^Environment="KF2_PARAMS=.*?[mM]utator=.\+"$' "${STARTUP_CONF}" > /dev/null && echo 1 || echo 0
+}
+
+function handle_api ()
+{
+    case $1 in
+        startup)
+            # Return values:
+            # - 0: startup params shouldn't be used yet
+            # - 1: startup params can be used
+
+            # Custom startup map + workshop downloads are incomplete OR custom startup mutators + workshop downloads are incomplete
+            if ([ $(startup_map_is_stock) -eq 0 ] && [ $(check_workshop 1) -eq 0 ]) || ([ $(startup_mutators_exist) -eq 1 ] && [ $(check_workshop 1) -eq 0 ])
+            then
+                echo 0
+            else
+                echo 1
+            fi
+            ;;
+
+        *)
+            exit 1
+    esac
+}
+
 # determine if classic install or current
 CLASSIC_MODE=0
 if [ -f "${DEPOT_FILE}" ]
@@ -1071,6 +1199,10 @@ case $1 in
 
     watchdog)
         handle_watchdog $2
+        ;;
+
+    api)
+        handle_api $2
         ;;
 
     help)
