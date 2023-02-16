@@ -636,9 +636,9 @@ function check_workshop ()
 {
     if [ "${1}" -eq 0 ]
     then
-        echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
-        echo -e "${BG_CYAN}Subscribed workshop maps:                             ${COLOR_RESET}"
-        echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
+        echo -e "${BG_GREEN}Subscribed workshop maps:                             ${COLOR_RESET}"
+        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
     fi
 
     find_maps_workshop
@@ -688,9 +688,9 @@ function check_workshop ()
 
     if [ "${1}" -eq 0 ]
     then
-        echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
-        echo -e "${BG_CYAN}Subscribed workshop mutators:                         ${COLOR_RESET}"
-        echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
+        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
+        echo -e "${BG_GREEN}Subscribed workshop mutators:                         ${COLOR_RESET}"
+        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
     fi
 
     find_mutators_workshop
@@ -764,6 +764,93 @@ function check_workshop ()
 
     #echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
     #echo '(Legend: ID, name, download state, cache state, web)'
+
+    # Find items that are present but not subscribed to anymore
+    if [ "${1}" -eq 0 ]
+    then
+	UNKNOWN_WORKSHOP=()
+
+        for dl_item in $(find ${WORKSHOP_CONTENT_DIR} -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
+        do
+            SUBBED_ITEM=0
+
+            for dl_mut in "${MUTATORS_WORKSHOP[@]}"
+            do
+                if [ "${dl_item}" == "${dl_mut}" ]
+                then
+                    SUBBED_ITEM=1
+                fi
+            done
+
+            for dl_map in "${!MAPS_WORKSHOP[@]}"
+            do
+                if [ "${dl_item}" == "${dl_map}" ]
+                then
+                    SUBBED_ITEM=1
+                fi
+            done
+
+            if [ "${SUBBED_ITEM}" -eq 0 ]
+            then
+                UNKNOWN_WORKSHOP+=("${dl_item}")
+            fi
+        done
+
+
+        if [ "${#UNKNOWN_WORKSHOP[@]}" -gt 0 ]
+        then
+            echo -e "${FG_RED}------------------------------------------------------${COLOR_RESET}"
+            echo -e "${BG_RED}Unknown items in workshop: (purge with ${BG_CYAN}klf purge <id>${BG_RED})${COLOR_RESET}"
+            echo -e "${FG_RED}------------------------------------------------------${COLOR_RESET}"
+
+            for item in "${UNKNOWN_WORKSHOP[@]}"
+            do
+                echo "${item}"
+            done
+        fi
+
+        UNKNOWN_CACHE=()
+
+        for dl_item in $(find ${CACHE_DIR} -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
+        do
+            SUBBED_ITEM=0
+
+            for dl_mut in "${MUTATORS_WORKSHOP[@]}"
+            do
+                if [ "${dl_item}" == "${dl_mut}" ]
+                then
+                    SUBBED_ITEM=1
+                fi
+            done
+
+            for dl_map in "${!MAPS_WORKSHOP[@]}"
+            do
+                if [ "${dl_item}" == "${dl_map}" ]
+                then
+                    SUBBED_ITEM=1
+                fi
+            done
+
+            if [ "${SUBBED_ITEM}" -eq 0 ]
+            then
+                UNKNOWN_CACHE+=("${dl_item}")
+            fi
+        done
+
+        if [ "${#UNKNOWN_CACHE[@]}" -gt 0 ]
+        then
+            echo -e "${FG_RED}------------------------------------------------------${COLOR_RESET}"
+            echo -e "${BG_RED}Unknown items in cache: (purge with ${BG_CYAN}klf purge <id>${BG_RED})   ${COLOR_RESET}"
+            echo -e "${FG_RED}------------------------------------------------------${COLOR_RESET}"
+
+            for item in "${UNKNOWN_CACHE[@]}"
+            do
+                echo "${item}"
+            done
+        fi
+
+        echo
+    fi
 
     if [ "${1}" -eq 1 ]
     then
