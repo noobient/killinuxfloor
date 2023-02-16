@@ -1091,8 +1091,12 @@ function gen_systemd_config ()
 {
     echo '[Service]'
 
-    # Custom startup map + workshop downloads are incomplete OR custom startup mutators + workshop downloads are incomplete
-    if ([ $(startup_map_is_stock) -eq 0 ] && [ $(check_workshop 1) -eq 0 ]) || ([ $(startup_mutators_exist) -eq 1 ] && [ $(check_workshop 1) -eq 0 ])
+    # Custom startup map is used but workshop downloads are incomplete
+    # OR custom startup mutators are used but workshop downloads are incomplete
+    # OR startup args are missing or malformed
+    if ([ $(startup_map_is_stock) -eq 0 ] && [ $(check_workshop 1) -eq 0 ]) || \
+       ([ $(startup_mutators_exist) -eq 1 ] && [ $(check_workshop 1) -eq 0 ]) || \
+       [ $(get_startup_args) == '0' ]
     then
         echo 'Environment="KF2_PARAMS="'
     else
