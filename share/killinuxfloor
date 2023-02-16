@@ -85,6 +85,7 @@ WORKSHOP_CONTENT_DIR="${WORKSHOP_DIR}/content/232090"
 DEPOT_FILE="${HOME}/Steam/KF2Server/.DepotDownloader/depot.config"
 CONF_LIST=("autokick.json" "My-Cycles.csv" "My-KFWebAdmin.ini" "My-KFWeb.ini" "My-LinuxServer-KFEngine.ini" "My-LinuxServer-KFGame.ini" "My-Maps.csv" "My-Mutators.csv" "My-Startup.conf")
 STARTUP_CONF="${OWN_CONF}/My-Startup.conf"
+SYSTEMD_CONF='/etc/systemd/system/kf2.service.d/kf2.service.conf'
 
 ECHO_DONE='echo -e \e[32mdone\e[0m.'
 CYCLE_START='GameMapCycles=(Maps=("'
@@ -409,6 +410,8 @@ function regen_config ()
 
     sanitize_internal_config
 
+    apply_systemd_config 1
+
     echo -e "\e[32mKilling Floor 2 server configuration applied successfully!\e[0m"
 }
 
@@ -450,6 +453,7 @@ function purge_map ()
 
 function start_kf2 ()
 {
+    apply_systemd_config 0
     sudo /bin/systemctl start kf2.service
 }
 
@@ -461,14 +465,6 @@ function stop_kf2 ()
 function reset_kf2 ()
 {
     stop_kf2
-
-    # need to ignore custom startup, because it may specify workshop map
-    # but we won't have workshop maps because we nuke the workshop dir
-    # so the service would keep failing infinitely
-    check_file ${OWN_CONF}/My-Startup.conf
-    mv -f ${OWN_CONF}/My-Startup.conf ${OWN_CONF}/My-Startup.conf.tmp
-    touch ${OWN_CONF}/My-Startup.conf
-    sudo /bin/systemctl daemon-reload
 
     # nuke old config
     rm -f ${LIVE_CONF}/KF*.ini
@@ -489,6 +485,8 @@ function reset_kf2 ()
         rm -rf ${WORKSHOP_DIR}/*
         ${ECHO_DONE}
     fi
+
+    apply_systemd_config 1
 
     echo -n 'Waiting for default INI files to be generated... '
     start_kf2
@@ -515,9 +513,6 @@ function reset_kf2 ()
     crudini --set "${LIVE_CONF}/KFWeb.ini" IpDrv.WebServer bEnabled false
 
     stop_kf2
-    rm -f ${OWN_CONF}/My-Startup.conf
-    mv -f ${OWN_CONF}/My-Startup.conf.tmp ${OWN_CONF}/My-Startup.conf
-    sudo /bin/systemctl daemon-reload
 
     ${ECHO_DONE}
 
@@ -1025,19 +1020,32 @@ function handle_watchdog ()
     esac
 }
 
-function startup_params_exist ()
+function get_startup_args ()
 {
     check_file "${STARTUP_CONF}"
-    grep '^Environment="KF2_PARAMS=.\+"$' ${STARTUP_CONF} > /dev/null && echo 1 || echo 0
+
+    # Pattern is KF- and then at least one alphanumeric character.
+    # Gotta do these quirks to ensure there's only one line fetched.
+    RET=0
+    grep -E '^KF-[[:alnum:]]+.*$' "${STARTUP_CONF}" > /dev/null || RET=1
+
+    if [ "${RET}" -eq 0 ]
+    then
+        grep -E '^KF-[[:alnum:]]+.*$' "${STARTUP_CONF}" | head -1
+    else
+        echo 0
+    fi
 }
 
 function find_startup_map ()
 {
-    if [ $(startup_params_exist) -eq 0 ]
+    STARTUP_ARGS=$(get_startup_args)
+
+    if [ "$STARTUP_ARGS}" == '0' ]
     then
         echo 0
     else
-        echo $(grep '^Environment="KF2_PARAMS=.\+"$' "${STARTUP_CONF}" | sed 's@^Environment="KF2_PARAMS=@@' | cut -d'?' -f1)
+        echo $(echo ${STARTUP_ARGS} | cut -d'?' -f1)
     fi
 }
 
@@ -1045,7 +1053,8 @@ function startup_map_is_stock ()
 {
     # If no params are set, it can only be a stock map, most likely Biotics Lab
     STARTUP_MAP=$(find_startup_map)
-    if [ "${STARTUP_MAP}" == '0' ] || [ "${STARTUP_MAP}" == '' ]
+
+    if [ "${STARTUP_MAP}" == '0' ]
     then
         echo 1
         return
@@ -1067,35 +1076,44 @@ function startup_map_is_stock ()
 
 function startup_mutators_exist ()
 {
-    if [ $(startup_params_exist) -eq 0 ]
+    STARTUP_ARGS=$(get_startup_args)
+
+    if [ "$STARTUP_ARGS}" == '0' ]
     then
         echo 0
         return
     fi
 
-    grep '^Environment="KF2_PARAMS=.*?[mM]utator=.\+"$' "${STARTUP_CONF}" > /dev/null && echo 1 || echo 0
+    echo "${STARTUP_ARGS}" | grep -E '^KF-[[:alnum:]]+.*\?[mM]utator=.+$' > /dev/null && echo 1 || echo 0
 }
 
-function handle_api ()
+function gen_systemd_config ()
 {
-    case $1 in
-        startup)
-            # Return values:
-            # - 0: startup params shouldn't be used yet
-            # - 1: startup params can be used
+    echo '[Service]'
 
-            # Custom startup map + workshop downloads are incomplete OR custom startup mutators + workshop downloads are incomplete
-            if ([ $(startup_map_is_stock) -eq 0 ] && [ $(check_workshop 1) -eq 0 ]) || ([ $(startup_mutators_exist) -eq 1 ] && [ $(check_workshop 1) -eq 0 ])
-            then
-                echo 0
-            else
-                echo 1
-            fi
-            ;;
+    # Custom startup map + workshop downloads are incomplete OR custom startup mutators + workshop downloads are incomplete
+    if ([ $(startup_map_is_stock) -eq 0 ] && [ $(check_workshop 1) -eq 0 ]) || ([ $(startup_mutators_exist) -eq 1 ] && [ $(check_workshop 1) -eq 0 ])
+    then
+        echo 'Environment="KF2_PARAMS="'
+    else
+        echo "Environment=\"KF2_PARAMS=$(get_startup_args)\""
+    fi
+}
 
-        *)
-            exit 1
-    esac
+function apply_systemd_config ()
+{
+    if [ "${1}" -eq 1 ]
+    then
+        echo -n "Applying startup command line... "
+    fi
+
+    gen_systemd_config > "${SYSTEMD_CONF}"
+    sudo /bin/systemctl daemon-reload
+
+    if [ "${1}" -eq 1 ]
+    then
+        ${ECHO_DONE}
+    fi
 }
 
 # determine if classic install or current
@@ -1128,6 +1146,7 @@ case $1 in
         ;;
 
     restart)
+        apply_systemd_config 0
         sudo /bin/systemctl restart kf2.service
         ;;
 
@@ -1199,10 +1218,6 @@ case $1 in
 
     watchdog)
         handle_watchdog $2
-        ;;
-
-    api)
-        handle_api $2
         ;;
 
     help)
