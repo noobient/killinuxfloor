@@ -34,6 +34,33 @@
     mode: '0644'
   notify: Reload systemd configuration
 
+- name: Check for legacy KF2 service link
+  stat:
+    path: /etc/systemd/system/kf2.service.d/kf2.service.conf
+  register: kf2_svc_conf
+
+- name: Delete legacy KF2 service link
+  file:
+    path: /etc/systemd/system/kf2.service.d/kf2.service.conf
+    state: absent
+  when: kf2_svc_conf.stat.islnk is defined and kf2_svc_conf.stat.islnk
+
+# Idempotency
+- name: Create KF2 systemd config # noqa risky-file-permissions
+  file:
+    path: /etc/systemd/system/kf2.service.d/kf2.service.conf
+    state: touch
+  when: kf2_svc_conf.stat.islnk is defined and kf2_svc_conf.stat.islnk
+
+- name: Set up KF2 systemd config
+  file:
+    path: /etc/systemd/system/kf2.service.d/kf2.service.conf
+    state: file
+    owner: steam
+    group: steam
+    mode: '0644'
+  notify: Reload systemd configuration
+
 - meta: flush_handlers
 
 - name: Auto-start KF2 services on boot
