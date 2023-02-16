@@ -50,7 +50,7 @@
   file:
     path: /etc/systemd/system/kf2.service.d/kf2.service.conf
     state: touch
-  when: kf2_svc_conf.stat.islnk is defined and kf2_svc_conf.stat.islnk
+  when: (kf2_svc_conf.stat.islnk is defined and kf2_svc_conf.stat.islnk) or (not kf2_svc_conf.stat.exists)
 
 - name: Set up KF2 systemd config
   file:
