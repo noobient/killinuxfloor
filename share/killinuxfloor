@@ -805,7 +805,10 @@ function check_workshop ()
 
             for item in "${UNKNOWN_WORKSHOP[@]}"
             do
-                echo "${item}"
+                # Padding
+                printf "%-52.52s" "${item}"
+                # Steam workshop link
+                echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${item}" "🌐" true
             done
         fi
 
@@ -845,7 +848,10 @@ function check_workshop ()
 
             for item in "${UNKNOWN_CACHE[@]}"
             do
-                echo "${item}"
+                # Padding
+                printf "%-52.52s" "${item}"
+                # Steam workshop link
+                echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${item}" "🌐" true
             done
         fi
 
