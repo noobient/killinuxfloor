@@ -3,3 +3,12 @@
   systemd:
     daemon_reload: true
   when: servicecheck.systemd
+
+- name: Reload firewalld configuration
+  command:
+    cmd: firewall-cmd --reload
+
+- name: Reload rsyslog configuration
+  systemd:
+    name: rsyslog.service
+    state: restarted
