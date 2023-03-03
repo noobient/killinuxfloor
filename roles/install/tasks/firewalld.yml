@@ -1,17 +1,39 @@
 ---
-- include_role:
-    name: bviktor.servicecheck
-  vars:
-    unit: firewalld.service
+- name: Install rsyslog
+  package:
+    name: rsyslog
+    state: latest
+
+- name: Enable rsyslog
+  systemd:
+    name: rsyslog.service
+    state: started
+    enabled: true
+
+- name: Configure KF2 DDoS logging
+  copy:
+    src: kf2-ddos.conf
+    dest: /etc/rsyslog.d/kf2-ddos.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reload rsyslog configuration
+
+- name: Log packets denied by firewalld
+  lineinfile:
+    path: /etc/firewalld/firewalld.conf
+    regexp: '^LogDenied='
+    line: LogDenied=all
+  notify: Reload firewalld configuration
 
 - include_role:
     name: bviktor.firewalld
   vars:
     service: 'kf2'
     port: "{{ item }}"
+    rate_limit: '10/m'
   loop:
     - '7777/udp'
     - '20560/udp'
     - '27015/udp'
     - '8080/tcp'
-  when: servicecheck.started
