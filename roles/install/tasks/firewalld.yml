@@ -4,6 +4,12 @@
     name: rsyslog
     state: latest
 
+- name: Install log rotation for system logs
+  package:
+    name: rsyslog-logrotate
+    state: latest
+  when: ansible_os_family == 'RedHat'
+
 - name: Enable rsyslog
   systemd:
     name: rsyslog.service
