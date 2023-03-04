@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/bin/grep -m 1 'messages lost due to rate-limiting' /var/log/messages | awk -F'[()]' '{print $2}'

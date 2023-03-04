@@ -1215,6 +1215,48 @@ function apply_systemd_config ()
     fi
 }
 
+function get_os_id ()
+{
+    grep '^ID=' /etc/os-release | awk -F'=' '{ print $2}' | tr -d '"'
+}
+
+function check_log_throttling ()
+{
+    RET=0
+    which check-log-throttling &> /dev/null && RET=1 || true
+    if [ ${RET} -ne 1 ]
+    then
+        return
+    fi
+
+    OS_ID=$(get_os_id)
+
+    case "${OS_ID}" in
+        fedora|almalinux)
+            :
+            ;;
+
+        *)
+            return
+            ;;
+    esac
+
+    printf "%-18.18s" "Log throttled:"
+
+    LOG_LIMIT=$(sudo /usr/local/bin/check-log-throttling)
+
+    if [ "${LOG_LIMIT}" != '' ]
+    then
+        echo -e "${FG_RED}yes${COLOR_RESET}"
+        printf "%-18.18s" "Log limits:"
+        echo -e "${LOG_LIMIT}"
+    else
+        echo -e "${FG_GREEN}no"
+    fi
+
+    echo -en "${COLOR_RESET}"
+}
+
 function get_ddos_stats ()
 {
     if [ ! -f "${DDOS_LOG}" ]
@@ -1228,9 +1270,9 @@ function get_ddos_stats ()
         LOG_SIZE=$(du -h ${DDOS_LOG} | awk '{ print $1 }')
     fi
 
-    echo -e "${FG_GREEN}-----------------------------${COLOR_RESET}"
-    echo -e "${BG_GREEN}Today's DDoS stats:          ${COLOR_RESET}"
-    echo -e "${FG_GREEN}-----------------------------${COLOR_RESET}"
+    echo -e "${FG_GREEN}-----------------------------------------------------${COLOR_RESET}"
+    echo -e "${BG_GREEN}Today's DDoS stats:                                  ${COLOR_RESET}"
+    echo -e "${FG_GREEN}-----------------------------------------------------${COLOR_RESET}"
 
     printf "%-18.18s" "Denied packets:"
     if [ ${ATTACK_COUNT} -eq 0 ]
@@ -1260,6 +1302,8 @@ function get_ddos_stats ()
         echo -n "${FG_RED}"
     fi
     echo -e "${LOG_SIZE}${COLOR_RESET}"
+
+    check_log_throttling
 
     echo
 }

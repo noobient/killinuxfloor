@@ -15,3 +15,8 @@
   file:
     path: /etc/logrotate.d/firewalld-denied
     state: absent
+
+- name: Remove log throttling checker wrapper script
+  file:
+    path: /usr/local/bin/check-log-throttling
+    state: absent
