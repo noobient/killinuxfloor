@@ -4,3 +4,6 @@
 %steam ALL=NOPASSWD: /bin/systemctl status kf2.service
 %steam ALL=NOPASSWD: /bin/journalctl --system --unit=kf2.service --follow
 %steam ALL=NOPASSWD: /bin/systemctl daemon-reload
+%steam ALL=NOPASSWD: /usr/bin/firewall-cmd --get-log-denied
+%steam ALL=NOPASSWD: /usr/bin/firewall-cmd --set-log-denied=all
+%steam ALL=NOPASSWD: /usr/bin/firewall-cmd --set-log-denied=off
