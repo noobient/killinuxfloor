@@ -56,3 +56,11 @@
       /var/log/firewalld-denied.log
       /var/log/firewalld-denied-kf2.log
     retention: 7
+
+- name: Install wrapper script for checking log throttling status
+  copy:
+    src: check-log-throttling
+    dest: /usr/local/bin/check-log-throttling
+    owner: root
+    group: root
+    mode: '0755'

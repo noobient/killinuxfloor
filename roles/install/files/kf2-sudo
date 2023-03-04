@@ -7,3 +7,4 @@
 %steam ALL=NOPASSWD: /usr/bin/firewall-cmd --get-log-denied
 %steam ALL=NOPASSWD: /usr/bin/firewall-cmd --set-log-denied=all
 %steam ALL=NOPASSWD: /usr/bin/firewall-cmd --set-log-denied=off
+%steam ALL=NOPASSWD: /usr/local/bin/check-log-throttling

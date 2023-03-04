@@ -7,6 +7,7 @@
       - glibc.i686
       - libstdc++.i686
       - nss-softokn-freebl.i686
+      - which
   when: ansible_os_family == 'RedHat'
 
 - name: Install Steam dependencies
