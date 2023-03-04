@@ -22,8 +22,8 @@ function print_help ()
         echo -e "\e[36mkillinuxfloor status install\e[0m \t show KF2 installation status"
     fi
     echo -e "\e[36mkillinuxfloor status watchdog\e[0m \t show Watchdog status"
-    echo -e "\e[36mkillinuxfloor status workshop\e[0m \t show Workshop download status"
     echo -e "\e[36mkillinuxfloor log\e[0m \t\t display the KF2 logs"
+    echo -e "\e[36mkillinuxfloor workshop\e[0m \t\t show Workshop download status"
     echo -e "\e[36mkillinuxfloor purge <map_id>\e[0m \t remove an installed workshop map"
     if [ "${CLASSIC_MODE}" -eq 1 ]
     then
@@ -1458,6 +1458,10 @@ case $1 in
         else
             handle_ddos "${@:2}"
         fi
+        ;;
+
+    workshop)
+        check_status workshop
         ;;
 
     help)
