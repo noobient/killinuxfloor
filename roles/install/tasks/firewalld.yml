@@ -37,3 +37,10 @@
     - '20560/udp'
     - '27015/udp'
     - '8080/tcp'
+
+- include_role:
+    name: bviktor.logrotate
+  vars:
+    name: kf2-ddos
+    pattern: /var/log/kf2-ddos.log
+    retention: 7
