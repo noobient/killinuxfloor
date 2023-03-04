@@ -30,14 +30,6 @@
     backup: true
   notify: Reload journald configuration
 
-# This will be enabled on-demand via klf
-#- name: Log packets denied by firewalld
-#  lineinfile:
-#    path: /etc/firewalld/firewalld.conf
-#    regexp: '^LogDenied='
-#    line: LogDenied=all
-#  notify: Reload firewalld configuration
-
 - include_role:
     name: bviktor.firewalld
   vars:

@@ -3,3 +3,8 @@
   systemd:
     daemon_reload: true
   when: servicecheck.systemd
+
+- name: Reload rsyslog configuration
+  systemd:
+    name: rsyslog.service
+    state: restarted
