@@ -4,11 +4,12 @@
     name: rsyslog
     state: latest
 
+# On AlmaLinux 8 it's part of rsyslog, after that, it's a separate package...
 - name: Install log rotation for system logs
   package:
     name: rsyslog-logrotate
     state: latest
-  when: ansible_os_family == 'RedHat'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version >= '8'
 
 - name: Enable rsyslog
   systemd:
