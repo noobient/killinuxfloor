@@ -1,5 +1,5 @@
 ---
-- name: Initialize KF2 config
+- name: Initialize KF2 config # noqa no-changed-when
   become_user: steam
   command:
     cmd: "{{ steam_home }}/bin/killinuxfloor {{ item }}"

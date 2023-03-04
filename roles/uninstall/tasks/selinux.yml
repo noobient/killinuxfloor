@@ -6,7 +6,7 @@
   changed_when: false
   register: klf_selinux
 
-- name: Disable SELinux policy module
+- name: Disable SELinux policy module # noqa no-changed-when
   command:
     cmd: semodule --remove=killinuxfloor
   when: klf_selinux.rc == 0
