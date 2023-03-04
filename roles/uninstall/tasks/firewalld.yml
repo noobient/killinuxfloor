@@ -1,21 +1,6 @@
 ---
 - include_role:
-    name: bviktor.servicecheck
+    name: bviktor.firewalld
   vars:
-    unit: firewalld.service
-
-- name: Disable KF2 firewall rules
-  shell:
-    cmd: firewall-cmd --remove-service=kf2 --permanent && firewall-cmd --reload
-  when: servicecheck.started
-
-- name: Delete KF2 firewall rules
-  file:
-    path: /etc/firewalld/services/kf2.xml
-    state: absent
-  register: kf2_fw_delete
-
-- name: Reload firewalld config # noqa no-changed-when
-  command:
-    cmd: firewall-cmd --reload
-  when: servicecheck.started and kf2_fw_delete.changed
+    service: 'kf2'
+    enabled: false
