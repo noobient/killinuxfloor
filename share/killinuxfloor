@@ -39,6 +39,7 @@ function print_help ()
     echo -e "\e[36mkillinuxfloor autokick {start|stop|restart|status|log}\e[0m"
     echo -e "\e[36mkillinuxfloor ban {list|add <steamID64>|delete <steamID64>}\e[0m"
     echo -e "\e[36mkillinuxfloor watchdog {enable|disable|status}\e[0m"
+    echo -e "\e[36mkillinuxfloor ddos {stats|enable|disable}\e[0m"
     echo -e "\e[36mkillinuxfloor help\e[0m \t\t print this help"
     echo ""
     echo -e "To save typing, you can also use \e[36mkfl\e[0m instead of \e[36mkillinuxfloor\e[0m."
@@ -86,6 +87,7 @@ DEPOT_FILE="${HOME}/Steam/KF2Server/.DepotDownloader/depot.config"
 CONF_LIST=("autokick.json" "My-Cycles.csv" "My-KFWebAdmin.ini" "My-KFWeb.ini" "My-LinuxServer-KFEngine.ini" "My-LinuxServer-KFGame.ini" "My-Maps.csv" "My-Mutators.csv" "My-Startup.conf")
 STARTUP_CONF="${OWN_CONF}/My-Startup.conf"
 SYSTEMD_CONF='/etc/systemd/system/kf2.service.d/kf2.service.conf'
+DDOS_LOG='/var/log/firewalld-denied-kf2.log'
 
 ECHO_DONE='echo -e \e[32mdone\e[0m.'
 CYCLE_START='GameMapCycles=(Maps=("'
@@ -1213,6 +1215,90 @@ function apply_systemd_config ()
     fi
 }
 
+function get_ddos_stats ()
+{
+    if [ ! -f "${DDOS_LOG}" ]
+    then
+        ATTACK_COUNT=0
+        ATTACKER_COUNT=0
+        LOG_SIZE='0'
+    else
+        ATTACK_COUNT=$(cat ${DDOS_LOG} | wc -l)
+        ATTACKER_COUNT=$(cat ${DDOS_LOG} | awk '{ print $10 }' | sort | uniq | wc -l)
+        LOG_SIZE=$(du -h ${DDOS_LOG} | awk '{ print $1 }')
+    fi
+
+    echo -e "${FG_GREEN}-----------------------------${COLOR_RESET}"
+    echo -e "${BG_GREEN}Today's DDoS stats:          ${COLOR_RESET}"
+    echo -e "${FG_GREEN}-----------------------------${COLOR_RESET}"
+
+    printf "%-18.18s" "Denied packets:"
+    if [ ${ATTACK_COUNT} -eq 0 ]
+    then
+        echo -n "${FG_GREEN}"
+    else
+        echo -n "${FG_RED}"
+    fi
+    printf "%'d" "${ATTACK_COUNT}"
+    echo -e "${COLOR_RESET}"
+
+    printf "%-18.18s" "Unique IPs:"
+    if [ ${ATTACKER_COUNT} -eq 0 ]
+    then
+        echo -n "${FG_GREEN}"
+    else
+        echo -n "${FG_RED}"
+    fi
+    printf "%'d" "${ATTACKER_COUNT}"
+    echo -e "${COLOR_RESET}"
+
+    printf "%-18.18s" "Log size:"
+    if [ ${LOG_SIZE} == '0' ]
+    then
+        echo -n "${FG_GREEN}"
+    else
+        echo -n "${FG_RED}"
+    fi
+    echo -e "${LOG_SIZE}${COLOR_RESET}"
+
+    echo
+}
+
+function handle_ddos ()
+{
+    case $1 in
+        stats)
+            FW_LOG=$(sudo /usr/bin/firewall-cmd --get-log-denied)
+
+            if [ "${FW_LOG}" != 'all' ]
+            then
+                echo -e "${FG_RED}DDoS logging is disabled.${COLOR_RESET} Use ${FG_CYAN}klf ddos enable${COLOR_RESET} to enable it.\n"
+
+                echo -e "Note: ${FG_GREEN}this option does not affect DDoS protection${COLOR_RESET}, this only switches the"
+                echo -e "logging of denied packets on and off.\n"
+
+                echo -e "${FG_RED}Warning:${COLOR_RESET} depending on the number of attacks, this may use a considerable amount"
+                echo -e "of disk space. Logs are automatically rotated daily, so olders logs will be"
+                echo -e "compressed and eventually discarded, but in extreme cases, ${FG_RED}the current day's log"
+                echo -e "may consume several GBs${COLOR_RESET}.\n"
+            else
+                get_ddos_stats
+            fi
+            ;;
+
+        enable)
+            sudo /usr/bin/firewall-cmd --set-log-denied=all
+            ;;
+
+        disable)
+            sudo /usr/bin/firewall-cmd --set-log-denied=off
+            ;;
+
+        *)
+            exit 1
+    esac
+}
+
 # determine if classic install or current
 CLASSIC_MODE=0
 if [ -f "${DEPOT_FILE}" ]
@@ -1315,6 +1401,15 @@ case $1 in
 
     watchdog)
         handle_watchdog $2
+        ;;
+
+    ddos)
+        if [ $# -eq 1 ]
+        then
+            handle_ddos stats
+        else
+            handle_ddos "${@:2}"
+        fi
         ;;
 
     help)
