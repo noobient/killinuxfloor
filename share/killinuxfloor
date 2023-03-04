@@ -1313,7 +1313,8 @@ then
 fi
 
 # do away with 'changed on disk' warnings once and for all
-sudo /bin/systemctl daemon-reload
+# TODO this shouldn't be needed since the startup config change?
+#sudo /bin/systemctl daemon-reload
 
 # Add steamcmd.sh to PATH - symlinking won't work, it's trying to be too smart.
 PATH="${PATH}:${HOME}/Steam"
