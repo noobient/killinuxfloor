@@ -12,3 +12,8 @@
   systemd:
     name: rsyslog.service
     state: restarted
+
+- name: Reload journald configuration
+  systemd:
+    name: systemd-journald.service
+    state: restarted

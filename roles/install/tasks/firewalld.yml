@@ -10,21 +10,33 @@
     state: started
     enabled: true
 
-- name: Configure KF2 DDoS logging
+- name: Redirect logging of denied packets
   copy:
-    src: kf2-ddos.conf
-    dest: /etc/rsyslog.d/kf2-ddos.conf
+    src: firewalld-denied.conf
+    dest: /etc/rsyslog.d/firewalld-denied.conf
     owner: root
     group: root
     mode: '0644'
   notify: Reload rsyslog configuration
 
-- name: Log packets denied by firewalld
-  lineinfile:
-    path: /etc/firewalld/firewalld.conf
-    regexp: '^LogDenied='
-    line: LogDenied=all
-  notify: Reload firewalld configuration
+- name: Limit journald storage
+  ini_file:
+    path: /etc/systemd/journald.conf
+    section: Journal
+    option: SystemMaxUse
+    value: 100M
+    no_extra_spaces: true
+    create: false
+    backup: true
+  notify: Reload journald configuration
+
+# This will be enabled on-demand via klf
+#- name: Log packets denied by firewalld
+#  lineinfile:
+#    path: /etc/firewalld/firewalld.conf
+#    regexp: '^LogDenied='
+#    line: LogDenied=all
+#  notify: Reload firewalld configuration
 
 - include_role:
     name: bviktor.firewalld
@@ -41,6 +53,8 @@
 - include_role:
     name: bviktor.logrotate
   vars:
-    name: kf2-ddos
-    pattern: /var/log/kf2-ddos.log
+    name: firewalld-denied
+    pattern: |-
+      /var/log/firewalld-denied.log
+      /var/log/firewalld-denied-kf2.log
     retention: 7
