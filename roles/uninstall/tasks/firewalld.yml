@@ -4,3 +4,14 @@
   vars:
     service: 'kf2'
     enabled: false
+
+- name: Remove firewalld log redirect
+  file:
+    path: /etc/rsyslog.d/firewalld-denied.conf
+    state: absent
+  notify: Reload rsyslog configuration
+
+- name: Remove firewalld log rotation
+  file:
+    path: /etc/logrotate.d/firewalld-denied
+    state: absent
