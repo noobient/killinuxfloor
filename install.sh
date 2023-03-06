@@ -44,14 +44,14 @@ echo
 echo -e "Files marked in \e[33myellow\e[0m are for all the game/server options provided by Tripwire."
 echo "Now they contain a few cherry-picked settings, but you can add any internal option here."
 echo
-echo -e "\e[36mkillinuxfloor\e[35m Command Reference:\e[0m run \e[36mkillinuxfloor help\e[0m."
+echo -e "\e[36mkillinuxfloor\e[35m Command Reference:\e[0m run \e[36mklf help\e[0m."
 echo -e "\e[35mKF2 Options Reference:\e[0m see the \e[36m/home/steam/Config/Internal\e[0m counterparts (but don't edit those)."
-echo -e "\e[35mApplying KF2 Changes:\e[0m edit the \e[36mMy-*\e[0m files, then run \e[36mkillinuxfloor apply\e[0m."
-echo -e "\e[35mApplying Auto-Kick Changes:\e[0m edit \e[36mautokick.json\e[0m, then run \e[36mkillinuxfloor autokick restart\e[0m."
+echo -e "\e[35mApplying KF2 Changes:\e[0m edit the \e[36mMy-*\e[0m files, then run \e[36mklf apply\e[0m."
+echo -e "\e[35mApplying Auto-Kick Changes:\e[0m edit \e[36mautokick.json\e[0m, then run \e[36mklf autokick restart\e[0m."
 echo
 echo -e "\e[35mWebadmin Access:\e[0m"
 echo -e "* Address:\e[36m http://${IP_ADDR}:8080/\e[0m (IP auto-detected, might differ)"
 echo -e "* Username:\e[36m Admin\e[0m"
 echo -e "* Password:\e[36m YOURPASSWORDHERE\e[0m"
 echo
-echo -e "\e[31mDon't forget to change \e[36mAdminPassword\e[31m in \e[33mMy-LinuxServer-KFGame.ini\e[31m, then \e[36mkillinuxfloor apply\e[31m!\e[0m"
+echo -e "\e[31mDon't forget to change \e[36mAdminPassword\e[31m in \e[33mMy-LinuxServer-KFGame.ini\e[31m, then \e[36mklf apply\e[31m!\e[0m"
