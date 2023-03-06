@@ -634,8 +634,11 @@ function check_workshop ()
 {
     if [ "${1}" -eq 0 ]
     then
+        WORKSHOP_ITEMS_APPLIED=1
+        check_file "${LIVE_CONF}/LinuxServer-KFEngine.ini"
+
         echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
-        echo -e "${BG_GREEN}Subscribed workshop maps:                             ${COLOR_RESET}"
+        echo -e "${BG_GREEN}Configured workshop maps:                             ${COLOR_RESET}"
         echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
     fi
 
@@ -673,6 +676,9 @@ function check_workshop ()
 
         if [ "${1}" -eq 0 ]
         then
+            # Check if item is applied to live config
+            grep "^ServerSubscribedWorkshopItems=${id}" "${LIVE_CONF}/LinuxServer-KFEngine.ini" > /dev/null || WORKSHOP_ITEMS_APPLIED=0
+
             # Coloring
             echo -n "${ITEM_COLOR}"
             # Padding
@@ -687,7 +693,7 @@ function check_workshop ()
     if [ "${1}" -eq 0 ]
     then
         echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
-        echo -e "${BG_GREEN}Subscribed workshop mutators:                         ${COLOR_RESET}"
+        echo -e "${BG_GREEN}Configured workshop mutators:                         ${COLOR_RESET}"
         echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
     fi
 
@@ -740,6 +746,9 @@ function check_workshop ()
 
         if [ "${1}" -eq 0 ]
         then
+            # Check if item is applied to live config
+            grep "^ServerSubscribedWorkshopItems=${mut}" "${LIVE_CONF}/LinuxServer-KFEngine.ini" > /dev/null || WORKSHOP_ITEMS_APPLIED=0
+
             # Coloring
             echo -n "${ITEM_COLOR}"
 
@@ -759,6 +768,21 @@ function check_workshop ()
             echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${mut}" "🌐" true
         fi
     done
+
+    # Check if configured items are pushed to internal config
+    if [ "${1}" -eq 0 ]
+    then
+        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
+        echo -e "${BG_GREEN}Subscription status:                                  ${COLOR_RESET}"
+        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
+
+        if [ "${WORKSHOP_ITEMS_APPLIED}" -eq 0 ]
+        then
+            echo -e "${BG_RED}Some subscriptions are not applied yet, run ${BG_CYAN}klf apply${BG_RED}.${COLOR_RESET}"
+        else
+            echo -e "All item subscriptions are successfully applied."
+        fi
+    fi
 
     #echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
     #echo '(Legend: ID, name, download state, cache state, web)'
@@ -855,7 +879,10 @@ function check_workshop ()
                 echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${item}" "🌐" true
             done
         fi
+    fi
 
+    if [ "${1}" -eq 0 ]
+    then
         echo
     fi
 
