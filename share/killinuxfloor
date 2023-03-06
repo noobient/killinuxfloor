@@ -9,40 +9,38 @@ function print_help ()
     echo ""
     echo "Usage:"
     echo "------"
-    echo -e "\e[36mkillinuxfloor config\e[0m \t\t insert your own settings into the internal KF2 server config without restarting KF2"
-    echo -e "\e[36mkillinuxfloor apply\e[0m \t\t apply your changes instantly, equivalent to running 'config' and 'restart'"
-    echo -e "\e[36mkillinuxfloor reset\e[0m \t\t reset internal config and erase the Workshop and Cache folders (don't forget to run 'config' afterwards)"
-    echo -e "\e[36mkillinuxfloor start\e[0m \t\t start KF2"
-    echo -e "\e[36mkillinuxfloor stop\e[0m \t\t stop KF2"
-    echo -e "\e[36mkillinuxfloor restart\e[0m \t\t restart KF2"
-    echo -e "\e[36mkillinuxfloor status\e[0m \t\t query the status of the KF2 service"
-    echo -e "\e[36mkillinuxfloor status service\e[0m \t same as \e[36mkillinuxfloor status\e[0m"
+    echo -e "\e[36mklf config\e[0m \t\t insert your own settings into the internal KF2 server config without restarting KF2"
+    echo -e "\e[36mklf apply\e[0m \t\t apply your changes instantly, equivalent to running 'config' and 'restart'"
+    echo -e "\e[36mklf reset\e[0m \t\t reset internal config and erase the Workshop and Cache folders (don't forget to run 'config' afterwards)"
+    echo -e "\e[36mklf start\e[0m \t\t start KF2"
+    echo -e "\e[36mklf stop\e[0m \t\t stop KF2"
+    echo -e "\e[36mklf restart\e[0m \t\t restart KF2"
+    echo -e "\e[36mklf status\e[0m \t\t query the status of the KF2 service"
+    echo -e "\e[36mklf status service\e[0m \t same as \e[36mklf status\e[0m"
     if [ "${CLASSIC_MODE}" -eq 1 ]
     then
-        echo -e "\e[36mkillinuxfloor status install\e[0m \t show KF2 installation status"
+        echo -e "\e[36mklf status install\e[0m \t show KF2 installation status"
     fi
-    echo -e "\e[36mkillinuxfloor status watchdog\e[0m \t show Watchdog status"
-    echo -e "\e[36mkillinuxfloor log\e[0m \t\t display the KF2 logs"
-    echo -e "\e[36mkillinuxfloor workshop\e[0m \t\t show Workshop download status"
-    echo -e "\e[36mkillinuxfloor purge <map_id>\e[0m \t remove an installed workshop map"
+    echo -e "\e[36mklf status watchdog\e[0m \t show Watchdog status"
+    echo -e "\e[36mklf log\e[0m \t\t display the KF2 logs"
+    echo -e "\e[36mklf workshop\e[0m \t\t show Workshop download status"
+    echo -e "\e[36mklf purge <map_id>\e[0m \t remove an installed workshop map"
     if [ "${CLASSIC_MODE}" -eq 1 ]
     then
-        echo -e "\e[36mkillinuxfloor update\e[0m \t\t check for and apply KF2 updates (don't forget to run 'init' and 'config' if update found)"
-        echo -e "\e[36mkillinuxfloor update preview\e[0m \t apply updates from the 'preview' branch"
+        echo -e "\e[36mklf update\e[0m \t\t check for and apply KF2 updates (don't forget to run 'init' and 'config' if update found)"
+        echo -e "\e[36mklf update preview\e[0m \t apply updates from the 'preview' branch"
     fi
-    echo -e "\e[36mkillinuxfloor verify\e[0m \t\t verify integrity of KF2 files"
+    echo -e "\e[36mklf verify\e[0m \t\t verify integrity of KF2 files"
     if [ "${CLASSIC_MODE}" -eq 1 ]
     then
-        echo -e "\e[36mkillinuxfloor verify preview\e[0m \t verify integrity of KF2 files in the 'preview' branch"
+        echo -e "\e[36mklf verify preview\e[0m \t verify integrity of KF2 files in the 'preview' branch"
     fi
-    echo -e "\e[36mkillinuxfloor backup\e[0m \t\t back up all KF2 settings"
-    echo -e "\e[36mkillinuxfloor autokick {start|stop|restart|status|log}\e[0m"
-    echo -e "\e[36mkillinuxfloor ban {list|add <steamID64>|delete <steamID64>}\e[0m"
-    echo -e "\e[36mkillinuxfloor watchdog {enable|disable|status}\e[0m"
-    echo -e "\e[36mkillinuxfloor ddos {stats|enable|disable}\e[0m"
-    echo -e "\e[36mkillinuxfloor help\e[0m \t\t print this help"
-    echo ""
-    echo -e "To save typing, you can also use \e[36mkfl\e[0m instead of \e[36mkillinuxfloor\e[0m."
+    echo -e "\e[36mklf backup\e[0m \t\t back up all KF2 settings"
+    echo -e "\e[36mklf autokick {start|stop|restart|status|log}\e[0m"
+    echo -e "\e[36mklf ban {list|add <steamID64>|delete <steamID64>}\e[0m"
+    echo -e "\e[36mklf watchdog {enable|disable|status}\e[0m"
+    echo -e "\e[36mklf ddos {stats|enable|disable}\e[0m"
+    echo -e "\e[36mklf help\e[0m \t\t print this help"
 }
 
 function errorexit ()
@@ -520,10 +518,8 @@ function reset_kf2 ()
 
     echo -e "\e[32mKilling Floor 2 has been reset successfully!\e[0m"
     echo
-    echo -e "You may run \e[36mkillinuxfloor config\e[0m now to apply your settings again."
-    echo -e "Please check \e[36mMy-Startup.conf\e[0m. If it contains any workshop map, remove it until"
-    echo -e "KF2 finishes downloading workshop content, otherwise KF2 will not be able to"
-    echo -e "start. You can check download status with \e[36mkillinuxfloor status workshop\e[0m."
+    echo -e "You may run \e[36mklf apply\e[0m now to apply your settings again."
+    echo -e "You can check workshop content download status with \e[36mklf workshop\e[0m."
 }
 
 function update_kf2 ()
@@ -1012,7 +1008,7 @@ function list_bans ()
     if [ ${MISSING} -eq 1 ]
     then
         echo
-        echo -e "Some bans are still not applied. Don't forget to run \e[36mkillinuxfloor config\e[0m!"
+        echo -e "Some bans are still not applied. Don't forget to run \e[36mklf apply\e[0m!"
     fi
 }
 
@@ -1065,7 +1061,7 @@ function delete_ban ()
 
     # list_bans() can't detect removal, always print this
     echo
-    echo -e "To apply the removal, don't forget to run \e[36mkillinuxfloor config\e[0m!"
+    echo -e "To apply the removal, don't forget to run \e[36mklf apply\e[0m!"
 }
 
 function handle_bans ()
