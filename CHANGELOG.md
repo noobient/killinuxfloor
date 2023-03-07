@@ -1,8 +1,12 @@
-## killinuxfloor 2.1 (TBD)
+## killinuxfloor 3.0 (2023-03-07)
 
-* Add many details to `killinuxfloor status workshop` report
+* Add DDoS protection
+* Add optional DDoS stats via `klf ddos` command
+* Add many details to `klf workshop` report
 * Add Unofficial Killing Floor 2 Patch
+* Add `update.sh` script to update killinuxfloor installation
 * Fix Steam Workshop downloads
+* Fix KF2 restart loop when startup includes workshop items not downloaded yet
 * Fix various issues when installing in a container
 * Fix missing workshop items when trailing newline is missing in config files
 * Fix various commands overriding symlinks in config
