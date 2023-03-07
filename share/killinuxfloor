@@ -637,9 +637,9 @@ function check_workshop ()
         WORKSHOP_ITEMS_APPLIED=1
         check_file "${LIVE_CONF}/LinuxServer-KFEngine.ini"
 
-        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
-        echo -e "${BG_GREEN}Configured workshop maps:                             ${COLOR_RESET}"
-        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
+        echo -e "${FG_GREEN}------------------------------------------------------------------${COLOR_RESET}"
+        echo -e "${BG_GREEN}Configured workshop maps:                                         ${COLOR_RESET}"
+        echo -e "${FG_GREEN}------------------------------------------------------------------${COLOR_RESET}"
     fi
 
     find_maps_workshop
@@ -649,6 +649,8 @@ function check_workshop ()
         WORKSHOP_STATE='✅'
         CACHE_STATE='✅'
         ITEM_COLOR=''
+        WORKSHOP_SIZE='0K'
+        CACHE_SIZE='0K'
 
         if [ ! -d "${WORKSHOP_CONTENT_DIR}/${id}" ] || [ ! $(find "${WORKSHOP_CONTENT_DIR}/${id}" -name '*.kfm' -type f | head -1 | grep .) ]
         then
@@ -660,6 +662,11 @@ function check_workshop ()
 
             WORKSHOP_STATE='❌'
             ITEM_COLOR="${BG_RED}"
+        else
+            if [ "${1}" -eq 0 ]
+            then
+                WORKSHOP_SIZE=$(du -sh ${WORKSHOP_CONTENT_DIR}/${id} | awk '{ print $1 }')
+            fi
         fi
 
         if [ ! -d "${CACHE_DIR}/${id}" ] || [ ! $(find "${CACHE_DIR}/${id}" -name '*.kfm' -type f | grep .) ]
@@ -672,6 +679,11 @@ function check_workshop ()
 
             CACHE_STATE='❌'
             ITEM_COLOR="${BG_RED}"
+        else
+            if [ "${1}" -eq 0 ]
+            then
+                CACHE_SIZE=$(du -sh ${CACHE_DIR}/${id} | awk '{ print $1 }')
+            fi
         fi
 
         if [ "${1}" -eq 0 ]
@@ -683,8 +695,9 @@ function check_workshop ()
             echo -n "${ITEM_COLOR}"
             # Padding
             printf "%-16.16s%-32.32s" "${id}" "${MAPS_WORKSHOP[${id}]}"
-            # Color reset, status indicator
-            echo -en "${COLOR_RESET}${WORKSHOP_STATE}${CACHE_STATE}"
+            # Color reset, status indicators, sizes
+            echo -en "${COLOR_RESET}"
+            printf "%-4.4s%-4.4s%-5.5s%-5.5s" "${WORKSHOP_STATE}" "${WORKSHOP_SIZE}" " ${CACHE_STATE}" "${CACHE_SIZE} "
             # Steam workshop link
             echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${id}" "🌐" true
         fi
@@ -692,9 +705,9 @@ function check_workshop ()
 
     if [ "${1}" -eq 0 ]
     then
-        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
-        echo -e "${BG_GREEN}Configured workshop mutators:                         ${COLOR_RESET}"
-        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
+        echo -e "${FG_GREEN}------------------------------------------------------------------${COLOR_RESET}"
+        echo -e "${BG_GREEN}Configured workshop mutators:                                     ${COLOR_RESET}"
+        echo -e "${FG_GREEN}------------------------------------------------------------------${COLOR_RESET}"
     fi
 
     find_mutators_workshop
@@ -704,6 +717,8 @@ function check_workshop ()
         WORKSHOP_STATE='✅'
         CACHE_STATE='✅'
         ITEM_COLOR=''
+        WORKSHOP_SIZE='0K'
+        CACHE_SIZE='0K'
 
         if [ ! -d "${WORKSHOP_CONTENT_DIR}/${mut}" ]
         then
@@ -718,6 +733,11 @@ function check_workshop ()
             mut_file=''
         else
             mut_file=$(find "${WORKSHOP_CONTENT_DIR}/${mut}" -name '*.u' -type f -printf "%f\n" | head -1)
+
+            if [ "${1}" -eq 0 ]
+            then
+                WORKSHOP_SIZE=$(du -sh ${WORKSHOP_CONTENT_DIR}/${mut} | awk '{ print $1 }')
+            fi
         fi
 
         if [ ! $(grep . <<< ${mut_file}) ]
@@ -742,6 +762,11 @@ function check_workshop ()
 
             CACHE_STATE='❌'
             ITEM_COLOR="${BG_RED}"
+        else
+            if [ "${1}" -eq 0 ]
+            then
+                CACHE_SIZE=$(du -sh ${CACHE_DIR}/${mut} | awk '{ print $1 }')
+            fi
         fi
 
         if [ "${1}" -eq 0 ]
@@ -762,27 +787,13 @@ function check_workshop ()
                 printf "%-32.32s" "${mut_file%.*}"
             fi
 
-            # Color reset, status indicator
-            echo -en "${COLOR_RESET}${WORKSHOP_STATE}${CACHE_STATE}"
+            # Color reset, status indicators, sizes
+            echo -en "${COLOR_RESET}"
+            printf "%-4.4s%-4.4s%-5.5s%-5.5s" "${WORKSHOP_STATE}" "${WORKSHOP_SIZE}" " ${CACHE_STATE}" "${CACHE_SIZE} "
             # Steam workshop link
             echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${mut}" "🌐" true
         fi
     done
-
-    # Check if configured items are pushed to internal config
-    if [ "${1}" -eq 0 ]
-    then
-        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
-        echo -e "${BG_GREEN}Subscription status:                                  ${COLOR_RESET}"
-        echo -e "${FG_GREEN}------------------------------------------------------${COLOR_RESET}"
-
-        if [ "${WORKSHOP_ITEMS_APPLIED}" -eq 0 ]
-        then
-            echo -e "${BG_RED}Some subscriptions are not applied yet, run ${BG_CYAN}klf apply${BG_RED}.${COLOR_RESET}"
-        else
-            echo -e "All item subscriptions are successfully applied."
-        fi
-    fi
 
     #echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
     #echo '(Legend: ID, name, download state, cache state, web)'
@@ -821,14 +832,14 @@ function check_workshop ()
 
         if [ "${#UNKNOWN_WORKSHOP[@]}" -gt 0 ]
         then
-            echo -e "${FG_RED}------------------------------------------------------${COLOR_RESET}"
-            echo -e "${BG_RED}Unknown items in workshop: (purge with ${BG_CYAN}klf purge <id>${BG_RED})${COLOR_RESET}"
-            echo -e "${FG_RED}------------------------------------------------------${COLOR_RESET}"
+            echo -e "${FG_RED}------------------------------------------------------------------${COLOR_RESET}"
+            echo -e "${BG_RED}Unknown items in workshop: (purge with ${BG_CYAN}klf purge <id>${BG_RED})            ${COLOR_RESET}"
+            echo -e "${FG_RED}------------------------------------------------------------------${COLOR_RESET}"
 
             for item in "${UNKNOWN_WORKSHOP[@]}"
             do
                 # Padding
-                printf "%-52.52s" "${item}"
+                printf "%-64.64s" "${item}"
                 # Steam workshop link
                 echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${item}" "🌐" true
             done
@@ -867,17 +878,32 @@ function check_workshop ()
 
         if [ "${#UNKNOWN_CACHE[@]}" -gt 0 ]
         then
-            echo -e "${FG_RED}------------------------------------------------------${COLOR_RESET}"
-            echo -e "${BG_RED}Unknown items in cache: (purge with ${BG_CYAN}klf purge <id>${BG_RED})   ${COLOR_RESET}"
-            echo -e "${FG_RED}------------------------------------------------------${COLOR_RESET}"
+            echo -e "${FG_RED}------------------------------------------------------------------${COLOR_RESET}"
+            echo -e "${BG_RED}Unknown items in cache: (purge with ${BG_CYAN}klf purge <id>${BG_RED})               ${COLOR_RESET}"
+            echo -e "${FG_RED}------------------------------------------------------------------${COLOR_RESET}"
 
             for item in "${UNKNOWN_CACHE[@]}"
             do
                 # Padding
-                printf "%-52.52s" "${item}"
+                printf "%-64.64s" "${item}"
                 # Steam workshop link
                 echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${item}" "🌐" true
             done
+        fi
+    fi
+
+    # Check if configured items are pushed to internal config
+    if [ "${1}" -eq 0 ]
+    then
+        echo -e "${FG_GREEN}------------------------------------------------------------------${COLOR_RESET}"
+        echo -e "${BG_GREEN}Subscription status:                                              ${COLOR_RESET}"
+        echo -e "${FG_GREEN}------------------------------------------------------------------${COLOR_RESET}"
+
+        if [ "${WORKSHOP_ITEMS_APPLIED}" -eq 0 ]
+        then
+            echo -e "${BG_RED}Some subscriptions are not applied yet, run ${BG_CYAN}klf apply${BG_RED}.            ${COLOR_RESET}"
+        else
+            echo -e "All item subscriptions are successfully applied."
         fi
     fi
 
