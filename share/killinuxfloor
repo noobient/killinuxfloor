@@ -634,8 +634,13 @@ function check_workshop ()
 {
     if [ "${1}" -eq 0 ]
     then
-        WORKSHOP_ITEMS_APPLIED=1
         check_file "${LIVE_CONF}/LinuxServer-KFEngine.ini"
+
+        WORKSHOP_ITEMS_APPLIED=1
+        WORKSHOP_DL_MAPS=0
+        WORKSHOP_DL_MUTATORS=0
+        CACHE_DL_MAPS=0
+        CACHE_DL_MUTATORS=0
 
         echo -e "${FG_GREEN}------------------------------------------------------------------${COLOR_RESET}"
         echo -e "${BG_GREEN}Configured workshop maps:                                         ${COLOR_RESET}"
@@ -666,6 +671,7 @@ function check_workshop ()
             if [ "${1}" -eq 0 ]
             then
                 WORKSHOP_SIZE=$(du -sh ${WORKSHOP_CONTENT_DIR}/${id} | awk '{ print $1 }')
+                ((WORKSHOP_DL_MAPS+=1))
             fi
         fi
 
@@ -683,6 +689,7 @@ function check_workshop ()
             if [ "${1}" -eq 0 ]
             then
                 CACHE_SIZE=$(du -sh ${CACHE_DIR}/${id} | awk '{ print $1 }')
+                ((CACHE_DL_MAPS+=1))
             fi
         fi
 
@@ -702,6 +709,13 @@ function check_workshop ()
             echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${id}" "🌐" true
         fi
     done
+
+    if [ "${1}" -eq 0 ]
+    then
+        echo -e "${FG_GREEN}------------------------------------------------------------------${COLOR_RESET}"
+        printf "%-48.48s%-8.8s%-8.8s" "Downloaded to Workshop & Cache:" "${WORKSHOP_DL_MAPS}/${#MAPS_WORKSHOP[@]}" "${CACHE_DL_MAPS}/${#MAPS_WORKSHOP[@]}"
+        echo
+    fi
 
     if [ "${1}" -eq 0 ]
     then
@@ -737,6 +751,7 @@ function check_workshop ()
             if [ "${1}" -eq 0 ]
             then
                 WORKSHOP_SIZE=$(du -sh ${WORKSHOP_CONTENT_DIR}/${mut} | awk '{ print $1 }')
+                ((WORKSHOP_DL_MUTATORS+=1))
             fi
         fi
 
@@ -766,6 +781,7 @@ function check_workshop ()
             if [ "${1}" -eq 0 ]
             then
                 CACHE_SIZE=$(du -sh ${CACHE_DIR}/${mut} | awk '{ print $1 }')
+                ((CACHE_DL_MUTATORS+=1))
             fi
         fi
 
@@ -794,6 +810,13 @@ function check_workshop ()
             echo_link "https://steamcommunity.com/sharedfiles/filedetails/?id=${mut}" "🌐" true
         fi
     done
+
+    if [ "${1}" -eq 0 ]
+    then
+        echo -e "${FG_GREEN}------------------------------------------------------------------${COLOR_RESET}"
+        printf "%-48.48s%-8.8s%-8.8s" "Downloaded to Workshop & Cache:" "${WORKSHOP_DL_MUTATORS}/${#MUTATORS_WORKSHOP[@]}" "${CACHE_DL_MUTATORS}/${#MUTATORS_WORKSHOP[@]}"
+        echo
+    fi
 
     #echo -e "${FG_CYAN}------------------------------------------------------${COLOR_RESET}"
     #echo '(Legend: ID, name, download state, cache state, web)'
