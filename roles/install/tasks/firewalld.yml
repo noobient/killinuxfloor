@@ -40,14 +40,15 @@
 - include_role:
     name: bviktor.firewalld
   vars:
-    service: 'kf2'
+    service: kf2
     port: "{{ item }}"
-    rate_limit: '10/m'
+    rate_limit: 10/m
+    family: ipv4
   loop:
-    - '7777/udp'
-    - '20560/udp'
-    - '27015/udp'
-    - '8080/tcp'
+    - 7777/udp
+    - 20560/udp
+    - 27015/udp
+    - 8080/tcp
 
 - include_role:
     name: bviktor.logrotate
