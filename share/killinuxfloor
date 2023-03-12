@@ -170,7 +170,7 @@ function sanitize_internal_config ()
 function reset_subscriptions ()
 {
     # delete old workshop section from KFEngine altogether
-    echo -n 'Deleting old workshop entries... '
+    echo -n 'Deleting old workshop subscriptions... '
     check_file ${LIVE_CONF}/LinuxServer-KFEngine.ini
     crudini --del ${LIVE_CONF}/LinuxServer-KFEngine.ini OnlineSubsystemSteamworks.KFWorkshopSteamworks
     # workshop header
@@ -231,11 +231,41 @@ function delete_cycles ()
     ${ECHO_DONE}
 }
 
-function add_maps ()
+function find_maps_webadmin ()
 {
-    # parse map list
+    MAPS_WEBADMIN=()
+
+    # convert multiline variable to array
+    mapfile -t MAPS_WEBADMIN <<< $(grep ' KFMapSummary]$' ${LIVE_CONF}/LinuxServer-KFGame.ini | awk '{ print $1 }' | tr -d '[')
+}
+
+function delete_maps_webadmin ()
+{
+    echo -n 'Deleting old workshop maps from webadmin map list... '
+
+    find_maps_stock
+    find_maps_webadmin
+
+    for map in "${MAPS_WEBADMIN[@]}"
+    do
+        # see if array contains variable with =~, maybe faster than manual nested loop
+        # ensure to compare case-insensitively with ,, e.g. MonsterBall vs Monsterball
+        # also ignore Default and Manor (dir is Manor, map is VolterManor...)
+        if [[ ! " ${MAPS_STOCK[*],,} " =~ " ${map,,} " ]] && [ "${map}" != 'KF-Default' ] && [ "${map}" != 'KF-VolterManor' ]
+        then
+            crudini --del ${LIVE_CONF}/LinuxServer-KFGame.ini "${map} KFMapSummary"
+        fi
+    done
+
+    ${ECHO_DONE}
+}
+
+function add_maps_webadmin ()
+{
+    # Check map list file
     echo -n 'Adding workshop maps to webadmin map list... '
     check_file ${MAP_LIST}
+
     while read -r line
     do
         [[ $line = \#* ]] || [ -z "$line" ] && continue # skip comments & empty lines
@@ -267,6 +297,8 @@ function add_cycle_custom ()
 
 function find_maps_workshop ()
 {
+    MAPS_WORKSHOP=()
+
     # Parse workshop map list
     check_file ${MAP_LIST}
     while read -r line
@@ -399,9 +431,11 @@ function regen_config ()
 
     merge_config
     reset_subscriptions
+    delete_maps_webadmin
+
     subscribe_mutators
     subscribe_maps
-    add_maps
+    add_maps_webadmin
     add_bans
     add_geoip
 
