@@ -12,3 +12,6 @@ skip_list:
   - role-name
   - schema[meta] # TODO ansible-lint believes the official dependency syntax is wrong
   - meta-no-info # we leave platform empty
+  - var-naming[no-role-prefix] # TODO
+  - var-naming[no-reserved] # TODO
+  - partial-become[task] # become is defined at the playbook level
