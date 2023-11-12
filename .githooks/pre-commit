@@ -1,4 +1,4 @@
 #!/bin/bash
 
 yamllint --strict .
-ansible-lint --strict
+ansible-lint --strict --offline

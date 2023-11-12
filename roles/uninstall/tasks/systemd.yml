@@ -1,6 +1,6 @@
 ---
 - include_role:
-    name: bviktor.servicecheck
+    name: noobient.servicecheck
   vars:
     unit: kf2.service
 
@@ -12,7 +12,7 @@
   when: servicecheck.exists
 
 - include_role:
-    name: bviktor.servicecheck
+    name: noobient.servicecheck
   vars:
     unit: kf2autokick.service
 
@@ -24,7 +24,7 @@
   when: servicecheck.exists
 
 - include_role:
-    name: bviktor.servicecheck
+    name: noobient.servicecheck
   vars:
     unit: kf2watchdog.service
 

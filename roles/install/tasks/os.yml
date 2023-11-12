@@ -19,7 +19,7 @@
 # Here we check not only the KF2 service, but also systemd state
 # Used in e.g. init, config, systemd
 - include_role:
-    name: bviktor.servicecheck
+    name: noobient.servicecheck
   vars:
     unit: kf2.service
 

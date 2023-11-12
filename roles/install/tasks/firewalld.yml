@@ -38,7 +38,7 @@
   notify: Reload journald configuration
 
 - include_role:
-    name: bviktor.firewalld
+    name: noobient.firewalld
   vars:
     service: kf2
     port: "{{ item }}"
@@ -51,7 +51,7 @@
     - 8080/tcp
 
 - include_role:
-    name: bviktor.logrotate
+    name: noobient.logrotate
   vars:
     name: firewalld-denied
     pattern: |-

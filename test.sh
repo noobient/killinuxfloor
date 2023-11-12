@@ -4,7 +4,7 @@ set -u
 
 if [ $# -lt 1 ]
 then
-    platform="fedora:37"
+    platform="fedora:39"
 else
     platform="${1}"
 fi

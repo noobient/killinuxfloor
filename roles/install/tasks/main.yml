@@ -4,7 +4,7 @@
 - include_tasks: user.yml
 
 - include_role:
-    name: bviktor.selinux_cil
+    name: noobient.selinux_cil
   vars:
     module: killinuxfloor
 

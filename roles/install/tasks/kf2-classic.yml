@@ -6,7 +6,7 @@
   when: ansible_os_family == 'RedHat'
 
 - include_role:
-    name: bviktor.thirdparty
+    name: noobient.thirdparty
   vars:
     name: '.NET Runtime'
     gpg_url: 'https://packages.microsoft.com/keys/microsoft.asc'
@@ -15,7 +15,7 @@
   when: ansible_os_family == 'Debian'
 
 - include_role:
-    name: bviktor.github_release
+    name: noobient.github_release
   vars:
     owner: 'SteamRE'
     repo: 'DepotDownloader'

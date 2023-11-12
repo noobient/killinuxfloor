@@ -1,7 +1,7 @@
 ---
-- src: bviktor.firewalld
-- src: bviktor.github_release
-- src: bviktor.logrotate
-- src: bviktor.selinux_cil
-- src: bviktor.servicecheck
-- src: bviktor.thirdparty
+- src: noobient.firewalld
+- src: noobient.github_release
+- src: noobient.logrotate
+- src: noobient.selinux_cil
+- src: noobient.servicecheck
+- src: noobient.thirdparty
