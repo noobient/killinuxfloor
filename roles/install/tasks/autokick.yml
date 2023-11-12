@@ -1,16 +1,10 @@
 ---
-# use dnf modules
+# TODO DNF modules used to be the way, but apparently not anymore
+#name: "@nodejs:{{ nodejs_version }}/common"
 - name: Install Node.js
-  dnf:
-    name: "@nodejs:{{ nodejs_version }}/common"
+  package:
+    name: nodejs
     state: latest
-  when: ansible_os_family == 'RedHat'
-
-- name: Install Node.js
-  apt:
-    name: "nodejs"
-    state: latest
-  when: ansible_os_family == 'Debian'
 
 - include_role:
     name: noobient.thirdparty
