@@ -35,6 +35,7 @@
       - sudo
       - rsync
       - jq
+      - acl
 
 - name: Create main Steam directory
   file:
