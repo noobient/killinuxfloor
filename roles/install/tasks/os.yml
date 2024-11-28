@@ -9,7 +9,7 @@
 - name: Check package manager
   fail:
     msg: 'Sorry, killinuxfloor only supports the DNF and APT package managers.'
-  when: ansible_pkg_mgr != 'dnf' and ansible_pkg_mgr != 'apt'
+  when: ansible_os_family != 'RedHat' and ansible_os_family != 'Debian'
 
 - name: Make sure the OS is up-to-date
   package:
