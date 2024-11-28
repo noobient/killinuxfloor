@@ -1,5 +1,5 @@
 ---
-name: Ubuntu 20.04
+name: Fedora 40
 
 on: # yamllint disable-line rule:truthy
   push:
@@ -18,7 +18,7 @@ jobs:
       - name: Test Galaxy role
         run: >
             CONT_ID=$(podman run --rm -v ${{ github.workspace }}:/repo -v /sys/fs/cgroup:/sys/fs/cgroup:ro
-            --tmpfs /tmp --tmpfs /run --privileged --detach bviktor/ansible-systemd-ubuntu:20.04) &&
+            --tmpfs /tmp --tmpfs /run --privileged --detach bviktor/ansible-systemd-fedora:40) &&
             podman exec ${CONT_ID} /bin/bash -c
             "./install.sh --extra-vars 'skip_kfgame=true' <<< y &&
             ./uninstall.sh <<< y &&
