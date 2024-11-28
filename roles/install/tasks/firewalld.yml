@@ -33,7 +33,10 @@
     option: SystemMaxUse
     value: 100M
     no_extra_spaces: true
-    create: false
+    create: true
+    mode: '0644'
+    owner: root
+    group: root
     backup: true
   notify: Reload journald configuration
 
