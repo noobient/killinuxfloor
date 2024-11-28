@@ -1,7 +1,7 @@
 ---
 - name: Check distribution flavor
   fail:
-    msg: 'Sorry, killinuxfloor only supports Red Hat and Debian-based distributions. Officially supported OS and release: {{ klf_dist }} {{ klf_rel }}.'
+    msg: 'Sorry, killinuxfloor only supports Red Hat and Debian-based distributions. Recommended OS and release: {{ klf_dist }} {{ klf_rel }}.'
   when: ansible_os_family != 'RedHat' and ansible_os_family != 'Debian'
 
 # Node.js requires dnf modules
