@@ -19,8 +19,8 @@
   vars:
     owner: 'SteamRE'
     repo: 'DepotDownloader'
-    prefix: 'depotdownloader-'
-    suffix: '.zip'
+    prefix: 'DepotDownloader-'
+    suffix: 'framework.zip'
 
 # the zip file needs to be versioned, otherwise version bumps won't trigger a re-download
 # we could checksum it to avoid that, but that's more effort and maintenance
