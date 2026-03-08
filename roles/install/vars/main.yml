@@ -1,5 +1,5 @@
 ---
 klf_dist: 'Fedora Server'
-klf_rel: '41'
+klf_rel: '43'
 nodejs_version: 22
 dotnet_version: 9.0

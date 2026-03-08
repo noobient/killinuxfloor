@@ -20,7 +20,7 @@ jobs:
             CONT_ID=$(podman run --rm -v ${{ github.workspace }}:/repo -v /sys/fs/cgroup:/sys/fs/cgroup:ro
             --tmpfs /tmp --tmpfs /run --privileged --detach bviktor/ansible-systemd-almalinux:9) &&
             podman exec ${CONT_ID} /bin/bash -c
-            "./install.sh --extra-vars 'skip_kfgame=true' <<< y &&
+            "./install.sh --extra-vars 'skip_kfgame=true ansible_become_method=su' <<< y &&
             ./uninstall.sh <<< y &&
-            ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true' <<< y" &&
+            ./install.sh --extra-vars 'skip_kfgame=true kf2_classic=true ansible_become_method=su' <<< y" &&
             podman stop ${CONT_ID}
