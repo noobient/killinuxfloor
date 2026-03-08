@@ -40,7 +40,7 @@ fi
 
 if [ $# -lt 1 ]
 then
-    platform="fedora:41"
+    platform="fedora:43"
 else
     platform="${1}"
 fi
