@@ -10,7 +10,7 @@
     name: noobient.thirdparty
   vars:
     name: Yarn
-    gpg_url: "https://dl.yarnpkg.com/{% if ansible_os_family == 'RedHat' %}rpm{% else %}debian{% endif %}/pubkey.gpg"
+    gpg_url: "https://dl.yarnpkg.com/{% if ansible_facts['os_family'] == 'RedHat' %}rpm{% else %}debian{% endif %}/pubkey.gpg"
     repo_file: yarn
     package: yarn
 

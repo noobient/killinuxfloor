@@ -2,7 +2,7 @@
 - name: Enable .NET backports repo
   apt_repository:
     repo: ppa:dotnet/backports
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Install .NET Runtime
   package:
